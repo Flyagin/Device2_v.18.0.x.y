@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\v.18.00\device_2_v_18_0_0_0(IAR 7 50 2).ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\v.18.00\device_2_v_18_1_0_0(IAR 7 50 2).ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\v.18.00\device_2_v_18_2_0_0(IAR 7 50 2).ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\v.18.00\device_2_v_18_3_0_0(IAR 7 50 2).ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+
