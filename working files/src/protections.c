@@ -5484,12 +5484,6 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
         
         break;
       }
-    case UP_CTRL_I04:
-      {
-        analog_value = measurement[IM_I04];
-        
-        break;
-      }
     case UP_CTRL_3I0_r:
       {
         analog_value = measurement[IM_3I0_r];
@@ -5510,11 +5504,10 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
       }
     case UP_CTRL_Ua_Ub_Uc:
       {
-        uint32_t phase_line = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0);
-        analog_value = (phase_line == 0) ? measurement[IM_UA] : measurement[IM_UAB];
+        analog_value = measurement[IM_UA];
         
         unsigned int or_and = ((current_settings_prt.control_UP & MASKA_FOR_BIT(n_UP*(_CTR_UP_NEXT_BIT - (_CTR_UP_PART_II - _CTR_UP_PART_I) - _CTR_UP_PART_I) + CTR_UP_OR_AND_BIT - (_CTR_UP_PART_II - _CTR_UP_PART_I))) != 0);
-        uint32_t analog_value_tmp = (phase_line == 0) ? measurement[IM_UB] : measurement[IM_UBC];
+        uint32_t analog_value_tmp = measurement[IM_UB];
         if (
             ((more_less == 0) && (or_and == 0)) ||
             ((more_less != 0) && (or_and != 0))
@@ -5522,14 +5515,14 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
         {
           if ((uint32_t)analog_value < analog_value_tmp) analog_value = analog_value_tmp;
          
-          analog_value_tmp = (phase_line == 0) ? measurement[IM_UC] : measurement[IM_UCA];
+          analog_value_tmp = measurement[IM_UC];
           if ((uint32_t)analog_value < analog_value_tmp) analog_value = analog_value_tmp;
         }
         else
         {
           if ((uint32_t)analog_value > analog_value_tmp) analog_value = analog_value_tmp;
          
-          analog_value_tmp = (phase_line == 0) ? measurement[IM_UC] : measurement[IM_UCA];
+          analog_value_tmp = measurement[IM_UC];
           if ((uint32_t)analog_value > analog_value_tmp) analog_value = analog_value_tmp;
         }
         
@@ -5537,19 +5530,63 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
       }
     case UP_CTRL_Ua:
       {
-        analog_value = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) ? measurement[IM_UA] : measurement[IM_UAB];
+        analog_value = measurement[IM_UA];
         
         break;
       }
     case UP_CTRL_Ub:
       {
-        analog_value = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) ? measurement[IM_UB] : measurement[IM_UBC];
+        analog_value = measurement[IM_UB];
         
         break;
       }
     case UP_CTRL_Uc:
       {
-        analog_value = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) ? measurement[IM_UC] : measurement[IM_UCA];
+        analog_value = measurement[IM_UC];
+        
+        break;
+      }
+    case UP_CTRL_Uab_Ubc_Uca:
+      {
+        analog_value = measurement[IM_UAB];
+        
+        unsigned int or_and = ((current_settings_prt.control_UP & MASKA_FOR_BIT(n_UP*(_CTR_UP_NEXT_BIT - (_CTR_UP_PART_II - _CTR_UP_PART_I) - _CTR_UP_PART_I) + CTR_UP_OR_AND_BIT - (_CTR_UP_PART_II - _CTR_UP_PART_I))) != 0);
+        uint32_t analog_value_tmp = measurement[IM_UBC];
+        if (
+            ((more_less == 0) && (or_and == 0)) ||
+            ((more_less != 0) && (or_and != 0))
+           )   
+        {
+          if ((uint32_t)analog_value < analog_value_tmp) analog_value = analog_value_tmp;
+         
+          analog_value_tmp = measurement[IM_UCA];
+          if ((uint32_t)analog_value < analog_value_tmp) analog_value = analog_value_tmp;
+        }
+        else
+        {
+          if ((uint32_t)analog_value > analog_value_tmp) analog_value = analog_value_tmp;
+         
+          analog_value_tmp = measurement[IM_UCA];
+          if ((uint32_t)analog_value > analog_value_tmp) analog_value = analog_value_tmp;
+        }
+        
+        break;
+      }
+    case UP_CTRL_Uab:
+      {
+        analog_value = measurement[IM_UAB];
+        
+        break;
+      }
+    case UP_CTRL_Ubc:
+      {
+        analog_value = measurement[IM_UBC];
+        
+        break;
+      }
+    case UP_CTRL_Uca:
+      {
+        analog_value = measurement[IM_UCA];
         
         break;
       }

@@ -997,49 +997,49 @@ void make_ekran_analog_value_records_digital_registrator(void)
     /******************************************/
     int additional_current = 0;
     
-    {
-      int shift_ind;
-      
-      if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) shift_ind = 8 - additional_current;
-      else shift_ind = 4 - additional_current; 
-      
-      if ((shift_ind + 1) <= position_temp) position_temp--;
-      do  
-      {
-        for(unsigned int j = 0; j<MAX_COL_LCD; j++)
-        {
-          if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
-          else name_string[shift_ind][j] = ' ';
-        }
-        shift_ind++;
-      }
-      while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
-      additional_current++;
-    }
-
-    if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)
-    {
-      int shift_ind_min = 9;
-      int shift_ind_max = 11;
-      
-      for (int i = 0; i <= (shift_ind_max - shift_ind_min); i++)
-      {
-        int shift_ind = shift_ind_min - additional_current + i;
-    
-        if ((shift_ind_max - additional_current + 1) <= position_temp) position_temp--;
-        do  
-        {
-          for(unsigned int j = 0; j<MAX_COL_LCD; j++)
-          {
-            if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
-            else name_string[shift_ind][j] = ' ';
-          }
-          shift_ind++;
-        }
-        while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
-        additional_current++;
-      }
-    }
+//    {
+//      int shift_ind;
+//      
+//      if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) shift_ind = 8 - additional_current;
+//      else shift_ind = 4 - additional_current; 
+//      
+//      if ((shift_ind + 1) <= position_temp) position_temp--;
+//      do  
+//      {
+//        for(unsigned int j = 0; j<MAX_COL_LCD; j++)
+//        {
+//          if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
+//          else name_string[shift_ind][j] = ' ';
+//        }
+//        shift_ind++;
+//      }
+//      while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
+//      additional_current++;
+//    }
+//
+//    if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)
+//    {
+//      int shift_ind_min = 9;
+//      int shift_ind_max = 11;
+//      
+//      for (int i = 0; i <= (shift_ind_max - shift_ind_min); i++)
+//      {
+//        int shift_ind = shift_ind_min - additional_current + i;
+//    
+//        if ((shift_ind_max - additional_current + 1) <= position_temp) position_temp--;
+//        do  
+//        {
+//          for(unsigned int j = 0; j<MAX_COL_LCD; j++)
+//          {
+//            if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
+//            else name_string[shift_ind][j] = ' ';
+//          }
+//          shift_ind++;
+//        }
+//        while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
+//        additional_current++;
+//      }
+//    }
 
     if (type_view_max_values_dr != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE)
     {

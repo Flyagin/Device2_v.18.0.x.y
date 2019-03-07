@@ -236,54 +236,23 @@ void Fourier(void)
 void fapch(void)
 {
   unsigned int bank_measurement_high_tmp = bank_measurement_high;
-  unsigned int canal_phase_line = current_settings.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE;
   int index_1 = -1;
   unsigned int maska_canaliv_fapch_tmp = 0;
 
   /*****
   Шучаємо сигнал по якому будемо розраховувати частоту
   *****/  
-  if (
-      (
-       (canal_phase_line == 0) &&
-       (measurement_high[bank_measurement_high_tmp][IM_UA] >= PORIG_FOR_FAPCH)
-      )   
-      ||  
-      (
-       (canal_phase_line != 0) &&
-       (measurement_high[bank_measurement_high_tmp][IM_UAB] >= PORIG_FOR_FAPCH)
-      )   
-     )   
+  if (measurement_high[bank_measurement_high_tmp][IM_UA] >= PORIG_FOR_FAPCH)
   {
     index_1 = INDEX_PhK_UA;
     maska_canaliv_fapch_tmp = READ_Ua;
   }
-  else if (
-           (
-            (canal_phase_line == 0) &&
-            (measurement_high[bank_measurement_high_tmp][IM_UB] >= PORIG_FOR_FAPCH)
-           )   
-           ||  
-           (
-            (canal_phase_line != 0) &&
-            (measurement_high[bank_measurement_high_tmp][IM_UBC] >= PORIG_FOR_FAPCH)
-           )   
-          )   
+  else if (measurement_high[bank_measurement_high_tmp][IM_UB] >= PORIG_FOR_FAPCH)
   {
     index_1 = INDEX_PhK_UB;
     maska_canaliv_fapch_tmp = READ_Ub;
   }
-  else if (
-           (
-            (canal_phase_line == 0) &&
-            (measurement_high[bank_measurement_high_tmp][IM_UC] >= PORIG_FOR_FAPCH)
-           )   
-           ||  
-           (
-            (canal_phase_line != 0) &&
-            (measurement_high[bank_measurement_high_tmp][IM_UCA] >= PORIG_FOR_FAPCH)
-           )   
-          )
+  else if (measurement_high[bank_measurement_high_tmp][IM_UC] >= PORIG_FOR_FAPCH)
   {
     index_1 = INDEX_PhK_UC;
     maska_canaliv_fapch_tmp = READ_Uc;
@@ -1653,15 +1622,7 @@ void calc_angle(void)
   semaphore_measure_values_low = 0;
   
   //Визначаємо, який вектор беремо за осному
-  __full_ort_index index_base;
-  if ((current_settings.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) index_base = FULL_ORT_Ua;
-  else 
-  {
-    index_base = FULL_ORT_Uab;
-    
-    //У цьому випадку кути між фазними напругами невизначкені
-    phi_angle[FULL_ORT_Uc] = phi_angle[FULL_ORT_Ub] = phi_angle[FULL_ORT_Ua] = -1;
-  }
+  __full_ort_index index_base = FULL_ORT_Ua;
 
   /***
   Визначаємо, який останній вектор можна брати за основу
