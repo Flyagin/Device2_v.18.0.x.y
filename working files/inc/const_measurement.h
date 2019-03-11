@@ -233,7 +233,7 @@ Koef_1 = 74.831881801009052122160116719483 (4790/64 = 74.84375)
 
 #define I_3I0         0
 #define I_Ia          1
-#define I_Ib_I04      2
+#define I_Ib          2
 #define I_Ic          3
 #define I_Ua          4
 #define I_Ub          5
@@ -295,7 +295,6 @@ FULL_ORT_Ib,
 FULL_ORT_Ic,
 FULL_ORT_3I0,
 FULL_ORT_3I0_r,
-FULL_ORT_I04,
 
 FULL_ORT_MAX
 };

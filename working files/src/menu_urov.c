@@ -389,7 +389,7 @@ void make_ekran_control_urov()
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
          )   
          &&
-         ((current_settings.configuration & (1<<MTZ04_BIT_CONFIGURATION)) == 0)
+         ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
         )  
         ||
         (

@@ -10,6 +10,31 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
   /************************/
   //Спершу перевіряємо чи не знаходимося зараз ми у такому вікні, яке забороняє змінювати текучу конфігурацію
   /************************/
+  //Перевірка ДЗ
+  if ((new_configuration & ( 1<< DZ_BIT_CONFIGURATION )) == 0)
+  {
+    if(
+       (current_ekran.current_level == EKRAN_CHOOSE_SETTINGS_DZ)
+       || 
+       (
+        (current_ekran.current_level >= EKRAN_CHOOSE_SETPOINT_TIMEOUT_GROUP1_DZ) &&
+        (current_ekran.current_level <= EKRAN_CHOOSE_SETPOINT_TIMEOUT_GROUP4_DZ) 
+       )  
+       ||  
+       (
+        (current_ekran.current_level >= EKRAN_SETPOINT_DZ_GROUP1) &&
+        (current_ekran.current_level <= EKRAN_SETPOINT_DZ_GROUP4)
+       )
+       ||  
+       (
+        (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
+        (current_ekran.current_level <= EKRAN_TIMEOUT_DZ_GROUP4)
+       )
+       ||  
+       (current_ekran.current_level == EKRAN_CONTROL_DZ)
+      )
+      error_window |= (1 << DZ_BIT_CONFIGURATION );
+  }
   //Перевірка МТЗ
   if ((new_configuration & ( 1<< MTZ_BIT_CONFIGURATION )) == 0)
   {
@@ -34,31 +59,6 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
        (current_ekran.current_level == EKRAN_CONTROL_MTZ)
       )
       error_window |= (1 << MTZ_BIT_CONFIGURATION );
-  }
-  //Перевірка МТЗ 0.4кВ
-  if ((new_configuration & ( 1<< MTZ04_BIT_CONFIGURATION )) == 0)
-  {
-    if(
-       (current_ekran.current_level == EKRAN_CHOOSE_SETTINGS_MTZ04)
-       || 
-       (
-        (current_ekran.current_level >= EKRAN_CHOOSE_SETPOINT_TIMEOUT_GROUP1_MTZ04) &&
-        (current_ekran.current_level <= EKRAN_CHOOSE_SETPOINT_TIMEOUT_GROUP4_MTZ04) 
-       )  
-       ||  
-       (
-        (current_ekran.current_level >= EKRAN_SETPOINT_MTZ04_GROUP1) &&
-        (current_ekran.current_level <= EKRAN_SETPOINT_MTZ04_GROUP4)
-       )
-       ||  
-       (
-        (current_ekran.current_level >= EKRAN_TIMEOUT_MTZ04_GROUP1) &&
-        (current_ekran.current_level <= EKRAN_TIMEOUT_MTZ04_GROUP4)
-       )
-       ||  
-       (current_ekran.current_level == EKRAN_CONTROL_MTZ04)
-      )
-      error_window |= (1 << MTZ04_BIT_CONFIGURATION );
   }
   //Перевірка ЗДЗ
   if ((new_configuration & (1<<ZDZ_BIT_CONFIGURATION)) == 0)
@@ -333,43 +333,43 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
     
     unsigned int maska[N_SMALL] = {0, 0, 0}, maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
   
-    //Перевіряємо, чи МТЗ зараз знято з конфігурації
-    if ((target_label->configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
+    //Перевіряємо, чи ДЗ зараз знято з конфігурації
+    if ((target_label->configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
     {
-      //Виводим ступені МТЗ
-      target_label->control_mtz &= (unsigned int)(~(CTR_MTZ_1 | CTR_MTZ_2 | CTR_MTZ_3 | CTR_MTZ_4));
-   
-      //Виводим ступені МТЗ з АПВ
-      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_MTZ1 | CTR_APV_STARTED_FROM_MTZ2 | CTR_APV_STARTED_FROM_MTZ3  | CTR_APV_STARTED_FROM_MTZ4));
-
-      //Вимикаємо контроль ЗДЗ за струмом
-      int32_t ctrl_zdz_type_tmp = target_label->ctrl_zdz_type;
-      if (
-          (ctrl_zdz_type_tmp == ZDZ_CTRL_I      ) ||
-          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_OR_U ) ||
-          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_AND_U)
-         )
-        target_label->ctrl_zdz_type = ZDZ_CTRL_NONE;
-      //Виводим ступені МТЗ з ЗДЗ
-      target_label->control_zdz &= (unsigned int)(~(
-                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ1_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ2_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ3_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ4_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II))
-                                                   ));
+//      //Виводим ступені ДЗ
+//      target_label->control_mtz &= (unsigned int)(~(CTR_MTZ_1 | CTR_MTZ_2 | CTR_MTZ_3 | CTR_MTZ_4));
+//   
+//      //Виводим ступені ДЗ з АПВ
+//      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_MTZ1 | CTR_APV_STARTED_FROM_MTZ2 | CTR_APV_STARTED_FROM_MTZ3  | CTR_APV_STARTED_FROM_MTZ4));
+//
+//      //Вимикаємо контроль ЗДЗ за струмом
+//      int32_t ctrl_zdz_type_tmp = target_label->ctrl_zdz_type;
+//      if (
+//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I      ) ||
+//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_OR_U ) ||
+//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_AND_U)
+//         )
+//        target_label->ctrl_zdz_type = ZDZ_CTRL_NONE;
+//      //Виводим ступені ДЗ з ЗДЗ
+//      target_label->control_zdz &= (unsigned int)(~(
+//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ1_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ2_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ3_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ4_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II))
+//                                                   ));
+//      
+//      //Виводим ступені ДЗ з УРОВ
+//      target_label->control_urov &= (unsigned int)(~(
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
+//                                                    )
+//                                                  );
       
-      //Виводим ступені МТЗ з УРОВ
-      target_label->control_urov &= (unsigned int)(~(
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) | 
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) | 
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) | 
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
-                                                    )
-                                                  );
-      
-      //Формуємо маски функцій МТЗ
+      //Формуємо маски функцій ДЗ
       for (unsigned int i = 0; i < N_SMALL; i++ ) maska[i] = 0;
-      for (int i = 0; i < NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL; i++)
+      for (int i = 0; i < NUMBER_DZ_SIGNAL_FOR_RANG_SMALL; i++)
         _SET_BIT(
                  maska, 
                  (
@@ -379,7 +379,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                 );
 
       for (unsigned int i = 0; i < N_BIG; i++ ) maska_1[i] = 0;
-      for (int i = 0; i < NUMBER_MTZ_SIGNAL_FOR_RANG; i++)
+      for (int i = 0; i < NUMBER_DZ_SIGNAL_FOR_RANG; i++)
         _SET_BIT(
                  maska_1, 
                  (
@@ -388,7 +388,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  )
                 );
       
-      //Знімаємо всі функції для ранжування входів, які відповідають за МТЗ
+      //Знімаємо всі функції для ранжування входів, які відповідають за ДЗ
       for (int i = 0; i < NUMBER_DEFINED_BUTTONS; i++)
       {
         target_label->ranguvannja_buttons[N_SMALL*i  ] &= ~maska[0];
@@ -396,7 +396,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
         target_label->ranguvannja_buttons[N_SMALL*i+2] &= ~maska[2];
       }
 
-      //Знімаємо всі функції для ранжування входів, які відповідають за МТЗ
+      //Знімаємо всі функції для ранжування входів, які відповідають за ДЗ
       for (int i = 0; i < NUMBER_INPUTS; i++)
       {
         target_label->ranguvannja_inputs[N_SMALL*i  ] &= ~maska[0];
@@ -468,44 +468,64 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
       }
     }
 
-    //Перевіряємо, чи МТЗ 0.4кВ зараз знято з конфігурації
-    if ((target_label->configuration & (1<<MTZ04_BIT_CONFIGURATION)) == 0)
+    //Перевіряємо, чи МТЗ зараз знято з конфігурації
+    if ((target_label->configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
     {
-      //Виводим ступені МТЗ 0.4кВ
-      target_label->control_mtz04 &= (unsigned int)(~(CTR_MTZ04_1 | CTR_MTZ04_2));
+      //Виводим ступені МТЗ
+      target_label->control_mtz &= (unsigned int)(~(CTR_MTZ_1 | CTR_MTZ_2 | CTR_MTZ_3 | CTR_MTZ_4));
    
-      //Виводим ступені МТЗ 0.4кВ з УРОВ
-      target_label->control_urov &= (unsigned int)(
-                                                   ~(
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) | 
-                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+      //Виводим ступені МТЗ з АПВ
+      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_MTZ1 | CTR_APV_STARTED_FROM_MTZ2 | CTR_APV_STARTED_FROM_MTZ3  | CTR_APV_STARTED_FROM_MTZ4));
+
+      //Вимикаємо контроль ЗДЗ за струмом
+      int32_t ctrl_zdz_type_tmp = target_label->ctrl_zdz_type;
+      if (
+          (ctrl_zdz_type_tmp == ZDZ_CTRL_I      ) ||
+          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_OR_U ) ||
+          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_AND_U)
+         )
+        target_label->ctrl_zdz_type = ZDZ_CTRL_NONE;
+      //Виводим ступені МТЗ з ЗДЗ
+      target_label->control_zdz &= (unsigned int)(~(
+                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ1_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ2_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ3_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
+                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ4_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II))
+                                                   ));
+      
+      //Виводим ступені МТЗ з УРОВ
+      target_label->control_urov &= (unsigned int)(~(
+                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) | 
+                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) | 
+                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) | 
+                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
                                                     )
                                                   );
       
-      //Формуємо маки функцій МТЗ 0.4кВ
+      //Формуємо маски функцій МТЗ
       for (unsigned int i = 0; i < N_SMALL; i++ ) maska[i] = 0;
-      for (int i = 0; i < NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL; i++)
+      for (int i = 0; i < NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL; i++)
         _SET_BIT(
                  maska, 
                  (
-                  NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
-                  NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  i
-                 )
-                );
-     
-      for (unsigned int i = 0; i < N_BIG; i++ ) maska_1[i] = 0;
-      for (int i = 0; i < NUMBER_MTZ04_SIGNAL_FOR_RANG; i++)
-        _SET_BIT(
-                 maska_1, 
-                 (
-                  NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
-                  NUMBER_MTZ_SIGNAL_FOR_RANG        +
+                  NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL      +
                   i
                  )
                 );
 
-      //Знімаємо всі функції для ранжування кнопок, які відповідають за МТЗ 0.4кВ
+      for (unsigned int i = 0; i < N_BIG; i++ ) maska_1[i] = 0;
+      for (int i = 0; i < NUMBER_MTZ_SIGNAL_FOR_RANG; i++)
+        _SET_BIT(
+                 maska_1, 
+                 (
+                  NUMBER_GENERAL_SIGNAL_FOR_RANG + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG      +
+                  i
+                 )
+                );
+      
+      //Знімаємо всі функції для ранжування входів, які відповідають за МТЗ
       for (int i = 0; i < NUMBER_DEFINED_BUTTONS; i++)
       {
         target_label->ranguvannja_buttons[N_SMALL*i  ] &= ~maska[0];
@@ -513,7 +533,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
         target_label->ranguvannja_buttons[N_SMALL*i+2] &= ~maska[2];
       }
 
-      //Знімаємо всі функції для ранжування входів, які відповідають за МТЗ 0.4кВ
+      //Знімаємо всі функції для ранжування входів, які відповідають за МТЗ
       for (int i = 0; i < NUMBER_INPUTS; i++)
       {
         target_label->ranguvannja_inputs[N_SMALL*i  ] &= ~maska[0];
@@ -601,8 +621,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   i
                  )
                 );
@@ -613,8 +633,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   i
                  )
                 );
@@ -729,8 +749,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL     +
                   i
                  )
@@ -742,8 +762,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG     +
                   i
                  )
@@ -851,8 +871,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL      +
                   i
@@ -865,8 +885,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG      +
                   i
@@ -966,8 +986,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL    +
@@ -981,8 +1001,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG      +
                   NUMBER_TZNP_SIGNAL_FOR_RANG    +
@@ -1091,8 +1111,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL    +
@@ -1107,8 +1127,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG      +
                   NUMBER_MTZ_SIGNAL_FOR_RANG     +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG   +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG     +
                   NUMBER_ZZ_SIGNAL_FOR_RANG      +
                   NUMBER_TZNP_SIGNAL_FOR_RANG    +
@@ -1210,8 +1230,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1227,8 +1247,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -1334,8 +1354,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1352,8 +1372,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -1479,8 +1499,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1498,8 +1518,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -1612,8 +1632,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1632,8 +1652,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -1746,8 +1766,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1767,8 +1787,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -1885,8 +1905,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL       +
@@ -1907,8 +1927,8 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
                  maska_1, 
                  (
                   NUMBER_GENERAL_SIGNAL_FOR_RANG    + 
+                  NUMBER_DZ_SIGNAL_FOR_RANG         +
                   NUMBER_MTZ_SIGNAL_FOR_RANG        +
-                  NUMBER_MTZ04_SIGNAL_FOR_RANG      +
                   NUMBER_ZDZ_SIGNAL_FOR_RANG        +
                   NUMBER_ZZ_SIGNAL_FOR_RANG         +
                   NUMBER_TZNP_SIGNAL_FOR_RANG       +
@@ -2121,63 +2141,6 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
 /*****************************************************/
 
 /*****************************************************/
-//Функція обновлення змінних при зміні типу вхідних напруг
-/*****************************************************/
-unsigned int action_after_changing_extra_settings(unsigned int new_value, __SETTINGS *target_label)
-{
-  unsigned int error = 0;
-  if ((target_label->control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)
-  {
-    if (current_ekran.current_level == EKRAN_TRANSFORMATOR_INFO_CONTROL) error |= (unsigned int)(1 << 31);
-  }
-  
-  if (error == 0)
-  {
-    unsigned int new_configuration = target_label->configuration;
-    if ((new_value & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0)
-    {
-      //Підготовляємо вивід з конфігурації МТЗ 0.4кВ
-      new_configuration &= (unsigned int)(~(1 << MTZ04_BIT_CONFIGURATION));
-    }
-    else
-    { 
-      //Підготовляємо вивід з конфігурації СЗНП
-      new_configuration &= (unsigned int)(~(1 << TZNP_BIT_CONFIGURATION));
-    }
-  
-    //Виконуєм спробу зміни конфігурації по зміні Ib/I0.4 і повертаємо результат цієї спроби
-    error |= action_after_changing_of_configuration(new_configuration, target_label);
-    if (error == 0) 
-    {
-      //Вводимо в дію номі значення  поля додаткових налаштувань
-      target_label->control_extra_settings_1 = new_value;
-    
-      for (size_t i = 0; i < NUMBER_UP; i++) 
-      {
-        if (
-            ((target_label->ctrl_UP_input[i] == UP_CTRL_I04  ) && ((new_value & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0)) ||
-            ((target_label->ctrl_UP_input[i] == UP_CTRL_3I0_r) && ((new_value & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) != 0)) ||
-            (
-             (  
-              (target_label->ctrl_UP_input[i] == UP_CTRL_U1) ||
-              (target_label->ctrl_UP_input[i] == UP_CTRL_U2)
-             )
-             &&
-             ((new_value & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)  
-            ) 
-           )   
-        {
-          action_after_changing_input_UP(target_label, i, UP_CTRL_Ia_Ib_Ic);
-        }
-      }
-    }
-  }
-  
-  return error;
-}
-/*****************************************************/
-
-/*****************************************************/
 //Функція обновлення змінних при зміні типу реле 33/3I0
 /*****************************************************/
 void action_after_changing_zz1_type(__SETTINGS *target_label)
@@ -2349,7 +2312,6 @@ void def_pickup_timeout_UP(__SETTINGS *current_label, uint32_t _n_UP, uint32_t g
   case UP_CTRL_Ic:
   case UP_CTRL_I1:
   case UP_CTRL_I2:
-  case UP_CTRL_I04:
   case UP_CTRL_3I0_r:
     {
       min = SETPOINT_UP_I_MIN;
@@ -2362,9 +2324,13 @@ void def_pickup_timeout_UP(__SETTINGS *current_label, uint32_t _n_UP, uint32_t g
       break;
     }
   case UP_CTRL_Ua_Ub_Uc:
+  case UP_CTRL_Uab_Ubc_Uca:
   case UP_CTRL_Ua:
+  case UP_CTRL_Uab:
   case UP_CTRL_Ub:
+  case UP_CTRL_Ubc:
   case UP_CTRL_Uc:
+  case UP_CTRL_Uca:
   case UP_CTRL_U1:
   case UP_CTRL_U2:
   case UP_CTRL_3U0:

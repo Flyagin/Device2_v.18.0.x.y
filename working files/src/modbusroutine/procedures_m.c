@@ -518,55 +518,17 @@ int configAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
       else
         header_ar_tmp = (__HEADER_AR*)buffer_for_RS485_read_record_ar;
 
-      char idetyficator[NUMBER_ANALOG_CANALES][16] =
+      const char idetyficator[NUMBER_ANALOG_CANALES][16] =
       {
         "3I0             ",
         "Ia              ",
-        "                ",
+        "Ib              ",
         "Ic              ",
-        "                ",
-        "                ",
-        "                ",
+        "Ua              ",
+        "Ub              ",
+        "Uc              ",
         "3U0             "
       };
-      const char idetyficator_current[2][16] =
-      {
-        "Ib              ",
-        "I 0.4kV         "
-      };
-
-      unsigned int phase_line = header_ar_tmp->control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE;
-      unsigned int Ib_I04 = header_ar_tmp->control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04;
-      for (unsigned int k = 0; k < 16; k++) idetyficator[2][k] = idetyficator_current[Ib_I04 != 0][k];
-
-      if (phase_line == 0)
-        {
-          const char idetyficator_phase[3][16] =
-          {
-            "Ua              ",
-            "Ub              ",
-            "Uc              "
-          };
-          char *point_to_changed_name = idetyficator[I_Ua + 0];
-          for (unsigned int j = 0; j < 3; j++)
-            {
-              for (unsigned int k = 0; k < 16; k++) *(point_to_changed_name + j*16 + k) = idetyficator_phase[j][k];
-            }
-        }
-      else
-        {
-          const char idetyficator_line[3][16] =
-          {
-            "Uab             ",
-            "Ubc             ",
-            "Uca             "
-          };
-          char *point_to_changed_name = idetyficator[I_Ua + 0];
-          for (unsigned int j = 0; j < 3; j++)
-            {
-              for (unsigned int k = 0; k < 16; k++) *(point_to_changed_name + j*16 + k) = idetyficator_line[j][k];
-            }
-        }
 
       switch(offsetRegister)
         {
@@ -591,55 +553,17 @@ int configAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
         case 9://Фаза канала offsetRegister
         {
           //Фаза каналу - 2 ASCII символів
-          char phase[NUMBER_ANALOG_CANALES][2] =
+          const char phase[NUMBER_ANALOG_CANALES][2] =
           {
             "I0",
             "A ",
-            "  ",
+            "B ",
             "C ",
-            "  ",
-            "  ",
-            "  ",
+            "A ",
+            "B ",
+            "C ",
             "U0"
           };
-
-          {
-            const char phase_c[2][2] =
-            {
-              "B ",
-              "04"
-            };
-            for (unsigned int k = 0; k < 2; k++) phase[I_Ib_I04][k] = phase_c[Ib_I04 != 0][k];
-          }
-
-          if (phase_line == 0)
-            {
-              const char phase_p[3][2] =
-              {
-                "A ",
-                "B ",
-                "C "
-              };
-              char *point_to_changed_name = phase[I_Ua + 0];
-              for (unsigned int j = 0; j < 3; j++)
-                {
-                  for (unsigned int k = 0; k < 2; k++) *(point_to_changed_name + j*2 + k) = phase_p[j][k];
-                }
-            }
-          else
-            {
-              const char pase_l[3][2] =
-              {
-                "AB",
-                "BC",
-                "CA"
-              };
-              char *point_to_changed_name = phase[I_Ua + 0];
-              for (unsigned int j = 0; j < 3; j++)
-                {
-                  for (unsigned int k = 0; k < 2; k++) *(point_to_changed_name + j*2 + k) = pase_l[j][k];
-                }
-            }
 
           return phase[subObj][0] | (phase[subObj][1]<<8);
         }//case 9

@@ -1784,12 +1784,6 @@ void calc_angle(void)
               index_m = IM_3I0_r;
               break;
             }
-          case FULL_ORT_I04:
-            {
-              porig_chutlyvosti = PORIG_CHUTLYVOSTI_CURRENT;
-              index_m = IM_I04;
-              break;
-            }
           default:
             {
               //Теоретично цього ніколи не мало б бути

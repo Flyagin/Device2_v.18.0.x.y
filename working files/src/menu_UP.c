@@ -116,12 +116,12 @@ void make_ekran_setpoint_UP(unsigned int group)
             break;
           }
         case UP_CTRL_Ua_Ub_Uc:
-        case UP_CTRL_Ua:
-        case UP_CTRL_Ub:
-        case UP_CTRL_Uc:
         case UP_CTRL_Uab_Ubc_Uca:
+        case UP_CTRL_Ua:
         case UP_CTRL_Uab:
+        case UP_CTRL_Ub:
         case UP_CTRL_Ubc:
+        case UP_CTRL_Uc:
         case UP_CTRL_Uca:
         case UP_CTRL_U1:
         case UP_CTRL_U2:

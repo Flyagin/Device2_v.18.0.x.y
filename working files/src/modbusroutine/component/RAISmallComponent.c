@@ -128,7 +128,6 @@ int getRAISmallModbusRegister(int adrReg)
         )
       )) return 0;//Блок пустой
   unsigned int value, index;
-  unsigned int control_extra_settings_1_tmp = *((unsigned int *)(point_to_buffer + FIRST_INDEX_EXTRA_SETTINGS_DR));
 
   switch (offset)
   {
@@ -141,14 +140,10 @@ int getRAISmallModbusRegister(int adrReg)
   }
   case MDR_OFFSET_MEASUREMENT_IB_1:
   {
-    if ((control_extra_settings_1_tmp & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0)
-    {
-      index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 4)*sizeof(unsigned int);
-      value = *((unsigned int *)(point_to_buffer + index));
+    index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 4)*sizeof(unsigned int);
+    value = *((unsigned int *)(point_to_buffer + index));
 
-      return (value >> 2) &0xFFFF;
-    }
-    return 0;
+    return (value >> 2) &0xFFFF;
   }
   case MDR_OFFSET_MEASUREMENT_IC_1:
   {
@@ -192,17 +187,6 @@ int getRAISmallModbusRegister(int adrReg)
 
     return (value >> 2) &0xFFFF;
   }
-  case MDR_OFFSET_MEASUREMENT_I04_1:
-  {
-    if ((control_extra_settings_1_tmp & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) != 0)
-    {
-      index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 8)*sizeof(unsigned int);
-      value = *((unsigned int *)(point_to_buffer + index));
-
-      return (value >> 2) &0xFFFF;
-    }
-    return 0;
-  }
   case MDR_OFFSET_MEASUREMENT_UAB_1:
   {
     index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 15)*sizeof(unsigned int);
@@ -226,36 +210,24 @@ int getRAISmallModbusRegister(int adrReg)
   }
   case MDR_OFFSET_MEASUREMENT_UA_1:
   {
-    if ((control_extra_settings_1_tmp & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0)
-    {
-      index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 9)*sizeof(unsigned int);
-      value = *((unsigned int *)(point_to_buffer + index));
+    index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 9)*sizeof(unsigned int);
+    value = *((unsigned int *)(point_to_buffer + index));
 
-      return (value >> 3) &0xFFFF;
-    }
-    return 0;
+    return (value >> 3) &0xFFFF;
   }
   case MDR_OFFSET_MEASUREMENT_UB_1:
   {
-    if ((control_extra_settings_1_tmp & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0)
-    {
-      index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 10)*sizeof(unsigned int);
-      value = *((unsigned int *)(point_to_buffer + index));
+    index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 10)*sizeof(unsigned int);
+    value = *((unsigned int *)(point_to_buffer + index));
 
-      return (value >> 3) &0xFFFF;
-    }
-    return 0;
+    return (value >> 3) &0xFFFF;
   }
   case MDR_OFFSET_MEASUREMENT_UC_1:
   {
-    if ((control_extra_settings_1_tmp & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0)
-    {
-      index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 11)*sizeof(unsigned int);
-      value = *((unsigned int *)(point_to_buffer + index));
+    index = FIRST_INDEX_FIRST_BLOCK_DR + (number_block*SIZE_ARRAY_FIX_MAX_MEASUREMENTS + 11)*sizeof(unsigned int);
+    value = *((unsigned int *)(point_to_buffer + index));
 
-      return (value >> 3) &0xFFFF;
-    }
-    return 0;
+    return (value >> 3) &0xFFFF;
   }
   case MDR_OFFSET_MEASUREMENT_3U0_1:
   {

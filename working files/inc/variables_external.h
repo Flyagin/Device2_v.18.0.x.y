@@ -75,7 +75,7 @@ extern unsigned int measurement_high[2][_NUMBER_IM], bank_measurement_high;
 extern unsigned int measurement_middle[_NUMBER_IM]; 
 extern unsigned int measurement_low[_NUMBER_IM]; 
 
-extern const unsigned int index_converter_Ib_p[NUMBER_ANALOG_CANALES];
+extern const unsigned int index_converter[NUMBER_ANALOG_CANALES];
 extern int ortogonal_calc[2*FULL_ORT_MAX];
 extern int ortogonal_calc_low[2*FULL_ORT_MAX];
 extern int phi_angle[FULL_ORT_MAX];

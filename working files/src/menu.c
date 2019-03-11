@@ -5551,7 +5551,8 @@ void main_manu_function(void)
               while (
                      ((current_ekran.index_position % (_CTR_UP_NEXT_BIT - _CTR_UP_PART_I)) == CTR_UP_OR_AND_BIT) &&
                      (ctrl_UP_input != UP_CTRL_Ia_Ib_Ic) &&
-                     (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc)
+                     (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc) &&
+                     (ctrl_UP_input != UP_CTRL_Uab_Ubc_Uca)
                     )
               {
                 current_ekran.index_position++;
@@ -6563,9 +6564,13 @@ void main_manu_function(void)
                         break;
                       }
                     case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
                     case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
                     case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
                     case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
                     case UP_CTRL_U1:
                     case UP_CTRL_U2:
                     case UP_CTRL_3U0:
@@ -10202,9 +10207,13 @@ void main_manu_function(void)
                         break;
                       }
                     case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
                     case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
                     case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
                     case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
                     case UP_CTRL_U1:
                     case UP_CTRL_U2:
                     case UP_CTRL_3U0:
@@ -11260,9 +11269,8 @@ void main_manu_function(void)
                     {
                       //Помічаємо, що поле структури зараз буде змінене
                       changed_settings = CHANGED_ETAP_EXECUTION;
-                        
-                      //Обновляємо значення
-                      action_after_changing_extra_settings(edition_settings.control_extra_settings_1, &current_settings);
+                      
+                      current_settings.control_extra_settings_1 = edition_settings.control_extra_settings_1;
                       
                       //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                       fix_change_settings(0, 1);
@@ -12266,9 +12274,13 @@ void main_manu_function(void)
                         break;
                       }
                     case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
                     case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
                     case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
                     case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
                     case UP_CTRL_U1:
                     case UP_CTRL_U2:
                     case UP_CTRL_3U0:
@@ -12354,7 +12366,8 @@ void main_manu_function(void)
                 while (
                        ((current_ekran.index_position % (_CTR_UP_NEXT_BIT - _CTR_UP_PART_I)) == CTR_UP_OR_AND_BIT) &&
                        (ctrl_UP_input != UP_CTRL_Ia_Ib_Ic) &&
-                       (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc)
+                       (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc) &&
+                       (ctrl_UP_input != UP_CTRL_Uab_Ubc_Uca)
                       )
                 {
                   current_ekran.index_position--;
@@ -13695,9 +13708,13 @@ void main_manu_function(void)
                         break;
                       }
                     case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
                     case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
                     case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
                     case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
                     case UP_CTRL_U1:
                     case UP_CTRL_U2:
                     case UP_CTRL_3U0:
@@ -13783,7 +13800,8 @@ void main_manu_function(void)
                 while (
                        ((current_ekran.index_position % (_CTR_UP_NEXT_BIT - _CTR_UP_PART_I)) == CTR_UP_OR_AND_BIT) &&
                        (ctrl_UP_input != UP_CTRL_Ia_Ib_Ic) &&
-                       (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc)
+                       (ctrl_UP_input != UP_CTRL_Ua_Ub_Uc) &&
+                       (ctrl_UP_input != UP_CTRL_Uab_Ubc_Uca)
                       )
                 {
                   current_ekran.index_position++;
@@ -15524,13 +15542,17 @@ void main_manu_function(void)
                       end = COL_SETPOINT_UP_3I0_END;
                       break;
                     }
-                  case UP_CTRL_Ua_Ub_Uc:
-                  case UP_CTRL_Ua:
-                  case UP_CTRL_Ub:
-                  case UP_CTRL_Uc:
-                  case UP_CTRL_U1:
-                  case UP_CTRL_U2:
-                  case UP_CTRL_3U0:
+                    case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
+                    case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
+                    case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
+                    case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
+                    case UP_CTRL_U1:
+                    case UP_CTRL_U2:
+                    case UP_CTRL_3U0:
                     {
                       begin = COL_SETPOINT_UP_U_BEGIN;
                       comma = COL_SETPOINT_UP_U_COMMA;
@@ -17333,13 +17355,17 @@ void main_manu_function(void)
                       end = COL_SETPOINT_UP_3I0_END;
                       break;
                     }
-                  case UP_CTRL_Ua_Ub_Uc:
-                  case UP_CTRL_Ua:
-                  case UP_CTRL_Ub:
-                  case UP_CTRL_Uc:
-                  case UP_CTRL_U1:
-                  case UP_CTRL_U2:
-                  case UP_CTRL_3U0:
+                    case UP_CTRL_Ua_Ub_Uc:
+                    case UP_CTRL_Uab_Ubc_Uca:
+                    case UP_CTRL_Ua:
+                    case UP_CTRL_Uab:
+                    case UP_CTRL_Ub:
+                    case UP_CTRL_Ubc:
+                    case UP_CTRL_Uc:
+                    case UP_CTRL_Uca:
+                    case UP_CTRL_U1:
+                    case UP_CTRL_U2:
+                    case UP_CTRL_3U0:
                     {
                       begin = COL_SETPOINT_UP_U_BEGIN;
                       comma = COL_SETPOINT_UP_U_COMMA;
@@ -18237,8 +18263,8 @@ void main_manu_function(void)
                                                                      /*el_filter,*/
                                                                      1,
                                                                      NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL,
+                                                                     NUMBER_DZ_SIGNAL_FOR_RANG_SMALL,
                                                                      NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL,
-                                                                     NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL,
                                                                      NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL,
                                                                      NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL,
                                                                      NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL,
@@ -18465,8 +18491,8 @@ void main_manu_function(void)
                                                                      /*el_filter,*/
                                                                      1,
                                                                      NUMBER_GENERAL_SIGNAL_FOR_RANG,
+                                                                     NUMBER_DZ_SIGNAL_FOR_RANG,
                                                                      NUMBER_MTZ_SIGNAL_FOR_RANG,
-                                                                     NUMBER_MTZ04_SIGNAL_FOR_RANG,
                                                                      NUMBER_ZDZ_SIGNAL_FOR_RANG,
                                                                      NUMBER_ZZ_SIGNAL_FOR_RANG,
                                                                      NUMBER_TZNP_SIGNAL_FOR_RANG,
@@ -19791,8 +19817,8 @@ void main_manu_function(void)
                                                                        /*el_filter,*/
                                                                        0,
                                                                        NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL,
+                                                                       NUMBER_DZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL,
-                                                                       NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL,
@@ -20075,8 +20101,8 @@ void main_manu_function(void)
                                                                        /*el_filter,*/
                                                                        0,
                                                                        NUMBER_GENERAL_SIGNAL_FOR_RANG,
+                                                                       NUMBER_DZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_MTZ_SIGNAL_FOR_RANG,
-                                                                       NUMBER_MTZ04_SIGNAL_FOR_RANG,
                                                                        NUMBER_ZDZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_ZZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_TZNP_SIGNAL_FOR_RANG,
@@ -20450,8 +20476,8 @@ void main_manu_function(void)
                                                                        /*el_filter,*/
                                                                        1,
                                                                        NUMBER_GENERAL_SIGNAL_FOR_RANG_SMALL,
+                                                                       NUMBER_DZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_MTZ_SIGNAL_FOR_RANG_SMALL,
-                                                                       NUMBER_MTZ04_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_ZDZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_ZZ_SIGNAL_FOR_RANG_SMALL,
                                                                        NUMBER_TZNP_SIGNAL_FOR_RANG_SMALL,
@@ -20734,8 +20760,8 @@ void main_manu_function(void)
                                                                        /*el_filter,*/
                                                                        1,
                                                                        NUMBER_GENERAL_SIGNAL_FOR_RANG,
+                                                                       NUMBER_DZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_MTZ_SIGNAL_FOR_RANG,
-                                                                       NUMBER_MTZ04_SIGNAL_FOR_RANG,
                                                                        NUMBER_ZDZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_ZZ_SIGNAL_FOR_RANG,
                                                                        NUMBER_TZNP_SIGNAL_FOR_RANG,

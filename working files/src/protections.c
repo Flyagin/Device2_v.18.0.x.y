@@ -1041,9 +1041,6 @@ inline void calc_measurement(unsigned int number_group_stp)
   /***
   Довертаємо кути і копіюємо ортогональні для низькопріоритетних задач
   ***/
-  const unsigned int *array_point_to_index_converter[4] = {index_converter_Ib_p, index_converter_I04_p, index_converter_Ib_l, index_converter_I04_l};
-  const unsigned int *point_to_index_converter = array_point_to_index_converter[current_settings_prt.control_extra_settings_1 & (CTR_EXTRA_SETTINGS_1_CTRL_IB_I04 | CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE)];
-
   unsigned int copy_to_low_tasks = (semaphore_measure_values_low == 0) ? true : false;
   for (unsigned int i = 0; i < NUMBER_ANALOG_CANALES; i++)
   {
@@ -1053,7 +1050,7 @@ inline void calc_measurement(unsigned int number_group_stp)
     float sin_beta =  phi_ustuvannja_sin_cos_meas[2*i    ];
     float cos_beta =  phi_ustuvannja_sin_cos_meas[2*i + 1];
     
-    unsigned int new_index = *(point_to_index_converter + i);
+    unsigned int new_index = index_converter[i];
     int ortogonal_sin = ortogonal_calc[2*new_index    ] = (int)(sin_alpha*cos_beta + cos_alpha*sin_beta);
     int ortogonal_cos = ortogonal_calc[2*new_index + 1] = (int)(cos_alpha*cos_beta - sin_alpha*sin_beta);
 
@@ -1160,18 +1157,10 @@ inline void calc_measurement(unsigned int number_group_stp)
           index_ort = FULL_ORT_Ia;
           break;
         }
-      case I_Ib_I04:
+      case I_Ib:
         {
-          if ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0)
-          {
-            index_m = IM_IB;
-            index_ort = FULL_ORT_Ib;
-          }
-          else
-          {
-            index_m = IM_I04;
-            index_ort = FULL_ORT_I04;
-          }
+          index_m = IM_IB;
+          index_ort = FULL_ORT_Ib;
           break;
         }
       case I_Ic:
@@ -1199,16 +1188,8 @@ inline void calc_measurement(unsigned int number_group_stp)
       case I_Uc:
         {
           unsigned int delta_index = (i - I_Ua);
-          if ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0)
-          {
-            index_m = IM_UA + delta_index;
-            index_ort = FULL_ORT_Ua + delta_index;
-          }
-          else
-          {
-            index_m = IM_UAB + delta_index;
-            index_ort = FULL_ORT_Uab + delta_index;
-          }
+          index_m = IM_UA + delta_index;
+          index_ort = FULL_ORT_Ua + delta_index;
           break;
         }
       case I_3U0:
@@ -1256,135 +1237,49 @@ inline void calc_measurement(unsigned int number_group_stp)
   ***/
   int _x, _y;
 
-  if ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0)
-  {   
-    //3I0(розрахункове), стрму I0.4 немає
-    
-    ortogonal_calc[2*FULL_ORT_I04 + 0] = 0;
-    ortogonal_calc[2*FULL_ORT_I04 + 1] = 0;
-    measurement[IM_I04] = 0;
-    
-    _x = ortogonal_calc[2*FULL_ORT_3I0_r + 0] = ortogonal_calc[2*FULL_ORT_Ia    ] + ortogonal_calc[2*FULL_ORT_Ib    ] + ortogonal_calc[2*FULL_ORT_Ic    ];
-    _y = ortogonal_calc[2*FULL_ORT_3I0_r + 1] = ortogonal_calc[2*FULL_ORT_Ia + 1] + ortogonal_calc[2*FULL_ORT_Ib + 1] + ortogonal_calc[2*FULL_ORT_Ic + 1];
-    if (copy_to_low_tasks == true)
-    {
-      ortogonal_calc_low[2*FULL_ORT_I04 + 0] = 0;
-      ortogonal_calc_low[2*FULL_ORT_I04 + 1] = 0;
-      
-      ortogonal_calc_low[2*FULL_ORT_3I0_r + 0] = _x;
-      ortogonal_calc_low[2*FULL_ORT_3I0_r + 1] = _y;
-    }
-    measurement[IM_3I0_r] = ( MNOGNYK_I_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_I_DIJUCHE + 4);
-  }
-  else
+  _x = ortogonal_calc[2*FULL_ORT_3I0_r + 0] = ortogonal_calc[2*FULL_ORT_Ia    ] + ortogonal_calc[2*FULL_ORT_Ib    ] + ortogonal_calc[2*FULL_ORT_Ic    ];
+  _y = ortogonal_calc[2*FULL_ORT_3I0_r + 1] = ortogonal_calc[2*FULL_ORT_Ia + 1] + ortogonal_calc[2*FULL_ORT_Ib + 1] + ortogonal_calc[2*FULL_ORT_Ic + 1];
+  if (copy_to_low_tasks == true)
   {
-    //Ib(розрахункове), струму 3I0(розрахункове) немає
-    
-    ortogonal_calc[2*FULL_ORT_3I0_r + 0] = 0;
-    ortogonal_calc[2*FULL_ORT_3I0_r + 1] = 0;
-    measurement[IM_3I0_r] = 0;
-    
-    int ortogonal_local_3I0[2];
-  
-#if (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA) >= VAGA_DILENNJA_I_DIJUCHE  
-    ortogonal_local_3I0[0] = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 0]) >> (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA - VAGA_DILENNJA_I_DIJUCHE))/MNOGNYK_I_DIJUCHE;
-    ortogonal_local_3I0[1] = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 1]) >> (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA - VAGA_DILENNJA_I_DIJUCHE))/MNOGNYK_I_DIJUCHE;
-#else
-    ortogonal_local_3I0[0] = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 0]) << (VAGA_DILENNJA_I_DIJUCHE - (VAGA_DILENNJA_3I0_DIJUCHE_D_mA + 4)))/MNOGNYK_I_DIJUCHE;
-    ortogonal_local_3I0[1] = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 1]) << (VAGA_DILENNJA_I_DIJUCHE - (VAGA_DILENNJA_3I0_DIJUCHE_D_mA + 4)))/MNOGNYK_I_DIJUCHE;
-#endif
-  
-    int T0 = (int)current_settings_prt.T0, TCurrent = (int)current_settings_prt.TCurrent;
-    _x = ortogonal_calc[2*FULL_ORT_Ib + 0] = T0*ortogonal_local_3I0[0]/TCurrent - (ortogonal_calc[2*FULL_ORT_Ia + 0] + ortogonal_calc[2*FULL_ORT_Ic + 0]);
-    _y = ortogonal_calc[2*FULL_ORT_Ib + 1] = T0*ortogonal_local_3I0[1]/TCurrent - (ortogonal_calc[2*FULL_ORT_Ia + 1] + ortogonal_calc[2*FULL_ORT_Ic + 1]);
-    if (copy_to_low_tasks == true)
-    {
-      ortogonal_calc_low[2*FULL_ORT_3I0_r + 0] = 0;
-      ortogonal_calc_low[2*FULL_ORT_3I0_r + 1] = 0;
-
-      ortogonal_calc_low[2*FULL_ORT_Ib + 0] = _x;
-      ortogonal_calc_low[2*FULL_ORT_Ib + 1] = _y;
-    }
-    measurement[IM_IB] = ( MNOGNYK_I_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_I_DIJUCHE + 4);
+    ortogonal_calc_low[2*FULL_ORT_3I0_r + 0] = _x;
+    ortogonal_calc_low[2*FULL_ORT_3I0_r + 1] = _y;
   }
+  measurement[IM_3I0_r] = ( MNOGNYK_I_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_I_DIJUCHE + 4);
     
-  if ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0)
+  //Ubc
+  _x = ortogonal_calc[2*FULL_ORT_Ubc + 0] = ortogonal_calc[2*FULL_ORT_Ub    ] - ortogonal_calc[2*FULL_ORT_Uc    ];
+  _y = ortogonal_calc[2*FULL_ORT_Ubc + 1] = ortogonal_calc[2*FULL_ORT_Ub + 1] - ortogonal_calc[2*FULL_ORT_Uc + 1];
+  if (copy_to_low_tasks == true)
   {
-    //Ubc
-    _x = ortogonal_calc[2*FULL_ORT_Ubc + 0] = ortogonal_calc[2*FULL_ORT_Ub    ] - ortogonal_calc[2*FULL_ORT_Uc    ];
-    _y = ortogonal_calc[2*FULL_ORT_Ubc + 1] = ortogonal_calc[2*FULL_ORT_Ub + 1] - ortogonal_calc[2*FULL_ORT_Uc + 1];
-    if (copy_to_low_tasks == true)
-    {
-      ortogonal_calc_low[2*FULL_ORT_Ubc + 0] = _x;
-      ortogonal_calc_low[2*FULL_ORT_Ubc + 1] = _y;
-    }
-    measurement[IM_UBC] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
-  
-    //Uca
-    _x = ortogonal_calc[2*FULL_ORT_Uca + 0] = ortogonal_calc[2*FULL_ORT_Uc    ] - ortogonal_calc[2*FULL_ORT_Ua    ];
-    _y = ortogonal_calc[2*FULL_ORT_Uca + 1] = ortogonal_calc[2*FULL_ORT_Uc + 1] - ortogonal_calc[2*FULL_ORT_Ua + 1];
-    if (copy_to_low_tasks == true)
-    {
-      ortogonal_calc_low[2*FULL_ORT_Uca + 0] = _x;
-      ortogonal_calc_low[2*FULL_ORT_Uca + 1] = _y;
-    }
-    measurement[IM_UCA] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
-
-    //Uab
-    _x = ortogonal_calc[2*FULL_ORT_Uab + 0] = ortogonal_calc[2*FULL_ORT_Ua    ] - ortogonal_calc[2*FULL_ORT_Ub    ];
-    _y = ortogonal_calc[2*FULL_ORT_Uab + 1] = ortogonal_calc[2*FULL_ORT_Ua + 1] - ortogonal_calc[2*FULL_ORT_Ub + 1];
-    if (copy_to_low_tasks == true)
-    {
-      ortogonal_calc_low[2*FULL_ORT_Uab + 0] = _x;
-      ortogonal_calc_low[2*FULL_ORT_Uab + 1] = _y;
-    }
-    measurement[IM_UAB] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
-
-    /***/
-    //Розраховуємо напругу прямої і зворотньої послідовності
-    /***/
-    velychyna_zvorotnoi_poslidovnosti(ortogonal_calc, INDEX_U);
-    /***/
+    ortogonal_calc_low[2*FULL_ORT_Ubc + 0] = _x;
+    ortogonal_calc_low[2*FULL_ORT_Ubc + 1] = _y;
   }
-  else
+  measurement[IM_UBC] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
+  
+  //Uca
+  _x = ortogonal_calc[2*FULL_ORT_Uca + 0] = ortogonal_calc[2*FULL_ORT_Uc    ] - ortogonal_calc[2*FULL_ORT_Ua    ];
+  _y = ortogonal_calc[2*FULL_ORT_Uca + 1] = ortogonal_calc[2*FULL_ORT_Uc + 1] - ortogonal_calc[2*FULL_ORT_Ua + 1];
+  if (copy_to_low_tasks == true)
   {
-    //Ua
-    ortogonal_calc[2*FULL_ORT_Ua + 0] = 0;
-    ortogonal_calc[2*FULL_ORT_Ua + 1] = 0;
-    measurement[IM_UA] = 0;
-
-    //Ub
-    ortogonal_calc[2*FULL_ORT_Ub + 0] = 0;
-    ortogonal_calc[2*FULL_ORT_Ub + 1] = 0;
-    measurement[IM_UB] = 0;
-
-    //Uc
-    ortogonal_calc[2*FULL_ORT_Uc + 0] = 0;
-    ortogonal_calc[2*FULL_ORT_Uc + 1] = 0;
-    measurement[IM_UC] = 0;
-    
-    //U2
-    measurement[IM_U2] = 0;
-
-    //U1
-    measurement[IM_U1] = 0;
-    
-    if (copy_to_low_tasks == true)
-    {
-      //Ua
-      ortogonal_calc_low[2*FULL_ORT_Ua + 0] = 0;
-      ortogonal_calc_low[2*FULL_ORT_Ua + 1] = 0;
-
-      //Ub
-      ortogonal_calc_low[2*FULL_ORT_Ub + 0] = 0;
-      ortogonal_calc_low[2*FULL_ORT_Ub + 1] = 0;
-
-      //Uc
-      ortogonal_calc_low[2*FULL_ORT_Uc + 0] = 0;
-      ortogonal_calc_low[2*FULL_ORT_Uc + 1] = 0;
-    }
-  
+    ortogonal_calc_low[2*FULL_ORT_Uca + 0] = _x;
+    ortogonal_calc_low[2*FULL_ORT_Uca + 1] = _y;
   }
+  measurement[IM_UCA] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
+
+  //Uab
+  _x = ortogonal_calc[2*FULL_ORT_Uab + 0] = ortogonal_calc[2*FULL_ORT_Ua    ] - ortogonal_calc[2*FULL_ORT_Ub    ];
+  _y = ortogonal_calc[2*FULL_ORT_Uab + 1] = ortogonal_calc[2*FULL_ORT_Ua + 1] - ortogonal_calc[2*FULL_ORT_Ub + 1];
+  if (copy_to_low_tasks == true)
+  {
+    ortogonal_calc_low[2*FULL_ORT_Uab + 0] = _x;
+    ortogonal_calc_low[2*FULL_ORT_Uab + 1] = _y;
+  }
+  measurement[IM_UAB] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
+
+  /***/
+  //Розраховуємо напругу прямої і зворотньої послідовності
+  /***/
+  velychyna_zvorotnoi_poslidovnosti(ortogonal_calc, INDEX_U);
   /***/
 
   /***/
@@ -1393,10 +1288,7 @@ inline void calc_measurement(unsigned int number_group_stp)
   directional_mtz(ortogonal_calc, number_group_stp);
   /***/
 
-  if (
-      ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) &&
-      ((current_settings_prt.configuration & (1<<TZNP_BIT_CONFIGURATION)) != 0)
-     )   
+  if ((current_settings_prt.configuration & (1<<TZNP_BIT_CONFIGURATION)) != 0)
   {
     /***/
     //Фазочутливий елемент для ТЗНП (всіх ступенів)
@@ -4122,7 +4014,7 @@ void umin1_handler(unsigned int *p_active_functions, unsigned int number_group_s
                                          (measurement[IM_IB] <= setpoint3) &&
                                          (measurement[IM_IC] <= setpoint3);
   //М
-  unsigned int tmp_value = (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umin & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umin & CTR_UMIN1) != 0)                                                            << 2;
@@ -4234,7 +4126,7 @@ void umin2_handler(unsigned int *p_active_functions, unsigned int number_group_s
                                          (measurement[IM_IB] <= setpoint3) &&
                                          (measurement[IM_IC] <= setpoint3);
   //М
-  unsigned int tmp_value = (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umin & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umin & CTR_UMIN2) != 0)                                                            << 2;
@@ -4315,164 +4207,11 @@ void umin2_handler(unsigned int *p_active_functions, unsigned int number_group_s
 /*****************************************************/
 // МТЗ04
 /*****************************************************/
-void mtz04_handler(unsigned int *p_active_functions, unsigned int number_group_stp)
+void dz_handler(unsigned int *p_active_functions, unsigned int number_group_stp)
 {
- //проверка предыдущего состояния ПО МТЗ04_1
-  _Bool previous_state_po_mtz04_1 = _CHECK_SET_BIT(p_active_functions, RANG_PO_MTZ04_1) > 0;
-  _Bool previous_state_po_mtz04_2 = _CHECK_SET_BIT(p_active_functions, RANG_PO_MTZ04_2) > 0;
-//пороги сраб и возв для ПО в зависимости от гр уставок
-  unsigned int setpoint1 = previous_state_po_mtz04_1 ?
-          current_settings_prt.setpoint_mtz04_1[number_group_stp] * U_UP / 100 :
-          current_settings_prt.setpoint_mtz04_1[number_group_stp];
-
-  unsigned int setpoint2 = previous_state_po_mtz04_2 ?
-          current_settings_prt.setpoint_mtz04_2[number_group_stp] * U_UP / 100 :
-          current_settings_prt.setpoint_mtz04_2[number_group_stp];
-
-//#define IM_I04         9
-  _Bool I04_is_larger_than_ust1 = measurement[IM_I04] >= setpoint1;
-  _Bool I04_is_larger_than_ust2 = measurement[IM_I04] >= setpoint2;
-  //М
-  //ВКЛ-ОТКЛ  МТЗ04_1
-  unsigned int tmp_value = ((current_settings_prt.control_mtz04 & CTR_MTZ04_1) != 0)  << 0;
-  //ВКЛ-ОТКЛ  МТЗ04_2
-  tmp_value |= ((current_settings_prt.control_mtz04 & CTR_MTZ04_2) != 0) << 1;
-  //ВКЛ-ОТКЛ  УСКОРЕНИЕ МТЗ04_2
-  tmp_value |= ((current_settings_prt.control_mtz04 & CTR_MTZ04_2_PRYSKORENNJA) != 0) << 2;
-  //ВКЛ-ОТКЛ  УСКОРЕННАЯ МТЗ04_2
-  tmp_value |= ((current_settings_prt.control_mtz04 & CTR_MTZ04_2_PRYSKORENA) != 0) << 3;
-  //ДВ блок МТЗ04_1
-  tmp_value |= (_CHECK_SET_BIT(p_active_functions, RANG_BLOCK_MTZ04_1) != 0) << 4;
-  //ДВ блок МТЗ04_2
-  tmp_value |= (_CHECK_SET_BIT(p_active_functions, RANG_BLOCK_MTZ04_2) != 0) << 5;
-  //ДВ блок ускорения МТЗ04_2
-  tmp_value |= (_CHECK_SET_BIT(p_active_functions, RANG_BLOCK_USK_MTZ04_2) != 0) << 6;
-  //Полож ВВ
-  tmp_value |= (_CHECK_SET_BIT(p_active_functions, RANG_STATE_VV) != 0)  << 7;
-/*
-//ТИП МТЗ04
- unsigned int tmp3=0;
- //Простая
- if(current_settings_prt.type_mtz04_2==0) _SET_BIT(tmp3, 0);
-  unsigned int type_mtz04 = 0;
- //Зависимая А
- if(current_settings_prt.type_mtz04_2==3) type_mtz04 = TYPE_MTZ_DEPENDENT_A;
- //Зависимая В
- if(current_settings_prt.type_mtz04_2==4) type_mtz04 = TYPE_MTZ_DEPENDENT_B;
- //Зависимая С
- if(current_settings_prt.type_mtz04_2==5) type_mtz04 = TYPE_MTZ_DEPENDENT_C;
-*/
-//RANG_BLOCK_MTZ04_1,
- //MTZ04_1 LOGIKA
-  _INVERTOR(tmp_value, 4, tmp_value, 8);
-        //ПО МТЗ04_1
-  _AND3(I04_is_larger_than_ust1, 0, 
-        //ВКЛ-ОТКЛ  МТЗ04_1
-        tmp_value, 0,
-        //INVERTOR
-        tmp_value, 8, tmp_value, 9);
-  //Сраб.ПО MTZ04_1
-  if (_GET_OUTPUT_STATE(tmp_value, 9)) 
-  {
-     //PO MTZ04_1
-    _SET_BIT(p_active_functions, RANG_PO_MTZ04_1);
-  }
-  else _CLEAR_BIT(p_active_functions, RANG_PO_MTZ04_1);
-
-    _TIMER_T_0(INDEX_TIMER_MTZ04_1, current_settings_prt.timeout_mtz04_1[number_group_stp], tmp_value, 9, tmp_value, 10);
-  //Сраб. MTZ04_1
-  if (_GET_OUTPUT_STATE(tmp_value, 10)) 
-  {
-     //MTZ04_1
-    _SET_BIT(p_active_functions, RANG_MTZ04_1);
-  }
-  else _CLEAR_BIT(p_active_functions, RANG_MTZ04_1);
-    
-//MTZ04_2
-//RANG_STATE_VV,
-//ПОЛОЖ ВВ
-//  if (_GET_OUTPUT_STATE(p_active_functions, RANG_STATE_VV)) {
-//  }//if
-
- unsigned int tmp2=0;
-  _AND2(tmp_value, 7, 
-        //УСКОРЕНИЕ МТЗ04_2
-        tmp_value, 2, tmp2, 0);
-
-  _TIMER_IMPULSE(INDEX_TIMER_MTZ04_2, current_settings_prt.timeout_mtz04_2_vvid_pr[number_group_stp],
-                 previous_states_MTZ04_vvid_pr_0, 0, tmp2, 0, tmp2, 1);
-//Ускоренная
-  _OR2(tmp_value, 3, 
-        tmp2, 1, tmp2, 2);
-  _INVERTOR(tmp_value, 6, tmp2, 3);
-  _AND2(tmp2, 3, 
-        tmp2, 2, tmp2, 4);
-  _INVERTOR(tmp2, 4, tmp2, 5);
-  _INVERTOR(tmp_value, 5, tmp2, 6);
-  _AND3(I04_is_larger_than_ust2, 0, 
-        tmp_value, 1, 
-        tmp2, 6, tmp2, 7);
-  //Сраб.ПО MTZ04_2
-  if (_GET_OUTPUT_STATE(tmp2, 7)) 
-  {
-     //PO MTZ04_2
-    _SET_BIT(p_active_functions, RANG_PO_MTZ04_2);
-  }
-  else _CLEAR_BIT(p_active_functions, RANG_PO_MTZ04_2);
-    
-//ускорение
-  _AND2(tmp2, 4, 
-        tmp2, 7, tmp2, 8);
-//Простая
-//ТИП МТЗ04
- unsigned int tmp3=0;
- //Простая
-// if(current_settings_prt.type_mtz04_2==0){
-//   _SET_STATE(tmp3, 0);
-// }//if
-  _AND2(tmp2, 5, 
-        tmp2, 7, 
-             tmp2, 10);
-//Зависимая А B C
-//  _INVERTOR(tmp2, 9, tmp2, 10);
-//  _AND3(tmp2, 4, 
-  //      tmp2, 7, 
-    //    tmp3, 0, tmp2, 10);
-//ускорение
-  _TIMER_T_0(INDEX_TIMER_MTZ04_3, current_settings_prt.timeout_mtz04_2_pr[number_group_stp], tmp2, 8, tmp3, 4);
-//Простая
- switch(current_settings_prt.type_mtz04_2)
- {
- case 0:
-   {
-     _TIMER_T_0(INDEX_TIMER_MTZ04_4, current_settings_prt.timeout_mtz04_2[number_group_stp], tmp2, 10, /*tmp3, 6*/ p_global_trigger_state_mtz04_2, 0);
-     break;
-   }
- case TYPE_MTZ_DEPENDENT_A:
- case TYPE_MTZ_DEPENDENT_B:
- case TYPE_MTZ_DEPENDENT_C:
-   {
-     //расчет выдержки
-     _TIMER_T_0_LOCK(INDEX_TIMER_MTZ04_4,  timeout_dependent_general(measurement[IM_I04], current_settings_prt.setpoint_mtz04_2[number_group_stp], current_settings_prt.timeout_mtz04_2[number_group_stp], current_settings_prt.type_mtz04_2), tmp2, 10, /*tmp3, 6*/ p_global_trigger_state_mtz04_2, 0);
-     break;
-   }
- }
-
-  _OR2(tmp3, 4, /*tmp3, 6*/p_global_trigger_state_mtz04_2, 0, tmp3, 7);
-  //Сраб. MTZ04_2
-  if (_GET_OUTPUT_STATE(tmp3, 7))
-  {
-     //MTZ04_1
-    _SET_BIT(p_active_functions, RANG_MTZ04_2);
-  }
-  else _CLEAR_BIT(p_active_functions, RANG_MTZ04_2);
-
-//Зависимая 
-//  if (_GET_OUTPUT_STATE(tmp2, 10)) {
-  //}//if
- // _TIMER_T_0(INDEX_TIMER_MTZ04_5, timeout_dependent_general(i_max, number_group_stp, type_mtz04), tmp2, 10, tmp3, 6);
-
-}//mtz04
+  UNUSED(p_active_functions);
+  UNUSED(number_group_stp);
+}
 
 /*****************************************************/
 // ЗНМАКС1
@@ -4494,7 +4233,7 @@ void umax1_handler(unsigned int *p_active_functions, unsigned int number_group_s
   _Bool Uc_is_larger_than_Umax1 = measurement[IM_UC] >= setpoint1;
   
   //М
-  unsigned int tmp_value = (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umax & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umax & CTR_PO_UMAX1_OR_AND) != 0)                                                  << 2;
@@ -4553,7 +4292,7 @@ void umax2_handler(unsigned int *p_active_functions, unsigned int number_group_s
   _Bool Uc_is_larger_than_Umax2 = measurement[IM_UC] >= setpoint1;
   
   //М
-  unsigned int tmp_value = (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umax & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umax & CTR_PO_UMAX2_OR_AND) != 0)                                                  << 2;
@@ -4631,25 +4370,25 @@ void achr_chapv_handler(unsigned int *p_active_functions, unsigned int number_gr
           current_settings_prt.setpoint_achr_chapv_uf[number_group_stp];
   
   //Линейные
-  _Bool Uab_is_larger_than_UF1 = measurement[IM_UAB] >= setpoint1;
-  _Bool Ubc_is_larger_than_UF1 = measurement[IM_UBC] >= setpoint2;
-  _Bool Uca_is_larger_than_UF1 = measurement[IM_UCA] >= setpoint3;
+//  _Bool Uab_is_larger_than_UF1 = measurement[IM_UAB] >= setpoint1;
+//  _Bool Ubc_is_larger_than_UF1 = measurement[IM_UBC] >= setpoint2;
+//  _Bool Uca_is_larger_than_UF1 = measurement[IM_UCA] >= setpoint3;
   
   //Фазные
   _Bool Ua_is_larger_than_UF1 = measurement[IM_UA] >= setpoint1;
   _Bool Ub_is_larger_than_UF1 = measurement[IM_UB] >= setpoint2;
   _Bool Uc_is_larger_than_UF1 = measurement[IM_UC] >= setpoint3;
   
-  /*----------------Выбор фазные/линейные-------------------------------------*/
-  _Bool UF1_phase = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0);
-  /*--------------------------------------------------------------------------*/
+//  /*----------------Выбор фазные/линейные-------------------------------------*/
+//  _Bool UF1_phase = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0);
+//  /*--------------------------------------------------------------------------*/
   
   _Bool timer1 = 0;
   _Bool UF1_is_larger_than_U_setpoint_F1 = 0;
 //  _Bool UF1_is_smaller_than_U_setpoint_F1 = 0;
   //ПО ФАЗНЫЕ-ЛИНЕЙНЫЕ
-  if (UF1_phase)
-  {
+//  if (UF1_phase)
+//  {
     //ПО UAF1
     previous_state_po_achr_chapv_uaf1 = Ua_is_larger_than_UF1;
     //ПО UBF1
@@ -4657,17 +4396,17 @@ void achr_chapv_handler(unsigned int *p_active_functions, unsigned int number_gr
     //ПО UCF1
     previous_state_po_achr_chapv_ucf1 = Uc_is_larger_than_UF1;
     _AND3(Ua_is_larger_than_UF1, 0, Ub_is_larger_than_UF1, 0, Uc_is_larger_than_UF1, 0, timer1, 0);
-  }
-  else 
-  {
-    //ПО UAF1
-    previous_state_po_achr_chapv_uaf1 = Uab_is_larger_than_UF1;
-    //ПО UBF1
-    previous_state_po_achr_chapv_ubf1 = Ubc_is_larger_than_UF1;
-    //ПО UCF1
-    previous_state_po_achr_chapv_ucf1 = Uca_is_larger_than_UF1;
-    _AND3(Uab_is_larger_than_UF1, 0, Ubc_is_larger_than_UF1, 0, Uca_is_larger_than_UF1, 0, timer1, 0);
-  }
+//  }
+//  else 
+//  {
+//    //ПО UAF1
+//    previous_state_po_achr_chapv_uaf1 = Uab_is_larger_than_UF1;
+//    //ПО UBF1
+//    previous_state_po_achr_chapv_ubf1 = Ubc_is_larger_than_UF1;
+//    //ПО UCF1
+//    previous_state_po_achr_chapv_ucf1 = Uca_is_larger_than_UF1;
+//    _AND3(Uab_is_larger_than_UF1, 0, Ubc_is_larger_than_UF1, 0, Uca_is_larger_than_UF1, 0, timer1, 0);
+//  }
   _TIMER_T_0(INDEX_TIMER_ACHR_CHAPV_100MS_1, TIMEOUT_ACHR_CHAPV_100MS, timer1, 0, UF1_is_larger_than_U_setpoint_F1, 0);
   //L1
 //  UF1_is_smaller_than_U_setpoint_F1 = !UF1_is_larger_than_U_setpoint_F1;
@@ -10056,6 +9795,38 @@ inline void main_protection(void)
     /**************************/
 
     /**************************/
+    //ДЗ
+    /**************************/
+    if ((current_settings_prt.configuration & (1 << DZ_BIT_CONFIGURATION)) != 0)
+    {
+      dz_handler(active_functions, number_group_stp);
+    }
+    else
+    {
+      //Очищуємо сигнали, які не можуть бути у даній конфігурації
+      const unsigned int maska_dz_signals[N_BIG] = 
+      {
+        MASKA_DZ_SIGNALS_0, 
+        MASKA_DZ_SIGNALS_1, 
+        MASKA_DZ_SIGNALS_2,
+        MASKA_DZ_SIGNALS_3, 
+        MASKA_DZ_SIGNALS_4, 
+        MASKA_DZ_SIGNALS_5, 
+        MASKA_DZ_SIGNALS_6, 
+        MASKA_DZ_SIGNALS_7, 
+        MASKA_DZ_SIGNALS_8
+      };
+      for (unsigned int i = 0; i < N_BIG; i++) active_functions[i] &= (unsigned int)(~maska_dz_signals[i]);
+      
+      global_timers[INDEX_TIMER_DZ_1] = -1;
+      global_timers[INDEX_TIMER_DZ_2] = -1;
+      global_timers[INDEX_TIMER_DZ_3] = -1;
+      global_timers[INDEX_TIMER_DZ_4] = -1;
+      global_timers[INDEX_TIMER_DZ_5] = -1;
+    }
+    /**************************/
+
+    /**************************/
     //МТЗ
     /**************************/
     if ((current_settings_prt.configuration & (1 << MTZ_BIT_CONFIGURATION)) != 0)
@@ -10104,38 +9875,6 @@ inline void main_protection(void)
     }
     /**************************/
     
-//123456
-    /**************************/
-    //МТЗ04
-    /**************************/
-    if ((current_settings_prt.configuration & (1 << MTZ04_BIT_CONFIGURATION)) != 0)
-    {
-      mtz04_handler(active_functions, number_group_stp);
-    }
-    else
-    {
-      //Очищуємо сигнали, які не можуть бути у даній конфігурації
-      const unsigned int maska_mtz04_signals[N_BIG] = 
-      {
-        MASKA_MTZ04_SIGNALS_0, 
-        MASKA_MTZ04_SIGNALS_1, 
-        MASKA_MTZ04_SIGNALS_2,
-        MASKA_MTZ04_SIGNALS_3, 
-        MASKA_MTZ04_SIGNALS_4, 
-        MASKA_MTZ04_SIGNALS_5, 
-        MASKA_MTZ04_SIGNALS_6, 
-        MASKA_MTZ04_SIGNALS_7, 
-        MASKA_MTZ04_SIGNALS_8
-      };
-      for (unsigned int i = 0; i < N_BIG; i++) active_functions[i] &= (unsigned int)(~maska_mtz04_signals[i]);
-      
-      global_timers[INDEX_TIMER_MTZ04_1] = -1;
-      global_timers[INDEX_TIMER_MTZ04_2] = -1;
-      global_timers[INDEX_TIMER_MTZ04_3] = -1;
-      global_timers[INDEX_TIMER_MTZ04_4] = -1;
-      global_timers[INDEX_TIMER_MTZ04_5] = -1;
-    }
-
     /**************************/
     //ЗЗ
     /**************************/

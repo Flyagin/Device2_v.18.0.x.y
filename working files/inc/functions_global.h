@@ -177,7 +177,6 @@ void make_ekran_grupa_ustavok(void);
 void make_ekran_vidkluchenja(void);
 
 unsigned int action_after_changing_of_configuration(unsigned int, __SETTINGS *);
-unsigned int action_after_changing_extra_settings(unsigned int, __SETTINGS *);
 void action_after_changing_zz1_type(__SETTINGS *);
 void action_during_changing_button_mode(__SETTINGS *, __SETTINGS *);
 void def_pickup_timeout_UP(__SETTINGS *, uint32_t, uint32_t);
@@ -202,7 +201,7 @@ void d_xor_handler(unsigned int*);
 void d_not_handler(unsigned int*);
 void tf_handler(unsigned int*, unsigned int*);
 void mtz_handler(unsigned int*, unsigned int);
-void mtz04_handler(unsigned int*, unsigned int);
+void dz_handler(unsigned int*, unsigned int);
 void zdz_handler(unsigned int*, unsigned int);
 int timeout_dependent_general(unsigned int, unsigned int, int, int);
 void zz_handler(unsigned int*, unsigned int);

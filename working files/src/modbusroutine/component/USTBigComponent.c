@@ -813,7 +813,7 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
       case UP_CTRL_Ic:
       case UP_CTRL_I1:
       case UP_CTRL_I2:
-      case UP_CTRL_I04:
+//      case UP_CTRL_I04:
       case UP_CTRL_3I0_r:
         if((item%4)==1)
         {
@@ -831,9 +831,13 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
         else if(regUst<SETPOINT_UP_3I0_MIN || regUst>SETPOINT_UP_3I0_MAX) diapazon=0;
         break;
       case UP_CTRL_Ua_Ub_Uc:
+      case UP_CTRL_Uab_Ubc_Uca:
       case UP_CTRL_Ua:
+      case UP_CTRL_Uab:
       case UP_CTRL_Ub:
+      case UP_CTRL_Ubc:
       case UP_CTRL_Uc:
+      case UP_CTRL_Uca:
       case UP_CTRL_U1:
       case UP_CTRL_U2:
       case UP_CTRL_3U0:
