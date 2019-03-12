@@ -617,16 +617,16 @@ int configAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
             }
           else if (subObj <= I_Ic )
             {
-              if (
-                (subObj != I_Ib_I04 )// || (I_Ib_I04 == 0)
-              )
-                {
+//              if (
+//                (subObj != I_Ib )// || (I_Ib_I04 == 0)
+//              )
+//                {
                   return   header_ar_tmp->TCurrent;
-                }
-              else
-                {
-                  return header_ar_tmp->TCurrent04;
-                }
+//                }
+//              else
+//                {
+//                  return header_ar_tmp->TCurrent04;
+//                }
             }
           else
             {

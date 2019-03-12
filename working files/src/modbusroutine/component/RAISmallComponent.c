@@ -117,7 +117,7 @@ int getRAISmallModbusRegister(int adrReg)
   if (!(
         number_block < (
           (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_PHASE_DR  )) +
-          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_PHASE04_DR)) +
+          (*(point_to_buffer + FIRST_INDEX_NUMBER_MIN_Z_DR      )) +
           (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_3I0_DR    )) +
           (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_3U0_DR    )) +
           (*(point_to_buffer + FIRST_INDEX_NUMBER_MIN_U_DR      )) +
@@ -299,10 +299,10 @@ int getRAISmallModbusRegister(int adrReg)
       {
         return MBLOCK_PROTECTION_MTZ;
       }
-      case IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04:
-      {
-        return MBLOCK_PROTECTION_MTZ04;
-      }
+//      case IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04:
+//      {
+//        return MBLOCK_PROTECTION_MTZ04;
+//      }
       case IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0:
       {
         return MBLOCK_PROTECTION_3I0;

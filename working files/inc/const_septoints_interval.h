@@ -7,9 +7,6 @@
 #define KOEF_TT_MIN                   1
 #define KOEF_TT_MAX                   2000
 
-#define KOEF_TT04_MIN                 1
-#define KOEF_TT04_MAX                 2000
-
 #define KOEF_TN_MIN                   50
 #define KOEF_TN_MAX                   1800
 

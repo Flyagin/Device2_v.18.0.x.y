@@ -487,9 +487,9 @@ void SPI_ADC_IRQHandler(void)
     if ((status_adc_read_work & DATA_VAL_READ) != 0)
     {
       command_word |= (1 << I_3I0)|
-                      (1 << I_Ia) | (1 << I_Ib_I04) | (1 << I_Ic) |
-                      (1 << I_Ua) | (1 << I_Ub    ) | (1 << I_Uc) |
-                       (1 << I_3U0);
+                      (1 << I_Ia) | (1 << I_Ib) | (1 << I_Ic) |
+                      (1 << I_Ua) | (1 << I_Ub) | (1 << I_Uc) |
+                      (1 << I_3U0);
         
     }
       
@@ -663,58 +663,58 @@ void SPI_ADC_IRQHandler(void)
     /*****/
 
     /*****/
-    //‘ормуЇмо значенн€ Ib/I0.4
+    //‘ормуЇмо значенн€ Ib
     /*****/
-    if ((command_word & (1 << I_Ib_I04)) != 0)
+    if ((command_word & (1 << I_Ib)) != 0)
     {
-      _x1 = ADCs_data_raw[I_Ib_I04].tick;
-      _y1 = ADCs_data_raw[I_Ib_I04].value;
+      _x1 = ADCs_data_raw[I_Ib].tick;
+      _y1 = ADCs_data_raw[I_Ib].value;
         
-      static uint32_t index_array_of_one_value_Ib_I04;
+      static uint32_t index_array_of_one_value_Ib;
       
-      uint32_t val_C_Ib_I04_1 = output_adc[C_Ib_1].value;
-      vref_adc_averange_sum[I_Ib_I04] += val_C_Ib_I04_1;
+      uint32_t val_C_Ib_1 = output_adc[C_Ib_1].value;
+      vref_adc_averange_sum[I_Ib] += val_C_Ib_1;
       
-      if((++index_array_of_one_value_Ib_I04) == NUMBER_POINT)
+      if((++index_array_of_one_value_Ib) == NUMBER_POINT)
       {
-        index_array_of_one_value_Ib_I04 = 0;
-        uint32_t vref_adc_period = vref_adc_averange_sum[I_Ib_I04] >> VAGA_NUMBER_POINT;
-        vref_adc_averange_sum[I_Ib_I04] = 0;
+        index_array_of_one_value_Ib = 0;
+        uint32_t vref_adc_period = vref_adc_averange_sum[I_Ib] >> VAGA_NUMBER_POINT;
+        vref_adc_averange_sum[I_Ib] = 0;
 
         //–обимо тепер усередненн€ за секунду
-        static uint32_t index_array_of_one_value_Ib_I04_1s;
+        static uint32_t index_array_of_one_value_Ib_1s;
         
-        vref_adc_averange_sum_1s[I_Ib_I04] += vref_adc_period;
-        vref_adc_averange_sum_1s[I_Ib_I04] -= vref_adc_moment_value_1s[I_Ib_I04][index_array_of_one_value_Ib_I04_1s];
-        vref_adc_moment_value_1s[I_Ib_I04][index_array_of_one_value_Ib_I04_1s] = vref_adc_period;
-        vref_adc[I_Ib_I04] = vref_adc_averange_sum_1s[I_Ib_I04] / MAIN_FREQUENCY;
+        vref_adc_averange_sum_1s[I_Ib] += vref_adc_period;
+        vref_adc_averange_sum_1s[I_Ib] -= vref_adc_moment_value_1s[I_Ib][index_array_of_one_value_Ib_1s];
+        vref_adc_moment_value_1s[I_Ib][index_array_of_one_value_Ib_1s] = vref_adc_period;
+        vref_adc[I_Ib] = vref_adc_averange_sum_1s[I_Ib] / MAIN_FREQUENCY;
         
-        if((++index_array_of_one_value_Ib_I04_1s) == MAIN_FREQUENCY)
-          index_array_of_one_value_Ib_I04_1s = 0;
-        else if (index_array_of_one_value_Ib_I04_1s > MAIN_FREQUENCY)
+        if((++index_array_of_one_value_Ib_1s) == MAIN_FREQUENCY)
+          index_array_of_one_value_Ib_1s = 0;
+        else if (index_array_of_one_value_Ib_1s > MAIN_FREQUENCY)
         {
           //якщо сюди д≥йшла програма, значить в≥дбулас€ недопустива помилка, тому треба зациклити програму, щоб вона п≥шла на перезагрузку
           total_error_sw_fixed(108);
         }
       }
-      else if (index_array_of_one_value_Ib_I04 > NUMBER_POINT)
+      else if (index_array_of_one_value_Ib > NUMBER_POINT)
       {
         //якщо сюди д≥йшла програма, значить в≥дбулас€ недопустива помилка, тому треба зациклити програму, щоб вона п≥шла на перезагрузку
         total_error_sw_fixed(107);
       }
 
-      _y2 = val_C_Ib_I04_1 - /*gnd_adc - */ vref_adc[I_Ib_I04];
+      _y2 = val_C_Ib_1 - /*gnd_adc - */ vref_adc[I_Ib];
       if (abs(_y2) > 87)
       {
         _x2 = output_adc[C_Ib_1].tick;
-        _y2 = (int)(_y2*ustuvannja_meas[I_Ib_I04])>>(USTUVANNJA_VAGA - 4);
+        _y2 = (int)(_y2*ustuvannja_meas[I_Ib])>>(USTUVANNJA_VAGA - 4);
       }
       else
       {
-        _y2 = output_adc[C_Ib_16].value - /*gnd_adc - */ vref_adc[I_Ib_I04];
+        _y2 = output_adc[C_Ib_16].value - /*gnd_adc - */ vref_adc[I_Ib];
 
         _x2 = output_adc[C_Ib_16].tick;
-        _y2 = (int)((-_y2)*ustuvannja_meas[I_Ib_I04])>>(USTUVANNJA_VAGA);
+        _y2 = (int)((-_y2)*ustuvannja_meas[I_Ib])>>(USTUVANNJA_VAGA);
       }
       
       if (_x2 > _x1) _DX = _x2 - _x1;
@@ -731,10 +731,10 @@ void SPI_ADC_IRQHandler(void)
       }
       _y = ((long long)_y1) + ((long long)(_y2 - _y1))*((long long)_dx)/((long long)_DX);
 
-      ADCs_data[I_Ib_I04] = _y;
+      ADCs_data[I_Ib] = _y;
       
-      ADCs_data_raw[I_Ib_I04].tick = _x2;
-      ADCs_data_raw[I_Ib_I04].value = _y2;
+      ADCs_data_raw[I_Ib].tick = _x2;
+      ADCs_data_raw[I_Ib].value = _y2;
     }
     /*****/
     

@@ -776,11 +776,6 @@ inline void analize_received_data_dataflash(int index_chip)
             {
               control_tasks_dataflash &= (unsigned int)(~TASK_MAMORY_READ_DATAFLASH_FOR_DR_MENU);
               
-              //Визначаємо налаштування при яких було запущено дискретний реєстратор
-              unsigned char *point_unsigned_char = (unsigned char*)(buffer_for_manu_read_record + FIRST_INDEX_EXTRA_SETTINGS_DR);
-              unsigned int *point_unsigned_int  = (unsigned int*)point_unsigned_char;
-              control_extra_settings_1_dr_for_manu = *point_unsigned_int;
-            
               /*Подаємо команду на обновлення екрану на LCD, хоч він десь за 
               час <= 1c обновиться автоматично, бо система меню чекає, поки
               буде зчитано запис

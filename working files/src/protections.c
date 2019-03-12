@@ -6505,10 +6505,10 @@ inline void continue_monitoring_max_phase_current(unsigned int time_tmp)
 /*****************************************************/
 //Початок моніторингу максимального фазного струму зі сторони 0.4кВ
 /*****************************************************/
-inline void start_monitoring_max_phase04_current(unsigned int time_tmp)
+inline void start_monitoring_min_Z_current(unsigned int time_tmp)
 {
   //Збільшуємо кількість фіксованих значень максимального фазного струму зі сторони 0.4кВ
-  number_max_phase04_dr++;
+  number_min_Z++;
   
   //Помічаємо, що будем виходити з того, що зараз значення тільки починають моніторитися, тому приймаємо їх за найбільші
   int frequency_int = (int)frequency;
@@ -6546,14 +6546,14 @@ inline void start_monitoring_max_phase04_current(unsigned int time_tmp)
   measurements_phase04_max_dr[27] = time_tmp;
 
   //Помічаємо, що ми на стадії моніторингу максимального фазного струму зі сторони 0.4кВ
-  state_current_monitoring |= (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04);
+  state_current_monitoring |= (1<<IDENTIFIER_BIT_ARRAY_MIN_Z);
 }
 /*****************************************************/
 
 /*****************************************************/
 //Продовження моніторингу максимального фазного струму зі сторони 0.4кВ
 /*****************************************************/
-inline void continue_monitoring_max_phase04_current(unsigned int time_tmp)
+inline void continue_monitoring_min_Z_current(unsigned int time_tmp)
 {
   //Перевірка, чи не є зарза фазний струм більший, ніж той що помічений максимальним
   if(measurements_phase04_max_dr[8] < measurement[IM_I04])
@@ -6831,7 +6831,7 @@ inline void start_monitoring_min_U(unsigned int time_tmp)
   measurements_U_min_dr[25] = (unsigned int)UNDEF_VMP;
   measurements_U_min_dr[26] = 0;
   
-  if (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0))
+  if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
   {
     //Визначаємо мінімальної фазну напругу між трьома фазами
     min_voltage_dr = measurements_U_min_dr[9];
@@ -6862,7 +6862,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
   //Перевірка, чи не є зарза досліджувана напуга менша, ніж та що помічена мінімальною
   if (
       (
-       (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) &&
+       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) &&
        (  
         (min_voltage_dr > measurement[IM_UA]) ||
         (min_voltage_dr > measurement[IM_UB]) ||
@@ -6871,7 +6871,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
       )   
       || 
       (
-       (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0) || ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0)) &&
+       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0) &&
        (  
         (min_voltage_dr > measurement[IM_UAB]) ||
         (min_voltage_dr > measurement[IM_UBC]) ||
@@ -6910,7 +6910,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
     measurements_U_min_dr[23] = (unsigned int)resistance[R_CA];
     measurements_U_min_dr[24] = (unsigned int)resistance[X_CA];
 
-    if (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0))
+    if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
     {
       //Визначаємо мінімальну фазну напругу між трьома фазами
       min_voltage_dr = measurements_U_min_dr[9];
@@ -6971,7 +6971,7 @@ inline void start_monitoring_max_U(unsigned int time_tmp)
   measurements_U_max_dr[25] = (unsigned int)UNDEF_VMP;
   measurements_U_max_dr[26] = 0;
   
-  if (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0))
+  if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
   {
     //Визначаємо макисальну фазну напругу між трьома фазами
     max_voltage_dr = measurements_U_max_dr[9];
@@ -7002,7 +7002,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
   //Перевірка, чи не є зарза досліджувана напуга більша, ніж та що помічена максимальною
   if (
       (
-       (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)) &&
+       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) &&
        (  
         (max_voltage_dr < measurement[IM_UA]) ||
         (max_voltage_dr < measurement[IM_UB]) ||
@@ -7011,7 +7011,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
       )   
       || 
       (
-       (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0) || ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0)) &&
+       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0) &&
        (  
         (max_voltage_dr < measurement[IM_UAB]) ||
         (max_voltage_dr < measurement[IM_UBC]) ||
@@ -7050,7 +7050,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
     measurements_U_max_dr[23] = (unsigned int)resistance[R_CA];
     measurements_U_max_dr[24] = (unsigned int)resistance[X_CA];
 
-    if (((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) == 0) && ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0))
+    if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
     {
       //Визначаємо макисальну фазну напругу між трьома фазами
       max_voltage_dr = measurements_U_max_dr[9];
@@ -7291,7 +7291,7 @@ inline void continue_monitoring_min_f(unsigned int time_tmp)
 //Завершення моніторингу максимального струму
 /*
   type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE        - завершення моніторингу максимального фазного струму
-  type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04      - завершення моніторингу максимального фазного струму сторони 0.4кВ
+  type_current == IDENTIFIER_BIT_ARRAY_MIN_Z                    - завершення моніторингу мінімального повного опору
   type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0          - завершення моніторингу максимального струму 3I0
   type_current == IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE_3U0          - завершення моніторингу максимального струму 3U0
   type_current == IDENTIFIER_BIT_ARRAY_MIN_VOLTAGE              - завершення моніторингу мінімальної напруги
@@ -7305,7 +7305,7 @@ inline void end_monitoring_min_max_measurement(unsigned int type_current, unsign
 {
   if(
      (type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE   ) ||
-     (type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04 ) ||
+     (type_current == IDENTIFIER_BIT_ARRAY_MIN_Z               ) ||
      (type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0     ) ||
      (type_current == IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE_3U0     ) ||
      (type_current == IDENTIFIER_BIT_ARRAY_MIN_VOLTAGE         ) ||
@@ -7316,7 +7316,7 @@ inline void end_monitoring_min_max_measurement(unsigned int type_current, unsign
     )
   {
     int step = number_max_phase_dr   + 
-               number_max_phase04_dr +
+               number_min_Z          +
                number_max_3I0_dr     + 
                number_max_3U0_dr     + 
                number_min_U_dr       +
@@ -7328,7 +7328,7 @@ inline void end_monitoring_min_max_measurement(unsigned int type_current, unsign
     //Перевірка на коректність роботи програмного забеспечення
     if(
        ( (number_max_phase_dr   > 0) || ( (number_max_phase_dr   == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE  )) == 0) ) ) &&
-       ( (number_max_phase04_dr > 0) || ( (number_max_phase04_dr == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) == 0) ) ) &&
+       ( (number_min_Z          > 0) || ( (number_min_Z          == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MIN_Z              )) == 0) ) ) &&
        ( (number_max_3I0_dr     > 0) || ( (number_max_3I0_dr     == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0    )) == 0) ) ) &&
        ( (number_max_3U0_dr     > 0) || ( (number_max_3U0_dr     == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE_3U0    )) == 0) ) ) &&
        ( (number_min_U_dr       > 0) || ( (number_min_U_dr       == 0) && ((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MIN_VOLTAGE        )) == 0) ) ) &&
@@ -7348,7 +7348,7 @@ inline void end_monitoring_min_max_measurement(unsigned int type_current, unsign
         measurements_phase_max_dr[26] = equal_more_KZ;
         input_data_point = (unsigned char *)(measurements_phase_max_dr);
       }
-      else if(type_current == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)
+      else if(type_current == IDENTIFIER_BIT_ARRAY_MIN_Z)
       {
         measurements_phase04_max_dr[25] = (unsigned int)UNDEF_VMP;
         measurements_phase04_max_dr[26] = 0;
@@ -7401,7 +7401,7 @@ inline void end_monitoring_min_max_measurement(unsigned int type_current, unsign
       step -= 1; //Тому що  нумерація починається з 0, а не з 1 (step гарантовано не менше 1(це перевірено вище), тому від'ємного числа не може бути)
       if(((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE  )) != 0) && (type_current != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE  ))
         step -= 1;
-      if(((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) != 0) && (type_current != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04))
+      if(((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MIN_Z              )) != 0) && (type_current != IDENTIFIER_BIT_ARRAY_MIN_Z              ))
         step -= 1;
       if(((state_current_monitoring & (1<< IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0    )) != 0) && (type_current != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0    ))
         step -= 1;
@@ -7602,7 +7602,7 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
     //Перевіряємо чи не виникла умова, що зарараз буде перебір фіксації максимальних струмів
     unsigned int temp_value_for_max_min_fix_measurement = (
                                                             number_max_phase_dr   + 
-                                                            number_max_phase04_dr + 
+                                                            number_min_Z          + 
                                                             number_max_3I0_dr     +
                                                             number_max_3U0_dr     +
                                                             number_min_U_dr       +
@@ -7646,20 +7646,20 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
 
       //Перевіряємо чи стоїть умова почати моніторити максимальний фазний струм сторони 0.4кВ
       if(
-         ((carrent_active_functions[0] & MASKA_MONITOTYNG_PHASE04_SIGNALES_0) != 0) ||
-         ((carrent_active_functions[1] & MASKA_MONITOTYNG_PHASE04_SIGNALES_1) != 0) ||
-         ((carrent_active_functions[2] & MASKA_MONITOTYNG_PHASE04_SIGNALES_2) != 0) ||
-         ((carrent_active_functions[3] & MASKA_MONITOTYNG_PHASE04_SIGNALES_3) != 0) ||
-         ((carrent_active_functions[4] & MASKA_MONITOTYNG_PHASE04_SIGNALES_4) != 0) ||
-         ((carrent_active_functions[5] & MASKA_MONITOTYNG_PHASE04_SIGNALES_5) != 0) ||
-         ((carrent_active_functions[6] & MASKA_MONITOTYNG_PHASE04_SIGNALES_6) != 0) ||
-         ((carrent_active_functions[7] & MASKA_MONITOTYNG_PHASE04_SIGNALES_7) != 0) ||
-         ((carrent_active_functions[8] & MASKA_MONITOTYNG_PHASE04_SIGNALES_8) != 0)
+         ((carrent_active_functions[0] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_0) != 0) ||
+         ((carrent_active_functions[1] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_1) != 0) ||
+         ((carrent_active_functions[2] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_2) != 0) ||
+         ((carrent_active_functions[3] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_3) != 0) ||
+         ((carrent_active_functions[4] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_4) != 0) ||
+         ((carrent_active_functions[5] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_5) != 0) ||
+         ((carrent_active_functions[6] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_6) != 0) ||
+         ((carrent_active_functions[7] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_7) != 0) ||
+         ((carrent_active_functions[8] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_8) != 0)
         )
       {
-        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) == 0)
+        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MIN_Z)) == 0)
         {
-          //Є умова почати новий моніторинг максимального фазного струму сторони 0.4кВ
+          //Є умова почати новий моніторинг мінімального повного опору
           temp_value_for_max_min_fix_measurement++;
         }
       }
@@ -7839,9 +7839,9 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
         if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE)) != 0)
           end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE, carrent_active_functions);
 
-        //Перевіряємо чи треба завершити моніторинг максимального фазного струму сторони 0.4кВ
-        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) != 0)
-          end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04, carrent_active_functions);
+        //Перевіряємо чи треба завершити моніторинг мінімального повного опру
+        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MIN_Z)) != 0)
+          end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MIN_Z, carrent_active_functions);
 
         //Перевіряємо чи треба завершити моніторинг максимального струму 3I0
         if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0)) != 0)
@@ -7879,7 +7879,7 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
         {
           //Записуємо кількість зафіксованих максимальних струмів всіх типів
           buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR  ] = number_max_phase_dr;
-          buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_PHASE04_DR] = number_max_phase04_dr;
+          buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MIN_Z_DR      ] = number_min_Z;
           buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_3I0_DR    ] = number_max_3I0_dr;
           buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_3U0_DR    ] = number_max_3U0_dr;
           buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MIN_U_DR      ] = number_min_U_dr;
@@ -7959,12 +7959,6 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           else label_to_time_array = time;
           for(unsigned int i = 0; i < 7; i++) buffer_for_save_dr_record[FIRST_INDEX_DATA_TIME_DR + i] = *(label_to_time_array + i);
           
-          //Додаткові налаштування при яких було запущено дискретний реєстратор
-          unsigned int control_extra_settings_1_tmp = current_settings_prt.control_extra_settings_1 & (CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE | CTR_EXTRA_SETTINGS_1_CTRL_IB_I04);
-          unsigned char *point_to_extra_settings = (unsigned char *)(&control_extra_settings_1_tmp);
-          for (unsigned int i = 0; i < sizeof(control_extra_settings_1_tmp); i++)
-            buffer_for_save_dr_record[FIRST_INDEX_EXTRA_SETTINGS_DR + i] = *(point_to_extra_settings + i);
-
            //І'мя комірки
           for(unsigned int i=0; i< MAX_CHAR_IN_NAME_OF_CELL; i++) 
             buffer_for_save_dr_record[FIRST_INDEX_NAME_OF_CELL_DR + i] = current_settings_prt.name_of_cell[i] & 0xff;
@@ -7974,7 +7968,7 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           
           //Скидаємо кількість фіксацій максимальних струмів/напруг
           number_max_phase_dr = 0;
-          number_max_phase04_dr = 0;
+          number_min_Z = 0;
           number_max_3I0_dr = 0;
           number_max_3U0_dr = 0;
           number_min_U_dr = 0;
@@ -8004,18 +7998,18 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
 
           //Перевіряємо чи стоїть умова моніторити максимальний фазний струм сторони 0.4кВ
           if(
-             ((carrent_active_functions[0] & MASKA_MONITOTYNG_PHASE04_SIGNALES_0) != 0) ||
-             ((carrent_active_functions[1] & MASKA_MONITOTYNG_PHASE04_SIGNALES_1) != 0) ||
-             ((carrent_active_functions[2] & MASKA_MONITOTYNG_PHASE04_SIGNALES_2) != 0) ||
-             ((carrent_active_functions[3] & MASKA_MONITOTYNG_PHASE04_SIGNALES_3) != 0) ||
-             ((carrent_active_functions[4] & MASKA_MONITOTYNG_PHASE04_SIGNALES_4) != 0) ||
-             ((carrent_active_functions[5] & MASKA_MONITOTYNG_PHASE04_SIGNALES_5) != 0) ||
-             ((carrent_active_functions[6] & MASKA_MONITOTYNG_PHASE04_SIGNALES_6) != 0) ||
-             ((carrent_active_functions[7] & MASKA_MONITOTYNG_PHASE04_SIGNALES_7) != 0) ||
-             ((carrent_active_functions[8] & MASKA_MONITOTYNG_PHASE04_SIGNALES_8) != 0)
+             ((carrent_active_functions[0] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_0) != 0) ||
+             ((carrent_active_functions[1] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_1) != 0) ||
+             ((carrent_active_functions[2] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_2) != 0) ||
+             ((carrent_active_functions[3] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_3) != 0) ||
+             ((carrent_active_functions[4] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_4) != 0) ||
+             ((carrent_active_functions[5] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_5) != 0) ||
+             ((carrent_active_functions[6] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_6) != 0) ||
+             ((carrent_active_functions[7] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_7) != 0) ||
+             ((carrent_active_functions[8] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_8) != 0)
             )
           {
-            start_monitoring_max_phase04_current(time_from_start_record_dr);
+            start_monitoring_min_Z_current(time_from_start_record_dr);
           }
 
           //Перевіряємо чи стоїть умова моніторити максимальний струм 3I0
@@ -8279,26 +8273,26 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
 
       //Перевіряємо чи стоїть умова моніторити максимальний фазний струм сторони 0.4кВ
       if(
-         ((carrent_active_functions[0] & MASKA_MONITOTYNG_PHASE04_SIGNALES_0) != 0) ||
-         ((carrent_active_functions[1] & MASKA_MONITOTYNG_PHASE04_SIGNALES_1) != 0) ||
-         ((carrent_active_functions[2] & MASKA_MONITOTYNG_PHASE04_SIGNALES_2) != 0) ||
-         ((carrent_active_functions[3] & MASKA_MONITOTYNG_PHASE04_SIGNALES_3) != 0) ||
-         ((carrent_active_functions[4] & MASKA_MONITOTYNG_PHASE04_SIGNALES_4) != 0) ||
-         ((carrent_active_functions[5] & MASKA_MONITOTYNG_PHASE04_SIGNALES_5) != 0) ||
-         ((carrent_active_functions[6] & MASKA_MONITOTYNG_PHASE04_SIGNALES_6) != 0) ||
-         ((carrent_active_functions[7] & MASKA_MONITOTYNG_PHASE04_SIGNALES_7) != 0) ||
-         ((carrent_active_functions[8] & MASKA_MONITOTYNG_PHASE04_SIGNALES_8) != 0)
+         ((carrent_active_functions[0] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_0) != 0) ||
+         ((carrent_active_functions[1] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_1) != 0) ||
+         ((carrent_active_functions[2] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_2) != 0) ||
+         ((carrent_active_functions[3] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_3) != 0) ||
+         ((carrent_active_functions[4] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_4) != 0) ||
+         ((carrent_active_functions[5] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_5) != 0) ||
+         ((carrent_active_functions[6] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_6) != 0) ||
+         ((carrent_active_functions[7] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_7) != 0) ||
+         ((carrent_active_functions[8] & MASKA_MONITOTYNG_MIN_Z_SIGNALES_8) != 0)
         )
       {
-        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) != 0)
-          continue_monitoring_max_phase04_current(time_from_start_record_dr);
+        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MIN_Z)) != 0)
+          continue_monitoring_min_Z_current(time_from_start_record_dr);
         else
-          start_monitoring_max_phase04_current(time_from_start_record_dr);
+          start_monitoring_min_Z_current(time_from_start_record_dr);
       }
       else
       {
-        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) != 0)
-          end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04, carrent_active_functions);
+        if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MIN_Z)) != 0)
+          end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MIN_Z, carrent_active_functions);
       }
 
       //Перевіряємо чи стоїть умова моніторити максимальний струм 3I0
@@ -8634,9 +8628,9 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE)) != 0)
             end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE, carrent_active_functions);
 
-          //Перевіряємо чи треба завершити моніторинг максимального фазного струму сторони 0.4кВ
-          if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04)) != 0)
-            end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04, carrent_active_functions);
+          //Перевіряємо чи треба завершити моніторинг мінімального повного опору
+          if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MIN_Z)) != 0)
+            end_monitoring_min_max_measurement(IDENTIFIER_BIT_ARRAY_MIN_Z, carrent_active_functions);
 
           //Перевіряємо чи треба завершити моніторинг максимального струму 3I0
           if((state_current_monitoring & (1<<IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0)) != 0)
@@ -8674,7 +8668,7 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           {
             //Записуємо кількість зафіксованих максимальних вимірювань всіх типів
             buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR  ] = number_max_phase_dr;
-            buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_PHASE04_DR] = number_max_phase04_dr;
+            buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MIN_Z_DR      ] = number_min_Z;
             buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_3I0_DR    ] = number_max_3I0_dr;
             buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MAX_3U0_DR    ] = number_max_3U0_dr;
             buffer_for_save_dr_record[FIRST_INDEX_NUMBER_MIN_U_DR      ] = number_min_U_dr;
@@ -8844,12 +8838,8 @@ inline void analog_registrator(unsigned int* carrent_active_functions)
           header_ar.T0 = current_settings_prt.T0;
           //Коефіцієнт трансформації TT
           header_ar.TCurrent = current_settings_prt.TCurrent;
-          //Коефіцієнт трансформації TT сторони 0.4кВ
-          header_ar.TCurrent04 = current_settings_prt.TCurrent04;
           //Коефіцієнт трансформації TН
           header_ar.TVoltage = current_settings_prt.TVoltage;
-          //Додаткові налаштування при яких було запущено аналоговий реєстратор
-          header_ar.control_extra_settings_1 = current_settings_prt.control_extra_settings_1 & (CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE);
           //І'мя ячейки
           for(unsigned int i=0; i<MAX_CHAR_IN_NAME_OF_CELL; i++)
             header_ar.name_of_cell[i] = current_settings_prt.name_of_cell[i] & 0xff;

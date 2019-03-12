@@ -527,7 +527,6 @@ void make_ekran_current(unsigned int pervynna_vtorynna)
         if (pervynna_vtorynna != 0)
         {
           if (index < IM_3I0_r) koef_mul = current_settings.T0;
-          else if (index == IM_I04) koef_mul = current_settings.TCurrent04;
           else  koef_mul = current_settings.TCurrent;
         }
         convert_and_insert_char_for_measurement(start_number_digit_after_point, measurement_low[index], koef_mul, 1, name_string[index_of_ekran], 7);

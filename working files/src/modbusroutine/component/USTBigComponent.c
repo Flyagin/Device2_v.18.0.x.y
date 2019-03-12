@@ -612,11 +612,11 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     (*editValue) = (uint32_t*)&edition_settings.T0;
     if(regUst<KOEF_TO_MIN || regUst>KOEF_TO_MAX) diapazon=0;
     break;
-  case 1025:
-    (*multer) = 1;
-    (*editValue) = (uint32_t*)&edition_settings.TCurrent04;
-    if(regUst<KOEF_TT04_MIN || regUst>KOEF_TT04_MAX) diapazon=0;
-    break;
+//  case 1025:
+//    (*multer) = 1;
+//    (*editValue) = (uint32_t*)&edition_settings.TCurrent04;
+//    if(regUst<KOEF_TT04_MIN || regUst>KOEF_TT04_MAX) diapazon=0;
+//    break;
 
   case 1026:
     (*editValue) = (uint32_t*)&edition_settings.timeout_swch_udl_blk_on;

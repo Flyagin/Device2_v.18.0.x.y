@@ -1703,7 +1703,6 @@ void min_settings(__SETTINGS *target_label)
   
   target_label->T0 = KOEF_TO_MIN;
   target_label->TCurrent = KOEF_TT_MIN;
-  target_label->TCurrent04 = KOEF_TT04_MIN;
   target_label->TVoltage = KOEF_TN_MIN;
   target_label->control_transformator = CTR_TRANSFORMATOR_PHASE_LINE;
 

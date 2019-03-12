@@ -735,7 +735,7 @@ unsigned int max_phase_current_dr;   //максимальний фазний струм
 unsigned int min_voltage_dr;  //мінімальнва фазна/лінійна напруга
 unsigned int max_voltage_dr;  //максимальна фазна/лінійна напруга
 unsigned int number_max_phase_dr;
-unsigned int number_max_phase04_dr;
+unsigned int number_min_Z;
 unsigned int number_max_3I0_dr;
 unsigned int number_max_3U0_dr;
 unsigned int number_min_U_dr;
@@ -745,7 +745,7 @@ unsigned int number_min_f_achr_dr;
 unsigned int number_f_chapv_dr;
 unsigned int type_view_max_values_dr;
 int index_cell_into_array_for_min_max_measurement_dr;
-unsigned int control_extra_settings_1_dr_for_manu;
+//unsigned int control_extra_settings_1_dr_for_manu;
 
 //Реєстратор програмних помилок
 unsigned char crc_info_rejestrator_pr_err;
