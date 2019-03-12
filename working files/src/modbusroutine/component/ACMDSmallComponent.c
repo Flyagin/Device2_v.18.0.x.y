@@ -216,36 +216,36 @@ int cmdFunc000(int inOffset, int *outMaska, int *dvMaska, int actControl)
     break;
 
 //  count_bit = 3;
-#define MTZ04_CONFIGURATION_BEGIN 80
-  case MTZ04_CONFIGURATION_BEGIN:
-    (*outMaska) = RANG_BLOCK_MTZ04_1;
-    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_1;
-    break;
-  case 81:
-    (*outMaska) = RANG_MTZ04_1;
-//        (*dvMaska) =
-    break;
-  case 82:
-    (*outMaska) = RANG_PO_MTZ04_1;
-//        (*dvMaska) =
-    break;
-  case 83:
-    (*outMaska) = RANG_BLOCK_MTZ04_2;
-    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_2;
-    break;
-  case 84:
-    (*outMaska) = RANG_MTZ04_2;
-//        (*dvMaska) =
-    break;
-  case 85:
-    (*outMaska) = RANG_PO_MTZ04_2;
-//        (*dvMaska) =
-    break;
-#define MTZ04_CONFIGURATION_END 86
-  case MTZ04_CONFIGURATION_END:
-    (*outMaska) = RANG_BLOCK_USK_MTZ04_2;
-    (*dvMaska) = RANG_SMALL_BLOCK_USK_MTZ04_2;
-    break;
+//#define MTZ04_CONFIGURATION_BEGIN 80
+//  case MTZ04_CONFIGURATION_BEGIN:
+//    (*outMaska) = RANG_BLOCK_MTZ04_1;
+//    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_1;
+//    break;
+//  case 81:
+//    (*outMaska) = RANG_MTZ04_1;
+////        (*dvMaska) =
+//    break;
+//  case 82:
+//    (*outMaska) = RANG_PO_MTZ04_1;
+////        (*dvMaska) =
+//    break;
+//  case 83:
+//    (*outMaska) = RANG_BLOCK_MTZ04_2;
+//    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_2;
+//    break;
+//  case 84:
+//    (*outMaska) = RANG_MTZ04_2;
+////        (*dvMaska) =
+//    break;
+//  case 85:
+//    (*outMaska) = RANG_PO_MTZ04_2;
+////        (*dvMaska) =
+//    break;
+//#define MTZ04_CONFIGURATION_END 86
+//  case MTZ04_CONFIGURATION_END:
+//    (*outMaska) = RANG_BLOCK_USK_MTZ04_2;
+//    (*dvMaska) = RANG_SMALL_BLOCK_USK_MTZ04_2;
+//    break;
 
   case 88:
     (*outMaska) = RANG_NCN_MTZ;

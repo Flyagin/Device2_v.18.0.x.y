@@ -70,11 +70,11 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     break;
 
 //  int count_bit = 68;
-  case 6:
-    (*editValue) = (uint32_t*)&edition_settings.type_mtz04_2;
-    (*multer) = 1;
-    if(regUst<0 || regUst>3) diapazon=0;
-    break;
+//  case 6:
+//    (*editValue) = (uint32_t*)&edition_settings.type_mtz04_2;
+//    (*multer) = 1;
+//    if(regUst<0 || regUst>3) diapazon=0;
+//    break;
 //IF ÂÑÒÀÂÊÀ
   case 15:
     (*editValue) = &edition_settings.setpoint_mtz_1[gruppa];
@@ -268,30 +268,30 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     break;
 
 //  int count_bit = 68;
-  case 75:
-    (*editValue) = (uint32_t*)&edition_settings.setpoint_mtz04_1[gruppa];
-    if(regUst<SETPOINT_MTZ04_1_MIN/10 || regUst>SETPOINT_MTZ04_1_MAX/10) diapazon=0;
-    break;
-  case 76:
-    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_1[gruppa];
-    if(regUst<TIMEOUT_MTZ04_1_MIN/10 || regUst>TIMEOUT_MTZ04_1_MAX/10) diapazon=0;
-    break;
-  case 77:
-    (*editValue) = (uint32_t*)&edition_settings.setpoint_mtz04_2[gruppa];
-    if(regUst<SETPOINT_MTZ04_2_MIN/10 || regUst>SETPOINT_MTZ04_2_MAX/10) diapazon=0;
-    break;
-  case 78:
-    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2[gruppa];
-    if(regUst<TIMEOUT_MTZ04_2_MIN/10 || regUst>TIMEOUT_MTZ04_2_MAX/10) diapazon=0;
-    break;
-  case 79:
-    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2_vvid_pr[gruppa];
-    if(regUst<TIMEOUT_MTZ04_2_VVID_PR_MIN/10 || regUst>TIMEOUT_MTZ04_2_VVID_PR_MAX/10) diapazon=0;
-    break;
-  case 80:
-    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2_pr[gruppa];
-    if(regUst<TIMEOUT_MTZ04_2_PR_MIN/10 || regUst>TIMEOUT_MTZ04_2_PR_MAX/10) diapazon=0;
-    break;
+//  case 75:
+//    (*editValue) = (uint32_t*)&edition_settings.setpoint_mtz04_1[gruppa];
+//    if(regUst<SETPOINT_MTZ04_1_MIN/10 || regUst>SETPOINT_MTZ04_1_MAX/10) diapazon=0;
+//    break;
+//  case 76:
+//    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_1[gruppa];
+//    if(regUst<TIMEOUT_MTZ04_1_MIN/10 || regUst>TIMEOUT_MTZ04_1_MAX/10) diapazon=0;
+//    break;
+//  case 77:
+//    (*editValue) = (uint32_t*)&edition_settings.setpoint_mtz04_2[gruppa];
+//    if(regUst<SETPOINT_MTZ04_2_MIN/10 || regUst>SETPOINT_MTZ04_2_MAX/10) diapazon=0;
+//    break;
+//  case 78:
+//    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2[gruppa];
+//    if(regUst<TIMEOUT_MTZ04_2_MIN/10 || regUst>TIMEOUT_MTZ04_2_MAX/10) diapazon=0;
+//    break;
+//  case 79:
+//    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2_vvid_pr[gruppa];
+//    if(regUst<TIMEOUT_MTZ04_2_VVID_PR_MIN/10 || regUst>TIMEOUT_MTZ04_2_VVID_PR_MAX/10) diapazon=0;
+//    break;
+//  case 80:
+//    (*editValue) = (uint32_t*)&edition_settings.timeout_mtz04_2_pr[gruppa];
+//    if(regUst<TIMEOUT_MTZ04_2_PR_MIN/10 || regUst>TIMEOUT_MTZ04_2_PR_MAX/10) diapazon=0;
+//    break;
 
 //  count_bit = 2;
   case 82:
@@ -972,7 +972,7 @@ int getUSTBigModbusRegister(int adrReg)
   ustFunc000(offset -adresGruppa, grupa_ustavok, &multer, 0, &editValue);
   if(editValue==NULL) return 0;
 
-  if(editValue == (uint32_t*)&edition_settings.type_mtz04_2 && (*editValue)!=0) return (*editValue)-2;
+//  if(editValue == (uint32_t*)&edition_settings.type_mtz04_2 && (*editValue)!=0) return (*editValue)-2;
   for(int gruppa=0; gruppa<4; gruppa++)
   {
     for(int item=0; item<NUMBER_UP; item++)
@@ -1206,12 +1206,12 @@ int postUSTBigWriteAction(void)
       }//else
     }//if(editValue == (uint32_t*)&edition_settings.type_of_led)
 
-    if(editValue == (uint32_t*)&edition_settings.type_mtz04_2)
-    {
-      if(value!=0) value += 2;
-      (*editValue) = value*multer;
-      goto m1;
-    }//if(editValue == (uint32_t*)&edition_settings.type_mtz04_2)
+//    if(editValue == (uint32_t*)&edition_settings.type_mtz04_2)
+//    {
+//      if(value!=0) value += 2;
+//      (*editValue) = value*multer;
+//      goto m1;
+//    }//if(editValue == (uint32_t*)&edition_settings.type_mtz04_2)
 
     if(editValue == (uint32_t*)&edition_settings.buttons_mode)
     {

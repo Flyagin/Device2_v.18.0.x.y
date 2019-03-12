@@ -1,9 +1,9 @@
 #include "header.h"
 
 /*****************************************************/
-//Формуємо екран відображення уставок МТЗ 0.4кВ
+//Формуємо екран відображення уставок ДЗ
 /*****************************************************/
-void make_ekran_setpoint_mtz04(unsigned int group)
+void make_ekran_setpoint_dz(unsigned int group)
 {
   UNUSED(group);
 //  const unsigned char name_string[MAX_NAMBER_LANGUAGE][MAX_ROW_FOR_SETPOINT_MTZ04][MAX_COL_LCD] = 
@@ -132,9 +132,9 @@ void make_ekran_setpoint_mtz04(unsigned int group)
 /*****************************************************/
 
 /*****************************************************/
-//Формуємо екран відображення витримок МТЗ 0.4кВ
+//Формуємо екран відображення витримок ДЗ
 /*****************************************************/
-void make_ekran_timeout_mtz04(unsigned int group)
+void make_ekran_timeout_dz(unsigned int group)
 {
   UNUSED(group);
 //  const unsigned char name_string[MAX_NAMBER_LANGUAGE][MAX_ROW_FOR_TIMEOUT_MTZ04][MAX_COL_LCD] = 
@@ -317,7 +317,7 @@ void make_ekran_timeout_mtz04(unsigned int group)
 /*****************************************************/
 //Формуємо екран відображення значення управлінської інформації для МТЗ 0.4кВ
 /*****************************************************/
-void make_ekran_control_mtz04()
+void make_ekran_control_dz()
 {
 //  const unsigned char name_string[MAX_NAMBER_LANGUAGE][MAX_ROW_FOR_CONTROL_MTZ04][MAX_COL_LCD] = 
 //  {

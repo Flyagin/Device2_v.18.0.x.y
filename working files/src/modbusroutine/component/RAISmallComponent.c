@@ -53,7 +53,7 @@
 #define MBLOCK_PROTECTION_FREQUENCY_1_CAPV     10
 #define MBLOCK_PROTECTION_FREQUENCY_2_ACHR     11
 #define MBLOCK_PROTECTION_FREQUENCY_2_CAPV     12
-#define MBLOCK_PROTECTION_MTZ04                13
+//#define MBLOCK_PROTECTION_MTZ04                13
 
 int getRAISmallModbusRegister(int);//получить содержимое регистра
 int getRAISmallModbusBit(int);//получить содержимое бита

@@ -157,24 +157,6 @@
 #define TIMEOUT_MTZ4_PO_NAPRUZI_MIN             0
 #define TIMEOUT_MTZ4_PO_NAPRUZI_MAX             300000
 
-#define SETPOINT_MTZ04_1_MIN                    500
-#define SETPOINT_MTZ04_1_MAX                    150000
-
-#define SETPOINT_MTZ04_2_MIN                    500
-#define SETPOINT_MTZ04_2_MAX                    150000
-
-#define TIMEOUT_MTZ04_1_MIN                     0
-#define TIMEOUT_MTZ04_1_MAX                     32000
-
-#define TIMEOUT_MTZ04_2_MIN                     0
-#define TIMEOUT_MTZ04_2_MAX                     300000
-
-#define TIMEOUT_MTZ04_2_PR_MIN                  200
-#define TIMEOUT_MTZ04_2_PR_MAX                  5000
-
-#define TIMEOUT_MTZ04_2_VVID_PR_MIN             200
-#define TIMEOUT_MTZ04_2_VVID_PR_MAX             5000
-
 #define TIMEOUT_ZDZ_MIN                         0
 #define TIMEOUT_ZDZ_MAX                         1000
 

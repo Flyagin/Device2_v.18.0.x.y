@@ -176,18 +176,6 @@ typedef struct
 
   unsigned int control_mtz;                                 //Поле для управління МТЗ
   
-  //МТЗ 0.4кВ
-  unsigned int setpoint_mtz04_1[NUMBER_GROUP_USTAVOK];            //Уставка МТЗ 0.4кВ першої ступені
-  int type_mtz04_2;                                               //Тип МТЗ2 0.4кВ (0 - Проста, 3 - Залежна А, 4 - Залежна В, 5 - Залежна С)
-  unsigned int setpoint_mtz04_2[NUMBER_GROUP_USTAVOK];            //Уставка МТЗ 0.4кВ другої ступені
-
-  int timeout_mtz04_1[NUMBER_GROUP_USTAVOK];                      //Витримка МТЗ 0.4кВ першої ступені
-  int timeout_mtz04_2[NUMBER_GROUP_USTAVOK];                      //Витримка МТЗ 0.4кВ друго 0.4кВї ступені
-  int timeout_mtz04_2_pr[NUMBER_GROUP_USTAVOK];                   //Витримка присторення МТЗ другої ступені
-  int timeout_mtz04_2_vvid_pr[NUMBER_GROUP_USTAVOK];              //Витримка вводу присорення МТЗ2 0.4кВ
-
-  unsigned int control_mtz04;                                 //Поле для управління МТЗ 0.4кВ
-  
   //ЗДЗ
   int32_t timeout_zdz[NUMBER_GROUP_USTAVOK];                //Витримка ЗДЗ
   unsigned int control_zdz;                                 //Поле для управління ЗДЗ

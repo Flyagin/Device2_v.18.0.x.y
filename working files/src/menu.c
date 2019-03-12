@@ -5071,7 +5071,7 @@ void main_manu_function(void)
 
               //Формуємо екран уставок ДЗ
               int group = (current_ekran.current_level - EKRAN_SETPOINT_DZ_GROUP1);
-              make_ekran_setpoint_mtz04(group);
+              make_ekran_setpoint_dz(group);
             }
             else if(
                     (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
@@ -5083,7 +5083,7 @@ void main_manu_function(void)
 
               //Формуємо екран витримок ДЗ
               int group = (current_ekran.current_level - EKRAN_TIMEOUT_DZ_GROUP1);
-              make_ekran_timeout_mtz04(group);
+              make_ekran_timeout_dz(group);
             }
             else if(current_ekran.current_level == EKRAN_CONTROL_DZ)
             {
@@ -5091,7 +5091,7 @@ void main_manu_function(void)
               position_in_current_level_menu[EKRAN_CONTROL_DZ] = current_ekran.index_position;
 
               //Формуємо екран управлінської інформації для МТЗ 0.4кВ
-              make_ekran_control_mtz04();
+              make_ekran_control_dz();
             }
             else if(
                     (current_ekran.current_level >= EKRAN_TIMEOUT_ZDZ_GROUP1) &&
@@ -5318,6 +5318,15 @@ void main_manu_function(void)
               while(
                     (
                      (
+                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
+                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+                     )   
+                     &&
+                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    )  
+                    ||
+                    (
+                     (
                       (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
                       (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) ||
                       (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) ||
@@ -5325,15 +5334,6 @@ void main_manu_function(void)
                      )   
                      &&
                      ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
-                    )  
-                    ||
-                    (
-                     (
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                     )   
-                     &&
-                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
                     )  
                     ||
                     (
@@ -11517,7 +11517,7 @@ void main_manu_function(void)
 //                    edition_settings.setpoint_mtz04_2[group] = edit_setpoint(1, edition_settings.setpoint_mtz04_2[group], 1, COL_SETPOINT_MTZ04_2_COMMA, COL_SETPOINT_MTZ04_2_END, 10);
                 }
                 //Формуємо екран уставок ДЗ
-                make_ekran_setpoint_mtz04(group);
+                make_ekran_setpoint_dz(group);
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
@@ -11544,14 +11544,14 @@ void main_manu_function(void)
 //                    edition_settings.timeout_mtz04_2_vvid_pr[group] = edit_setpoint(1, edition_settings.timeout_mtz04_2_vvid_pr[group], 1, COL_TMO_MTZ04_2_VVID_PR_COMMA, COL_TMO_MTZ04_2_VVID_PR_END, 10);
                 }
                 //Формуємо екран витримок ДЗ
-                make_ekran_timeout_mtz04(group);
+                make_ekran_timeout_dz(group);
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_DZ)
               {
                 if(--current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_CONTROL_DZ - 1;
                 position_in_current_level_menu[EKRAN_CONTROL_DZ] = current_ekran.index_position;
                 //Формуємо екран управлінської інформації для ДЗ
-                make_ekran_control_mtz04();
+                make_ekran_control_dz();
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_ZDZ_GROUP1) &&
@@ -11960,6 +11960,15 @@ void main_manu_function(void)
                 if(current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_CONTROL_UROV - 1;
                 while(
                       (
+                       (
+                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
+                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+                       )   
+                       &&
+                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                      )  
+                      ||
+                      (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) ||
@@ -11968,15 +11977,6 @@ void main_manu_function(void)
                        )   
                        &&
                        ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
                       )  
                       ||
                       (
@@ -12951,7 +12951,7 @@ void main_manu_function(void)
 //                    edition_settings.setpoint_mtz04_2[group] = edit_setpoint(0, edition_settings.setpoint_mtz04_2[group], 1, COL_SETPOINT_MTZ04_2_COMMA, COL_SETPOINT_MTZ04_2_END, 10);
                 }
                 //Формуємо екран уставок ДЗ
-                make_ekran_setpoint_mtz04(group);
+                make_ekran_setpoint_dz(group);
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
@@ -12978,14 +12978,14 @@ void main_manu_function(void)
 //                    edition_settings.timeout_mtz04_2_vvid_pr[group] = edit_setpoint(0, edition_settings.timeout_mtz04_2_vvid_pr[group], 1, COL_TMO_MTZ04_2_VVID_PR_COMMA, COL_TMO_MTZ04_2_VVID_PR_END, 10);
                 }
                 //Формуємо екран витримок ДЗ
-                make_ekran_timeout_mtz04(group);
+                make_ekran_timeout_dz(group);
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_DZ)
               {
                 if(++current_ekran.index_position >= MAX_ROW_FOR_CONTROL_DZ) current_ekran.index_position = 0;
                 position_in_current_level_menu[EKRAN_CONTROL_DZ] = current_ekran.index_position;
                 //Формуємо екран управлінської інформації для ДЗ
-                make_ekran_control_mtz04();
+                make_ekran_control_dz();
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_ZDZ_GROUP1) &&
@@ -13394,6 +13394,15 @@ void main_manu_function(void)
                 if(current_ekran.index_position >= MAX_ROW_FOR_CONTROL_UROV) current_ekran.index_position = 0;
                 while(
                       (
+                       (
+                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
+                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+                       )   
+                       &&
+                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                      )  
+                      ||
+                      (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) ||
@@ -13402,15 +13411,6 @@ void main_manu_function(void)
                        )   
                        &&
                        ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
                       )  
                       ||
                       (
@@ -14628,7 +14628,7 @@ void main_manu_function(void)
 
                 //Формуємо екран уставок ДЗ
                 int group = (current_ekran.current_level - EKRAN_SETPOINT_DZ_GROUP1);
-                make_ekran_setpoint_mtz04(group);
+                make_ekran_setpoint_dz(group);
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
@@ -14666,7 +14666,7 @@ void main_manu_function(void)
                 
                 //Формуємо екран витримок ДЗ
                 int group = (current_ekran.current_level - EKRAN_TIMEOUT_DZ_GROUP1);
-                make_ekran_timeout_mtz04(group);
+                make_ekran_timeout_dz(group);
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_DZ)
               {
@@ -14695,7 +14695,7 @@ void main_manu_function(void)
 //                }
 
                 //Формуємо екран управлінської інформації для ДЗ
-                 make_ekran_control_mtz04();
+                 make_ekran_control_dz();
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_ZDZ_GROUP1) &&
@@ -16441,7 +16441,7 @@ void main_manu_function(void)
 
                 //Формуємо екран уставок ДЗ
                 int group = (current_ekran.current_level - EKRAN_SETPOINT_DZ_GROUP1);
-                make_ekran_setpoint_mtz04(group);
+                make_ekran_setpoint_dz(group);
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_DZ_GROUP1) &&
@@ -16479,7 +16479,7 @@ void main_manu_function(void)
                 
                 //Формуємо екран витримок ДЗ
                 int group = (current_ekran.current_level - EKRAN_TIMEOUT_DZ_GROUP1);
-                make_ekran_timeout_mtz04(group);
+                make_ekran_timeout_dz(group);
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_DZ)
               {
@@ -16508,7 +16508,7 @@ void main_manu_function(void)
 //                }
 
                 //Формуємо екран управлінської інформації для ДЗ
-                 make_ekran_control_mtz04();
+                 make_ekran_control_dz();
               }
               else if(
                       (current_ekran.current_level >= EKRAN_TIMEOUT_ZDZ_GROUP1) &&

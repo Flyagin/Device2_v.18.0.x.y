@@ -357,14 +357,14 @@ void make_ekran_control_urov()
   /******************************************/
   //Виключаємо поля, які не треба відображати
   /******************************************/
-  int additional_current_mtz = 0, additional_current_mtz04 = 0, additional_current_zdz = 0;
+  int additional_current_dz = 0, additional_current_mtz = 0, additional_current_zdz = 0;
   int additional_current_zz = 0, additional_current_tznp = 0, additional_current_zop = 0;
   int additional_current_Umin = 0, additional_current_Umax = 0, additional_current_achr = 0;
   int additional_current_up = 0;
   int position_temp = current_ekran.index_position;
   int index_of_ekran;
 
-  int additional_current = additional_current_mtz  + additional_current_mtz04 + additional_current_zdz  + 
+  int additional_current = additional_current_dz   + additional_current_mtz   + additional_current_zdz  + 
                            additional_current_zz   + additional_current_tznp  + additional_current_zop  + 
                            additional_current_Umin + additional_current_Umax  + additional_current_achr + 
                            additional_current_up;
@@ -372,6 +372,15 @@ void make_ekran_control_urov()
   {
 
     if (
+        (  
+         (
+          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
+          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+         )   
+         &&
+         ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+        )  
+        ||
         (
          (
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
@@ -381,15 +390,6 @@ void make_ekran_control_urov()
          )   
          &&
          ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
-        )  
-        ||
-        (  
-         (
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-         )   
-         &&
-         ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
         )  
         ||
         (
@@ -494,18 +494,18 @@ void make_ekran_control_urov()
       temp_data = (temp_data & maska_1) | temp_data_1;
 
       if (
+          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
+          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+         )   
+        additional_current_dz++;
+
+      if (
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) ||
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) ||
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
          )   
         additional_current_mtz++;
-
-      if (
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-         )   
-        additional_current_mtz04++;
 
       if (
           (current_index == INDEX_ML_CTRUROV_STARTED_FROM_ZDZ)
@@ -555,7 +555,7 @@ void make_ekran_control_urov()
          )   
         additional_current_up++;
       
-      additional_current = additional_current_mtz  + additional_current_mtz04 + additional_current_zdz  + 
+      additional_current = additional_current_dz   + additional_current_mtz   + additional_current_zdz  + 
                            additional_current_zz   + additional_current_tznp  + additional_current_zop  + 
                            additional_current_Umin + additional_current_Umax  + additional_current_achr +
                            additional_current_up;

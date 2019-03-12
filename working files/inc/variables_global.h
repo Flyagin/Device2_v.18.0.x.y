@@ -26,8 +26,6 @@ const unsigned int input_adc[NUMBER_INPUTs_ADCs][2]={
                                                     };
 EXTENDED_OUTPUT_DATA output_adc[NUMBER_INPUTs_ADCs];
 ROZSHYRENA_VYBORKA rozshyrena_vyborka;
-//12345
-uint32_t previous_states_MTZ04_vvid_pr_0/* = 0*/;
 
 unsigned int command_word_adc/* = 0*/, command_word_adc_work/* = 0*/, active_index_command_word_adc/* = 0*/;
 unsigned int state_reading_ADCs = STATE_READING_ADCs_NONE;
@@ -269,15 +267,15 @@ RANG_3_GRUPA_USTAVOK,
 RANG_4_GRUPA_USTAVOK,
 RANG_RESET_BLOCK_READY_TU_VID_ZAHYSTIV,
 
+RANG_BLOCK_MTZ04_1,
+RANG_BLOCK_MTZ04_2,
+RANG_BLOCK_USK_MTZ04_2,
+
 RANG_BLOCK_MTZ1,
 RANG_BLOCK_MTZ2,
 RANG_BLOCK_USK_MTZ2,
 RANG_BLOCK_MTZ3,
 RANG_BLOCK_MTZ4,
-
-RANG_BLOCK_MTZ04_1,
-RANG_BLOCK_MTZ04_2,
-RANG_BLOCK_USK_MTZ04_2,
 
 RANG_BLOCK_ZDZ,
 RANG_PUSK_ZDZ_VID_DV,
@@ -600,7 +598,6 @@ int * timeout_mtz_po_napruzi[NUMBER_LEVEL_MTZ];
 _Bool previous_state_mtz_po_incn = 0;
 _Bool previous_state_mtz_po_uncn = 0;
 unsigned int p_global_trigger_state_mtz2/* = 0*/;
-unsigned int p_global_trigger_state_mtz04_2/* = 0*/;
 
 //Визначення періодів у хвилину і більше
 unsigned int number_seconds/* = 0*/;

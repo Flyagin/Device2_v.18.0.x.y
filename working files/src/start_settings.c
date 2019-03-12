@@ -1457,7 +1457,6 @@ void min_settings(__SETTINGS *target_label)
   for (size_t i = 0; i < NUMBER_UP; i++) target_label->ctrl_UP_input[i] = UP_CTRL_Ia_Ib_Ic;
 
   target_label->control_mtz = 0;
-  target_label->control_mtz04 = 0;
   target_label->control_zdz = 0;
   target_label->control_zz = 0;
   target_label->control_tznp = 0;
@@ -1557,14 +1556,6 @@ void min_settings(__SETTINGS *target_label)
     target_label->timeout_mtz_4_n_nazad[i] = TIMEOUT_MTZ4_N_NAZAD_MIN; 
     target_label->timeout_mtz_4_po_napruzi[i] = TIMEOUT_MTZ4_PO_NAPRUZI_MIN; 
 
-    target_label->setpoint_mtz04_1[i] = SETPOINT_MTZ04_1_MIN;
-    target_label->setpoint_mtz04_2[i] = SETPOINT_MTZ04_2_MIN;
-    
-    target_label->timeout_mtz04_1[i] = TIMEOUT_MTZ04_1_MIN; 
-    target_label->timeout_mtz04_2[i] = TIMEOUT_MTZ04_2_MIN; 
-    target_label->timeout_mtz04_2_pr[i] = TIMEOUT_MTZ04_2_PR_MIN; 
-    target_label->timeout_mtz04_2_vvid_pr[i] = TIMEOUT_MTZ04_2_VVID_PR_MIN;
-    
     target_label->timeout_zdz[i] = TIMEOUT_ZDZ_MIN;    
 
     target_label->setpoint_zz_3I0[i] = SETPOINT_ZZ_3I0_MIN;
