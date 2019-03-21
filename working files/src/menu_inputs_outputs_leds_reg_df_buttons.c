@@ -779,7 +779,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 {
 #define NUMBER_ROW_FOR_NOTHING_INFORMATION 2
   
-  unsigned int state_viewing_input[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  unsigned int state_viewing_input[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned int max_row_ranguvannja;
   const unsigned char name_string[MAX_NAMBER_LANGUAGE][NUMBER_TOTAL_SIGNAL_FOR_RANG - NUMBER_UP_SIGNAL_FOR_RANG + 3 + NUMBER_ROW_FOR_NOTHING_INFORMATION][MAX_COL_LCD] = 
   {
@@ -1191,7 +1191,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
         (state_viewing_input[5] == 0) &&
         (state_viewing_input[6] == 0) &&
         (state_viewing_input[7] == 0) &&
-        (state_viewing_input[8] == 0)
+        (state_viewing_input[8] == 0) &&
+        (state_viewing_input[9] == 0)
        )
     {
       //Це означає, що на даний вхід нічого не відранжовано
@@ -1389,7 +1390,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
       /*************************************************************/
 
       //Формуємо маску біт, які не треба переміщати при переміщенні імен полів
-      unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+      unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       for (unsigned int j = 0; j < (index_deleted_function - offset); j++) _SET_BIT(maska, j);
           
       /***/
@@ -1449,7 +1450,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 //      for (i = 0; i < 2; i++)
 //      {
 //        unsigned int index_deleted_function;
-//        unsigned int maska_func[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+//        unsigned int maska_func[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //        unsigned int need_filtration = 0;
 //        //Визначаємо індекс функції, яку потенційно можливо треба буде фільтрувати із сприску
 //        //Першою фільтруємо функцію з меншим номером
@@ -1480,7 +1481,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 //                ((current_settings.ranguvannja_outputs[N_BIG*index + 5] & maska_func[5]) != 0) ||
 //                ((current_settings.ranguvannja_outputs[N_BIG*index + 6] & maska_func[6]) != 0) ||
 //                ((current_settings.ranguvannja_outputs[N_BIG*index + 7] & maska_func[7]) != 0) ||
-//                ((current_settings.ranguvannja_outputs[N_BIG*index + 8] & maska_func[8]) != 0)
+//                ((current_settings.ranguvannja_outputs[N_BIG*index + 8] & maska_func[8]) != 0) ||
+//                ((current_settings.ranguvannja_outputs[N_BIG*index + 9] & maska_func[9]) != 0)
 //               )
 //            {
 //              need_filtration = 1;
@@ -1493,7 +1495,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 //        if (need_filtration != 0)
 //        {
 //          //Формуємо маску біт, які не треба переміщати при переміщенні імен полів
-//          unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+//          unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //          for (unsigned int j = 0; j < (index_deleted_function - offset); j++) _SET_BIT(maska, j);
 //          
 //          /***/
@@ -1564,7 +1566,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 
             //Відкидати імена функцій і зміщати біти треба тільки у тому випадку, якщо функції пристні у списку для ранжування для даного захисту
             //Формуємо маску біт, які не треба переміщати при переміщенні імен полів
-            unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+            unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
             unsigned int j1;
             for (j1 = 0; j1 < (min_max_number[i][0] - offset); j1++) _SET_BIT(maska, j1);
           
@@ -1634,7 +1636,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
 
             //Відкидати імена функцій і зміщати біти треба тільки у тому випадку, якщо функції пристні у списку для ранжування для даного захисту
             //Формуємо маску біт, які не треба переміщати при переміщенні імен полів
-            unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+            unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
             unsigned int j1;
             for (j1 = 0; j1 < (min_max_number[i][0] - offset); j1++) _SET_BIT(maska, j1);
           
@@ -1791,7 +1793,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
       {
         //Відкидати імена функцій і зміщати біти треба тільки у тому випадку, якщо функції пристні у списку для ранжування для даного захисту
         //Формуємо маску біт, які не треба переміщати при переміщенні імен полів
-        unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        unsigned int maska[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (unsigned int j = 0; j < (min_max_number[i][0] - offset); j++) _SET_BIT(maska, j);
           
         //Відкидаємо назви функцій із списку, які є зайвими

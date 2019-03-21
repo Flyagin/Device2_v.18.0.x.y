@@ -331,7 +331,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
     //Вводимо нову конфігурацю у цільову структуру
     target_label->configuration = new_configuration;
     
-    unsigned int maska[N_SMALL] = {0, 0, 0}, maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned int maska[N_SMALL] = {0, 0, 0}, maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   
     //Перевіряємо, чи ДЗ зараз знято з конфігурації
     if ((target_label->configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
@@ -1892,7 +1892,7 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
 
     //"Розширена логіка"
     for (unsigned int i = 0; i < N_SMALL; i++ ) maska[i] = 0;
-    unsigned int array_full[N_BIG] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+    unsigned int array_full[N_BIG] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
     unsigned int *point_to_mask_array;
     for (unsigned int i = 0; i < N_BIG; i++ ) maska_1[i] = 0;
     if ((target_label->configuration & (1<<EL_BIT_CONFIGURATION)) == 0)
@@ -2153,7 +2153,7 @@ void action_after_changing_zz1_type(__SETTINGS *target_label)
     //Виводим НЗЗ з УРОВ
     target_label->control_urov &= (unsigned int)(~MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ));
       
-    unsigned int /*maska[N_SMALL] = {0,0,0}, */maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned int /*maska[N_SMALL] = {0,0,0}, */maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     
     _SET_BIT(maska_1, RANG_PO_NZZ);
     _SET_BIT(maska_1, RANG_NZZ);
@@ -2419,7 +2419,7 @@ void action_after_changing_ctrl_UP(__SETTINGS *current_label, uint32_t value)
 ///*****************************************************/
 //void action_after_changing_number_el(__SETTINGS *target_label, unsigned int element)
 //{
-//  unsigned int maska[N_SMALL] = {0, 0, 0}, maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0}, maska_2 = 0;
+//  unsigned int maska[N_SMALL] = {0, 0, 0}, maska_1[N_BIG] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, maska_2 = 0;
 //
 //  //Формуємо маски тільки тих сигналів розширеної логіки, які виведені з конфігурації у кількісному значенні
 //  unsigned int array_defined_logic[NUMBER_DEFINED_ELEMENTS][2] =

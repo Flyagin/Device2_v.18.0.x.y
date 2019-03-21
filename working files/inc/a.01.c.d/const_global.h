@@ -1252,7 +1252,7 @@ enum __mtz_abc_direction_const {
 )
 
 #define MASKA_EL_SIGNALS_9        (unsigned int)(             \
-  | (1 << (RANG_ERROR_CONF_EL - 288))                         \
+    (1 << (RANG_ERROR_CONF_EL - 288))                         \
 )
 /*****************************************/
 
