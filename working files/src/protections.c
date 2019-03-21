@@ -9737,33 +9737,6 @@ inline void main_protection(void)
   /***********************************************************/
   calc_measurement(number_group_stp);
 
-#ifdef DEBUG_TEST
-  /***/
-  //Тільки для відладки
-  /***/
-  if (temp_value_3I0_1 != 0)
-    measurement[IM_3I0]         = temp_value_3I0_1;
-  if (temp_value_3I0_other != 0)
-    measurement[IM_3I0_other_g] = temp_value_3I0_other;
-  if (temp_value_IA != 0)
-    measurement[IM_IA]          = temp_value_IA;
-  if (temp_value_IC != 0)
-    measurement[IM_IC]          = temp_value_IC;
-  if (temp_value_UA != 0)
-    measurement[IM_UA]          = temp_value_UA;
-  if (temp_value_UB != 0)
-    measurement[IM_UB]          = temp_value_UB;
-  if (temp_value_UC != 0)
-    measurement[IM_UC]          = temp_value_UC;
-  if (temp_value_3U0 != 0)
-    measurement[IM_3U0]         = temp_value_3U0;
-  if (temp_value_I2 != 0)
-    measurement[IM_I2]          = temp_value_I2;
-  if (temp_value_I1 != 0)
-    measurement[IM_I1]          = temp_value_I1;
-  /***/
-#endif
-    
       
 //  //Діагностика справності раз на період
 //  diagnostyca_adc_execution();

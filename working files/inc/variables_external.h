@@ -246,7 +246,8 @@ extern unsigned char temp_register_rtc[2];
 
 extern unsigned int changed_settings; 
 extern unsigned char crc_settings;
-extern __SETTINGS current_settings_prt, current_settings, edition_settings, current_settings_interfaces;
+extern __SETTINGS current_settings_prt, current_settings;
+extern __SETTINGS edition_settings, current_settings_interfaces;
 extern int * type_mtz_arr[NUMBER_LEVEL_MTZ];
 extern unsigned int mtz_settings_prt[NUMBER_LEVEL_MTZ][MTZ_SETTINGS_LENGTH];
 extern unsigned int mtz_tmr_const[NUMBER_LEVEL_MTZ][NUMBER_LEVEL_TMR_CONST];
@@ -536,16 +537,6 @@ extern unsigned int __checksum_end;
 //extern unsigned int temp_value_for_debbuging_2;
 //extern unsigned int temp_value_for_debbuging_3;
 
-extern unsigned int temp_value_3I0_1;
-extern unsigned int temp_value_3I0_other;
-extern unsigned int temp_value_IA;
-extern unsigned int temp_value_IC;
-extern unsigned int temp_value_UA;
-extern unsigned int temp_value_UB;
-extern unsigned int temp_value_UC;
-extern unsigned int temp_value_3U0;
-extern unsigned int temp_value_I2;
-extern unsigned int temp_value_I1;
 
 #endif
 
