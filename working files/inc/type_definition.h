@@ -114,6 +114,17 @@ typedef struct
                                       // 3 - Група 3
                                       // 4 - Група 4
   
+  //ДЗ
+  uint32_t pickup_dz_k[NUMBER_GROUP_USTAVOK];                   //Коефіцієнт помпенсації п.5.27.5 [0; 3] крок 0,01
+  uint32_t pickup_dz1[NUMBER_GROUP_USTAVOK];                    //Уставка ДЗ1 за опором п.5.27.6 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz1_amtz[NUMBER_GROUP_USTAVOK];               //
+  uint32_t pickup_dz2_vpered[NUMBER_GROUP_USTAVOK];             //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz2_nazad[NUMBER_GROUP_USTAVOK];              //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz2_amtz[NUMBER_GROUP_USTAVOK];               //
+
+  int32_t timeout_dz1[NUMBER_GROUP_USTAVOK];                    //Витримка ДЗ1 п.5.27.6 [0.05; 32] крок 0,01с
+  int32_t timeout_dz1_amtz[NUMBER_GROUP_USTAVOK];               //
+  
   //МТЗ
   int type_mtz1;                                                //Тип МТЗ1 (0 - Проста, 1 - Направлена, 2 -  З пуском по напрузі)
   unsigned int setpoint_mtz_1[NUMBER_GROUP_USTAVOK];            //Уставка МТЗ першої ступені (проста)

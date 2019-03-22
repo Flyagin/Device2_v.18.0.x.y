@@ -13,6 +13,33 @@
 #define SETPOINT_GRUPA_USTAVOK_MIN    1
 #define SETPOINT_GRUPA_USTAVOK_MAX    4
 
+#define PICKUP_DZ_K_MIN                0
+#define PICKUP_DZ_K_MAX                3000
+
+#define PICKUP_DZ1_MIN                 10
+#define PICKUP_DZ1_MAX                 300000
+
+#define PICKUP_DZ2_VPERED_MIN          10
+#define PICKUP_DZ2_VPERED_MAX          300000
+
+#define PICKUP_DZ2_NAZAD_MIN           10
+#define PICKUP_DZ2_NAZAD_MAX           300000
+
+#define TIMEOUT_DZ1_MIN                50
+#define TIMEOUT_DZ1_MAX                32000
+
+#define TIMEOUT_DZ2_VPERED_MIN         50
+#define TIMEOUT_DZ2_VPERED_MAX         32000
+
+#define TIMEOUT_DZ2_VPERED_PR_MIN      50
+#define TIMEOUT_DZ2_VPERED_PR_MAX      32000
+
+#define TIMEOUT_DZ2_NAZAD_MIN          50
+#define TIMEOUT_DZ2_NAZAD_MAX          32000
+
+#define TIMEOUT_DZ2_NAZAD_PR_MIN       50
+#define TIMEOUT_DZ2_NAZAD_PR_MAX       32000
+
 #define TYPE_MTZ_SIMPLE                0
 #define TYPE_MTZ_DIRECTIONAL           1
 #define TYPE_MTZ_VOLTAGE               2
