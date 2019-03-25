@@ -117,13 +117,62 @@ typedef struct
   //ДЗ
   uint32_t pickup_dz_k[NUMBER_GROUP_USTAVOK];                   //Коефіцієнт помпенсації п.5.27.5 [0; 3] крок 0,01
   uint32_t pickup_dz1[NUMBER_GROUP_USTAVOK];                    //Уставка ДЗ1 за опором п.5.27.6 [0.01; 300] крок 0,01 Ом
-  uint32_t pickup_dz1_amtz[NUMBER_GROUP_USTAVOK];               //
+  uint32_t pickup_dz1_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ1 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
+
+  int32_t pickup_dz2_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ2 п.5.27.10 [-10, 40] крок 1
+  int32_t pickup_dz2_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 
+  int32_t pickup_dz2_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2
   uint32_t pickup_dz2_vpered[NUMBER_GROUP_USTAVOK];             //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz2_nazad[NUMBER_GROUP_USTAVOK];              //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
-  uint32_t pickup_dz2_amtz[NUMBER_GROUP_USTAVOK];               //
+  uint32_t pickup_dz2_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ2 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
+
+  int32_t pickup_dz3_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ3 п.5.27.10 [-10, 40] крок 1
+  int32_t pickup_dz3_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ3 
+  int32_t pickup_dz3_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ3
+  uint32_t pickup_dz3_vpered[NUMBER_GROUP_USTAVOK];             //Уставка ДЗ3 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz3_nazad[NUMBER_GROUP_USTAVOK];              //Уставка ДЗ3 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz3_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ3 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
+
+  int32_t pickup_dz4_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ4 п.5.27.10 [-10, 40] крок 1
+  int32_t pickup_dz4_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ4
+  int32_t pickup_dz4_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ4
+  uint32_t pickup_dz4_vpered[NUMBER_GROUP_USTAVOK];             //Уставка ДЗ4 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz4_nazad[NUMBER_GROUP_USTAVOK];              //Уставка ДЗ4 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
+  uint32_t pickup_dz4_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ4 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
 
   int32_t timeout_dz1[NUMBER_GROUP_USTAVOK];                    //Витримка ДЗ1 п.5.27.6 [0.05; 32] крок 0,01с
-  int32_t timeout_dz1_amtz[NUMBER_GROUP_USTAVOK];               //
+  int32_t timeout_dz1_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ1 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
+
+  int32_t timeout_dz2_vpered[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ2 ВПЕРЕД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz2_vpered_pr[NUMBER_GROUP_USTAVOK];          //Витримка ДЗ2 ВПЕРЕД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz2_nazad[NUMBER_GROUP_USTAVOK];              //Витримка ДЗ2 НАЗАД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz2_nazad_pr[NUMBER_GROUP_USTAVOK];           //Витримка ДЗ2 НАЗАД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz2_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ2 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
+  int32_t timeout_dz2_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ2 прискорена для АМСЗ п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz2_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ2
+  int32_t timeout_dz2_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ2 для АМСЗ
+
+  int32_t timeout_dz3_vpered[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ3 ВПЕРЕД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz3_vpered_pr[NUMBER_GROUP_USTAVOK];          //Витримка ДЗ3 ВПЕРЕД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz3_nazad[NUMBER_GROUP_USTAVOK];              //Витримка ДЗ3 НАЗАД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz3_nazad_pr[NUMBER_GROUP_USTAVOK];           //Витримка ДЗ3 НАЗАД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz3_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ3 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
+  int32_t timeout_dz3_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ3 прискорена для АМСЗ п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz3_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ3
+  int32_t timeout_dz3_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ3 для АМСЗ
+
+  int32_t timeout_dz4_vpered[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ4 ВПЕРЕД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz4_vpered_pr[NUMBER_GROUP_USTAVOK];          //Витримка ДЗ4 ВПЕРЕД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz4_nazad[NUMBER_GROUP_USTAVOK];              //Витримка ДЗ4 НАЗАД п.5.27.7 [0.05; 32] крок 0,01с
+  int32_t timeout_dz4_nazad_pr[NUMBER_GROUP_USTAVOK];           //Витримка ДЗ4 НАЗАД  прискорена п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz4_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ4 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
+  int32_t timeout_dz4_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ4 прискорена для АМСЗ п.5.27.26.3 [0; 5] крок 0,01с
+  int32_t timeout_dz4_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ4
+  int32_t timeout_dz4_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ4 для АМСЗ
+  
+  int32_t timeout_ncn_dz[NUMBER_GROUP_USTAVOK];                 //Витримка ДЗ "Т НЦН ДЗ" п.5.27.19.5 [0; 1] крок 0,01с
+
+  uint32_t control_dz;                                          //Поле для управління ДЗ
   
   //МТЗ
   int type_mtz1;                                                //Тип МТЗ1 (0 - Проста, 1 - Направлена, 2 -  З пуском по напрузі)
