@@ -4491,6 +4491,9 @@
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_dt.h</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\..\..\working files\inc\const_menu_dz.h</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_extended_logic.h</name>
         </file>
         <file>
@@ -4516,9 +4519,6 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_mtz.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\working files\inc\const_menu_mtz04.h</name>
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_point_time_settings.h</name>
@@ -4836,6 +4836,9 @@
           <name>$PROJ_DIR$\..\..\working files\src\menu_dt.c</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\..\..\working files\src\menu_dz.c</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\..\..\working files\src\menu_energy.c</name>
         </file>
         <file>
@@ -4858,9 +4861,6 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\working files\src\menu_mtz.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\working files\src\menu_mtz04.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\working files\src\menu_point_time_settings.c</name>

@@ -34,12 +34,12 @@
 
 #define FIRST_INDEX_START_START_RECORD_DR     0
 #define FIRST_INDEX_DATA_TIME_DR              1
-#define FIRST_INDEX_EXTRA_SETTINGS_DR         8
+//#define FIRST_INDEX_EXTRA_SETTINGS_DR         8
 #define FIRST_INDEX_NAME_OF_CELL_DR           12
 #define FIRST_INDEX_NUMBER_ITEMS_DR           44
 #define FIRST_INDEX_NUMBER_CHANGES_DR         45
 #define FIRST_INDEX_NUMBER_MAX_PHASE_DR       47
-#define FIRST_INDEX_NUMBER_MAX_PHASE04_DR     48
+#define FIRST_INDEX_NUMBER_MIN_Z_DR           48
 #define FIRST_INDEX_NUMBER_MAX_3I0_DR         49
 #define FIRST_INDEX_NUMBER_MAX_3U0_DR         50
 #define FIRST_INDEX_NUMBER_MIN_U_DR           51
@@ -134,7 +134,7 @@
 #define LABEL_START_RECORD_DR           0xA5
 
 #define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE          1
-#define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE04        2
+#define IDENTIFIER_BIT_ARRAY_MIN_Z                      2
 #define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0            3
 #define IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE_3U0            4
 #define IDENTIFIER_BIT_ARRAY_MIN_VOLTAGE                5
@@ -311,7 +311,7 @@ Built-in Erase" < 25,001(мс)
 
 */
 
-#define SIZE_BUFFER_FOR_AR    258720/*398592*/
+#define SIZE_BUFFER_FOR_AR    24000/*398592*/
 
 #define CLEAN_AR_BIT          0
 #define CLEAN_AR              (1 << CLEAN_AR_BIT)
