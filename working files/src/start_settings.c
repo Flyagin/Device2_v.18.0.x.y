@@ -1477,8 +1477,78 @@ void min_settings(__SETTINGS *target_label)
   
   for (unsigned int i = 0; i < NUMBER_GROUP_USTAVOK; i++)
   {
-    unsigned int angle;
+    int angle;
     float angle_f;
+    
+    //ÄÇ
+    target_label->pickup_dz_k[i] = PICKUP_DZ_K_MIN;
+    
+    target_label->pickup_dz1[i] = PICKUP_DZ1_MIN;
+    target_label->pickup_dz1_amtz[i] = PICKUP_DZ1_AMTZ_MIN;
+
+    target_label->timeout_dz1[i] = TIMEOUT_DZ1_MIN;
+    target_label->timeout_dz1_amtz[i] = TIMEOUT_DZ1_AMTZ_MIN;
+    
+    angle = PICKUP_DZ2_ANGLE_MIN;
+    angle_f = (float)angle;
+    target_label->pickup_dz2_angle[i] = angle;
+    target_label->pickup_dz2_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz2_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    
+    target_label->pickup_dz2_vpered[i] = PICKUP_DZ2_VPERED_MIN;
+    target_label->pickup_dz2_nazad[i] = PICKUP_DZ2_NAZAD_MIN;
+    target_label->pickup_dz2_amtz[i] = PICKUP_DZ2_AMTZ_MIN;
+    
+    target_label->timeout_dz2_vpered[i] = TIMEOUT_DZ2_VPERED_MIN;
+    target_label->timeout_dz2_vpered_pr[i] = TIMEOUT_DZ2_VPERED_PR_MIN;
+    target_label->timeout_dz2_nazad[i] = TIMEOUT_DZ2_NAZAD_MIN;
+    target_label->timeout_dz2_nazad_pr[i] = TIMEOUT_DZ2_NAZAD_PR_MIN;
+    target_label->timeout_dz2_amtz[i] = TIMEOUT_DZ2_AMTZ_MIN;
+    target_label->timeout_dz2_amtz_pr[i] = TIMEOUT_DZ2_AMTZ_PR_MIN;
+    target_label->timeout_dz2_vvid_pr[i] = TIMEOUT_DZ2_VVID_PR_MIN;
+    target_label->timeout_dz2_amtz_vvid_pr[i] = TIMEOUT_DZ2_AMTZ_VVID_PR_MIN;
+    
+    angle = PICKUP_DZ3_ANGLE_MIN;
+    angle_f = (float)angle;
+    target_label->pickup_dz3_angle[i] = angle;
+    target_label->pickup_dz3_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz3_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    
+    target_label->pickup_dz3_vpered[i] = PICKUP_DZ3_VPERED_MIN;
+    target_label->pickup_dz3_nazad[i] = PICKUP_DZ3_NAZAD_MIN;
+    target_label->pickup_dz3_amtz[i] = PICKUP_DZ3_AMTZ_MIN;
+    
+    target_label->timeout_dz3_vpered[i] = TIMEOUT_DZ3_VPERED_MIN;
+    target_label->timeout_dz3_vpered_pr[i] = TIMEOUT_DZ3_VPERED_PR_MIN;
+    target_label->timeout_dz3_nazad[i] = TIMEOUT_DZ3_NAZAD_MIN;
+    target_label->timeout_dz3_nazad_pr[i] = TIMEOUT_DZ3_NAZAD_PR_MIN;
+    target_label->timeout_dz3_amtz[i] = TIMEOUT_DZ3_AMTZ_MIN;
+    target_label->timeout_dz3_amtz_pr[i] = TIMEOUT_DZ3_AMTZ_PR_MIN;
+    target_label->timeout_dz3_vvid_pr[i] = TIMEOUT_DZ3_VVID_PR_MIN;
+    target_label->timeout_dz3_amtz_vvid_pr[i] = TIMEOUT_DZ3_AMTZ_VVID_PR_MIN;
+
+    angle = PICKUP_DZ4_ANGLE_MIN;
+    angle_f = (float)angle;
+    target_label->pickup_dz4_angle[i] = angle;
+    target_label->pickup_dz4_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz4_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    
+    target_label->pickup_dz4_vpered[i] = PICKUP_DZ4_VPERED_MIN;
+    target_label->pickup_dz4_nazad[i] = PICKUP_DZ4_NAZAD_MIN;
+    target_label->pickup_dz4_amtz[i] = PICKUP_DZ4_AMTZ_MIN;
+
+    target_label->timeout_dz4_vpered[i] = TIMEOUT_DZ4_VPERED_MIN;
+    target_label->timeout_dz4_vpered_pr[i] = TIMEOUT_DZ4_VPERED_PR_MIN;
+    target_label->timeout_dz4_nazad[i] = TIMEOUT_DZ4_NAZAD_MIN;
+    target_label->timeout_dz4_nazad_pr[i] = TIMEOUT_DZ4_NAZAD_PR_MIN;
+    target_label->timeout_dz4_amtz[i] = TIMEOUT_DZ4_AMTZ_MIN;
+    target_label->timeout_dz4_amtz_pr[i] = TIMEOUT_DZ4_AMTZ_PR_MIN;
+    target_label->timeout_dz4_vvid_pr[i] = TIMEOUT_DZ4_VVID_PR_MIN;
+    target_label->timeout_dz4_amtz_vvid_pr[i] = TIMEOUT_DZ4_AMTZ_VVID_PR_MIN;
+    
+    target_label->timeout_nkn_dz[i] = TIMEOUT_NKN_DZ_MIN;
+    
+    //ÌÑÇ
     target_label->setpoint_mtz_1[i] = SETPOINT_MTZ1_MIN;
     target_label->setpoint_mtz_1_n_vpered[i] = SETPOINT_MTZ1_N_VPERED_MIN;
     target_label->setpoint_mtz_1_n_nazad[i] = SETPOINT_MTZ1_N_NAZAD_MIN;

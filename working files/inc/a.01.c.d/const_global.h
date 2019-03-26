@@ -89,7 +89,7 @@ RANG_SMALL_3_GRUPA_USTAVOK,
 RANG_SMALL_4_GRUPA_USTAVOK,
 RANG_SMALL_RESET_BLOCK_READY_TU_VID_ZAHYSTIV,
 
-RANG_SMALL_EXT_NCN_DZ,
+RANG_SMALL_EXT_NKN_DZ,
 RANG_SMALL_BLOCK_DZ1,
 RANG_SMALL_BLOCK_DZ2,
 RANG_SMALL_BLOCK_PR_DZ2,
@@ -228,8 +228,8 @@ RANG_RESET_BLOCK_READY_TU_VID_ZAHYSTIV,
 RANG_READY_TU,
 RANG_SETTINGS_CHANGED,
 
-RANG_EXT_NCN_DZ,
-RANG_NCN_DZ,
+RANG_EXT_NKN_DZ,
+RANG_NKN_DZ,
 RANG_PO_U_DZ,
 RANG_PO_I_BLK_DZ,
 RANG_BLOCK_DZ1,
@@ -671,7 +671,7 @@ enum __mtz_abc_direction_const {
 )
 
 #define MASKA_FOR_INPUT_SIGNALS_1        (unsigned int)(        \
-    (1 << (RANG_EXT_NCN_DZ - 32))                               \
+    (1 << (RANG_EXT_NKN_DZ - 32))                               \
   | (1 << (RANG_BLOCK_DZ1 - 32))                                \
   | (1 << (RANG_BLOCK_DZ2 - 32))                                \
   | (1 << (RANG_BLOCK_PR_DZ2 - 32))                             \
@@ -759,8 +759,8 @@ enum __mtz_abc_direction_const {
 #define MASKA_DZ_SIGNALS_0                0
 
 #define MASKA_DZ_SIGNALS_1        (unsigned int)(            \
-     (1 << (RANG_EXT_NCN_DZ - 32))                           \
-   | (1 << (RANG_NCN_DZ - 32))                               \
+     (1 << (RANG_EXT_NKN_DZ - 32))                           \
+   | (1 << (RANG_NKN_DZ - 32))                               \
    | (1 << (RANG_PO_U_DZ - 32))                              \
    | (1 << (RANG_PO_I_BLK_DZ - 32))                          \
    | (1 << (RANG_BLOCK_DZ1 - 32))                            \

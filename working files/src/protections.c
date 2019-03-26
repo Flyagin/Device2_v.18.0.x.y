@@ -9576,7 +9576,7 @@ inline void main_protection(void)
     }
 
     //Блок для ДЗ
-    active_functions[RANG_EXT_NCN_DZ   >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_EXT_NCN_DZ    ) != 0) << (RANG_EXT_NCN_DZ   & 0x1f);
+    active_functions[RANG_EXT_NKN_DZ   >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_EXT_NKN_DZ    ) != 0) << (RANG_EXT_NKN_DZ   & 0x1f);
     active_functions[RANG_BLOCK_DZ1    >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_DZ1     ) != 0) << (RANG_BLOCK_DZ1    & 0x1f);
     active_functions[RANG_BLOCK_DZ2    >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_DZ2     ) != 0) << (RANG_BLOCK_DZ2    & 0x1f);
     active_functions[RANG_BLOCK_PR_DZ2 >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_PR_DZ2  ) != 0) << (RANG_BLOCK_PR_DZ2 & 0x1f);
@@ -9919,11 +9919,33 @@ inline void main_protection(void)
       };
       for (unsigned int i = 0; i < N_BIG; i++) active_functions[i] &= (unsigned int)(~maska_dz_signals[i]);
       
-      global_timers[INDEX_TIMER_DZ_1] = -1;
-      global_timers[INDEX_TIMER_DZ_2] = -1;
-      global_timers[INDEX_TIMER_DZ_3] = -1;
-      global_timers[INDEX_TIMER_DZ_4] = -1;
-      global_timers[INDEX_TIMER_DZ_5] = -1;
+      global_timers[INDEX_TIMER_DZ1] = -1;
+      global_timers[INDEX_TIMER_DZ1_AMTZ] = -1;
+      global_timers[INDEX_TIMER_DZ2_VPERED] = -1;
+      global_timers[INDEX_TIMER_DZ2_VPERED_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_NAZAD] = -1;
+      global_timers[INDEX_TIMER_DZ2_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_AMTZ] = -1;
+      global_timers[INDEX_TIMER_DZ2_AMTZ_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_AMTZ_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_VPERED] = -1;
+      global_timers[INDEX_TIMER_DZ3_VPERED_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_NAZAD] = -1;
+      global_timers[INDEX_TIMER_DZ3_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_AMTZ] = -1;
+      global_timers[INDEX_TIMER_DZ3_AMTZ_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_AMTZ_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_VPERED] = -1;
+      global_timers[INDEX_TIMER_DZ4_VPERED_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_NAZAD] = -1;
+      global_timers[INDEX_TIMER_DZ4_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_AMTZ] = -1;
+      global_timers[INDEX_TIMER_DZ4_AMTZ_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_AMTZ_VVID_PR] = -1;
+      global_timers[INDEX_TIMER_NKN_DZ] = -1;
     }
     /**************************/
 

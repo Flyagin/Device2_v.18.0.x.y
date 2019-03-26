@@ -136,8 +136,8 @@
 #define TIMEOUT_DZ4_AMTZ_VVID_PR_MIN   200
 #define TIMEOUT_DZ4_AMTZ_VVID_PR_MAX   5000
 
-#define TIMEOUT_NCN_DZ_MIN             0
-#define TIMEOUT_NCN_DZ_MAX             1000
+#define TIMEOUT_NKN_DZ_MIN             0
+#define TIMEOUT_NKN_DZ_MAX             1000
 
 #define TYPE_MTZ_SIMPLE                0
 #define TYPE_MTZ_DIRECTIONAL           1
