@@ -336,34 +336,25 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
     //Перевіряємо, чи ДЗ зараз знято з конфігурації
     if ((target_label->configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
     {
-//      //Виводим ступені ДЗ
-//      target_label->control_mtz &= (unsigned int)(~(CTR_MTZ_1 | CTR_MTZ_2 | CTR_MTZ_3 | CTR_MTZ_4));
-//   
+      //Виводим ступені ДЗ
+      target_label->control_dz &= (unsigned int)(~(
+                                                    MASKA_FOR_BIT(INDEX_CTR_DZ1) |
+                                                    MASKA_FOR_BIT(INDEX_CTR_DZ2) |
+                                                    MASKA_FOR_BIT(INDEX_CTR_DZ3) |
+                                                    MASKA_FOR_BIT(INDEX_CTR_DZ4)
+                                                   )
+                                                 );
+   
 //      //Виводим ступені ДЗ з АПВ
-//      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_MTZ1 | CTR_APV_STARTED_FROM_MTZ2 | CTR_APV_STARTED_FROM_MTZ3  | CTR_APV_STARTED_FROM_MTZ4));
-//
-//      //Вимикаємо контроль ЗДЗ за струмом
-//      int32_t ctrl_zdz_type_tmp = target_label->ctrl_zdz_type;
-//      if (
-//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I      ) ||
-//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_OR_U ) ||
-//          (ctrl_zdz_type_tmp == ZDZ_CTRL_I_AND_U)
-//         )
-//        target_label->ctrl_zdz_type = ZDZ_CTRL_NONE;
-//      //Виводим ступені ДЗ з ЗДЗ
-//      target_label->control_zdz &= (unsigned int)(~(
-//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ1_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ2_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ3_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II)) | 
-//                                                    MASKA_FOR_BIT(CTR_ZDZ_STARTED_FROM_MTZ4_BIT - (_CTR_ZDZ_PART_III - _CTR_ZDZ_PART_II))
-//                                                   ));
-//      
+//      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_DZ1 | CTR_APV_STARTED_FROM_DZ2 | CTR_APV_STARTED_FROM_DZ3  | CTR_APV_STARTED_FROM_DZ4));
+
+      
 //      //Виводим ступені ДЗ з УРОВ
 //      target_label->control_urov &= (unsigned int)(~(
-//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) | 
-//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) | 
-//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) | 
-//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ1) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ2) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ3) | 
+//                                                     MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ4)
 //                                                    )
 //                                                  );
       

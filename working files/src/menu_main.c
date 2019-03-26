@@ -18,8 +18,8 @@ void make_ekran_main(void)
      " Настройки      ",
      " Диагностика    ",
      " Конфигурация   ",
+     " ДЗ             ",
      " МТЗ            ",
-     " МТЗ 0.4кВ      ",
      " ЗДЗ            ",
      "                ",
      " ТЗНП           ",
@@ -43,8 +43,8 @@ void make_ekran_main(void)
      " Налаштування   ",
      " Діагностика    ",
      " Конфігурація   ",
+     " ДЗ             ",
      " МСЗ            ",
-     " МСЗ 0.4кВ      ",
      " ЗДЗ            ",
      "                ",
      " СЗНП           ",
@@ -68,8 +68,8 @@ void make_ekran_main(void)
      " Settings       ",
      " Diagnostic     ",
      " Configuration  ",
+     " ДЗ             ",
      " OCP            ",
-     " OCP 0.4kV      ",
      " ЗДЗ            ",
      "                ",
      " ТЗНП           ",
@@ -93,8 +93,8 @@ void make_ekran_main(void)
      " Реттегіш       ",
      " Диагностика    ",
      " Конфигурациялар",
+     " ДЗ             ",
      " МТK            ",
-     " МТK 0.4кВ      ",
      " ЗДЗ            ",
      "                ",
      " ТЗНП           ",
@@ -143,7 +143,7 @@ void make_ekran_main(void)
   {
     if ((current_settings.configuration & (1 << zachyst)) == 0)
     {
-      unsigned int i = INDEX_ML1_MTZ + zachyst - additional_current;
+      unsigned int i = INDEX_ML1_DZ + zachyst - additional_current;
     
       if ((i+1) <= position_temp) position_temp--;
       do

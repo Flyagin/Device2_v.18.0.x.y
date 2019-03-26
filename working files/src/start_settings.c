@@ -1456,6 +1456,7 @@ void min_settings(__SETTINGS *target_label)
 #endif
   for (size_t i = 0; i < NUMBER_UP; i++) target_label->ctrl_UP_input[i] = UP_CTRL_Ia_Ib_Ic;
 
+  target_label->control_dz = 0;
   target_label->control_mtz = 0;
   target_label->control_zdz = 0;
   target_label->control_zz = 0;

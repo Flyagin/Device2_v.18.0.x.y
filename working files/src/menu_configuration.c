@@ -10,8 +10,8 @@ void make_ekran_configuration(unsigned int configuration_edit_temp)
   const unsigned char name_string[MAX_NAMBER_LANGUAGE][MAX_ROW_FOR_EKRAN_CONFIGURATION][MAX_COL_LCD_PART1] = 
   {
     {
+     "ÄÇ        ",
      "ÌÒÇ       ",
-     "ÌÒÇ 0.4êÂ ",
      "ÇÄÇ       ",
      "          ",
      "ÒÇÍÏ      ",
@@ -26,8 +26,8 @@ void make_ekran_configuration(unsigned int configuration_edit_temp)
      "Ðàñø.ëîã. "
     },
     {
+     "ÄÇ        ",
      "ÌÑÇ       ",
-     "ÌÑÇ 0.4êÂ ",
      "ÇÄÇ       ",
      "          ",
      "ÑÇÍÏ      ",
@@ -42,8 +42,8 @@ void make_ekran_configuration(unsigned int configuration_edit_temp)
      "Ðîçø.ëîã. "
     },
     {
+     "ÄÇ        ",
      "OCP       ",
-     "OCP 0.4kV ",
      "ÇÄÇ       ",
      "          ",
      "ÒÇÍÏ      ",
@@ -58,8 +58,8 @@ void make_ekran_configuration(unsigned int configuration_edit_temp)
      "Ext.logic "
     },
     {
+     "ÄÇ        ",
      "ÌÒK       ",
-     "ÌÒK 0.4êÂ ",
      "ÇÄÇ       ",
      "          ",
      "ÒÇÍÏ      ",
