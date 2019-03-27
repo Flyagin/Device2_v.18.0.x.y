@@ -1,0 +1,28 @@
+cd /G/emb_pj/mrzs_L 
+git clone https://github.com/Malynovsky/Device2_v.18.0.x.y.git /mrzsL_a
+cd mrzsL_a
+ 
+ git pull  https://github.com/Malynovsky/Device2_v.18.0.x.y.git  Synchro
+From https://github.com/Malynovsky/Device2_v.18.0.x.y
+ * branch            Synchro    -> FETCH_HEAD
+Updating 77bfd0f..5fa5c6a
+Fast-forward
+ project files/stm32f2xx_flash.icf                  |    2 +-
+... 
+ working files/src/start_settings.c                 |   83 +-
+ 69 files changed, 7053 insertions(+), 6374 deletions(-)
+ create mode 100644 working files/inc/const_menu_dz.h
+ delete mode 100644 working files/inc/const_menu_mtz04.h
+ create mode 100644 working files/src/menu_dz.c
+ delete mode 100644 working files/src/menu_mtz04.c
+
+user@MARKOVSKI MINGW64 /G/emb_pj/mrzs_L/mrzsL_a (master)
+$ git branch -r
+  origin/HEAD -> origin/master
+  origin/Synchro
+  origin/master
+
+  
+  git push  --repo https://github.com/AdrianVlas/mrprL_a.git
+   git add -v .
+   git commit -m ' A-Version on 27-03-2019'
