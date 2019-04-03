@@ -116,7 +116,7 @@ enum _index_ml_ctrl_dz
 #define COL_PICKUP_DZ1_AMTZ_COMMA            7
 #define COL_PICKUP_DZ1_AMTZ_END              9
 
-#define COL_PICKUP_DZ2_ANGLE_SIGN            6
+#define COL_SDZ2_ANGLE                       6
 #define COL_PICKUP_DZ2_ANGLE_BEGIN           7
 #define COL_PICKUP_DZ2_ANGLE_END             8
 
@@ -132,7 +132,7 @@ enum _index_ml_ctrl_dz
 #define COL_PICKUP_DZ2_AMTZ_COMMA            7
 #define COL_PICKUP_DZ2_AMTZ_END              9
 
-#define COL_PICKUP_DZ3_ANGLE_SIGN            6
+#define COL_SDZ3_ANGLE                       6
 #define COL_PICKUP_DZ3_ANGLE_BEGIN           7
 #define COL_PICKUP_DZ3_ANGLE_END             8
 
@@ -148,7 +148,7 @@ enum _index_ml_ctrl_dz
 #define COL_PICKUP_DZ3_AMTZ_COMMA            7
 #define COL_PICKUP_DZ3_AMTZ_END              9
 
-#define COL_PICKUP_DZ4_ANGLE_SIGN            6
+#define COL_SDZ4_ANGLE                       6
 #define COL_PICKUP_DZ4_ANGLE_BEGIN           7
 #define COL_PICKUP_DZ4_ANGLE_END             8
 

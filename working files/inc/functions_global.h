@@ -89,6 +89,8 @@ void calc_symbol_and_put_into_working_ekran(unsigned char*, void*, void*, unsign
 void calc_int_symbol_and_put_into_working_ekran(unsigned char*, unsigned int*, unsigned int*, unsigned int*, unsigned int);
 unsigned int edit_setpoint(unsigned int,  unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
 unsigned int check_data_setpoint(unsigned int, unsigned int, unsigned int);
+unsigned int check_data_setpoint_sign(int, int, int);
+unsigned int edit_setpoint_signed(unsigned int, unsigned int, unsigned int, unsigned int);
 void make_ekran_setpoint_zz(unsigned int);
 void make_ekran_timeout_zz(unsigned int);
 void make_ekran_control_zz(void);

@@ -14,12 +14,13 @@
 #define SETPOINT_GRUPA_USTAVOK_MAX    4
 
 #define PICKUP_DZ_K_MIN                0
-#define PICKUP_DZ_K_MAX                3000
+#define PICKUP_DZ_K_MAX                300
 
 #define PICKUP_DZ1_MIN                 10
 #define PICKUP_DZ1_MAX                 300000
 
-#define PICKUP_DZ1_AMTZ_MIN            2
+//Приведено в соотв с п.5.27.18.3
+#define PICKUP_DZ1_AMTZ_MIN            2000
 #define PICKUP_DZ1_AMTZ_MAX            150000
 
 #define PICKUP_DZ2_ANGLE_MIN           (-10)
