@@ -1347,24 +1347,12 @@ enum __mtz_abc_direction_const {
 )
 
 #define MASKA_SIGNALES_FOR_LOCK_GROUP_PICKUP_4 (unsigned int)(\
-     (1 << (RANG_PO_3I0_TZNP1_VPERED - 128))                  \
-   | (1 << (RANG_PO_3I0_TZNP1_NAZAD - 128))                   \
-   | (1 << (RANG_PO_3U0_TZNP1_VPERED - 128))                  \
-   | (1 << (RANG_PO_3U0_TZNP1_NAZAD - 128))                   \
-   | (1 << (RANG_PO_TZNP1_VPERED - 128))                      \
+     (1 << (RANG_PO_TZNP1_VPERED - 128))                      \
    | (1 << (RANG_PO_TZNP1_NAZAD - 128))                       \
    | (1 << (RANG_TZNP1 - 128))                                \
-   | (1 << (RANG_PO_3I0_TZNP2_VPERED - 128))                  \
-   | (1 << (RANG_PO_3I0_TZNP2_NAZAD - 128))                   \
-   | (1 << (RANG_PO_3U0_TZNP2_VPERED - 128))                  \
-   | (1 << (RANG_PO_3U0_TZNP2_NAZAD - 128))                   \
    | (1 << (RANG_PO_TZNP2_VPERED - 128))                      \
    | (1 << (RANG_PO_TZNP2_NAZAD - 128))                       \
    | (1 << (RANG_TZNP2 - 128))                                \
-   | (1 << (RANG_PO_3I0_TZNP3_VPERED - 128))                  \
-   | (1 << (RANG_PO_3I0_TZNP3_NAZAD - 128))                   \
-   | (1 << (RANG_PO_3U0_TZNP3_VPERED - 128))                  \
-   | (1 << (RANG_PO_3U0_TZNP3_NAZAD - 128))                   \
    | (1 << (RANG_PO_TZNP3_VPERED - 128))                      \
    | (1 << (RANG_PO_TZNP3_NAZAD - 128))                       \
    | (1 << (RANG_TZNP3 - 128))                                \
