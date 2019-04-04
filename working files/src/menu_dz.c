@@ -257,7 +257,7 @@ void make_ekran_setpoint_dz(unsigned int group)
                 (j != (COL_PICKUP_DZ2_DIR_END + 2) && j != (COL_PICKUP_DZ2_DIR_END + 3))  
                )working_ekran[i][j] = ' ';
             else if (j == COL_PICKUP_DZ2_DIR_COMMA )working_ekran[i][j] = ',';
-            else if ((j >= (COL_PICKUP_DZ2_DIR_END + 2)) && (j <= (COL_PICKUP_DZ2_DIR_END + 2 + SIZE_R_DIMENSION - 1))) working_ekran[i][j] = resistance_dimension[index_language][i - (COL_PICKUP_DZ2_DIR_END + 2)];
+            else if ((j >= (COL_PICKUP_DZ2_DIR_END + 2)) && (j <= (COL_PICKUP_DZ2_DIR_END + 2 + SIZE_R_DIMENSION - 1))) working_ekran[i][j] = resistance_dimension[index_language][j - (COL_PICKUP_DZ2_DIR_END + 2)];
             else
               calc_symbol_and_put_into_working_ekran((working_ekran[i] + j), &value, &vaga, &first_symbol, j, COL_PICKUP_DZ2_DIR_COMMA, view, 0);
           }
