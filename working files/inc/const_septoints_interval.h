@@ -32,7 +32,7 @@
 #define PICKUP_DZ2_INV_MIN           10
 #define PICKUP_DZ2_INV_MAX           300000
 
-#define PICKUP_DZ2_AMTZ_MIN            2
+#define PICKUP_DZ2_AMTZ_MIN            2000
 #define PICKUP_DZ2_AMTZ_MAX            150000
 
 #define PICKUP_DZ3_ANGLE_MIN           (-10)
@@ -44,7 +44,7 @@
 #define PICKUP_DZ3_INV_MIN           10
 #define PICKUP_DZ3_INV_MAX           300000
 
-#define PICKUP_DZ3_AMTZ_MIN            2
+#define PICKUP_DZ3_AMTZ_MIN            2000
 #define PICKUP_DZ3_AMTZ_MAX            150000
 
 #define PICKUP_DZ4_ANGLE_MIN           (-10)
@@ -56,7 +56,7 @@
 #define PICKUP_DZ4_INV_MIN           10
 #define PICKUP_DZ4_INV_MAX           300000
 
-#define PICKUP_DZ4_AMTZ_MIN            2
+#define PICKUP_DZ4_AMTZ_MIN            2000
 #define PICKUP_DZ4_AMTZ_MAX            150000
 
 #define TIMEOUT_DZ1_MIN                50
