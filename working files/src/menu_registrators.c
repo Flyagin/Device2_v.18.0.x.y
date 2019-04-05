@@ -846,10 +846,6 @@ void make_ekran_analog_value_records_digital_registrator(void)
        //Опори
         const unsigned int index_of_start_position_array[MAX_NAMBER_LANGUAGE] = {4, 4, 5, 4};
 
-#define SIZE_R_DIMENSION    2
-        const unsigned int size_dimension_array[MAX_NAMBER_LANGUAGE] = {SIZE_R_DIMENSION, SIZE_R_DIMENSION, SIZE_R_DIMENSION - 1, SIZE_R_DIMENSION};
-        const unsigned char resistance_dimension[MAX_NAMBER_LANGUAGE][SIZE_R_DIMENSION] = {"Ом", "Ом", "Ї ", "Ом"}; /*Ї тут іде як замінник великої букви Омега для англійської розкладки*/
-  
         unsigned int start_position = index_of_start_position_array[index_language];
         unsigned int size_dimension = size_dimension_array[index_language];
         for (unsigned int j = 0; j < size_dimension; j++)
@@ -858,7 +854,6 @@ void make_ekran_analog_value_records_digital_registrator(void)
         }
         name_string[i][start_position] = '=';
 
-#undef SIZE_R_DIMENSION
         start_position++;
 
         int temp_measurement = *(point_unsigned_int + i);

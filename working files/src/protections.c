@@ -3013,9 +3013,7 @@ inline void zdz_handler(unsigned int *p_active_functions, unsigned int number_gr
   if (test != 0)
   {
     //Стан діагностики
-    uint32_t state_test;
-    if ((state_test = (light ^ test) & test) != 0) zdz_ovd_diagnostyka |= state_test;
-    else zdz_ovd_diagnostyka &= (uint32_t)(~state_test);
+    zdz_ovd_diagnostyka = (light ^ test) & test;
     
     if (zdz_ovd_diagnostyka & (1 << 0)) _SET_BIT(set_diagnostyka, TEST_OVD1);
     else _SET_BIT(clear_diagnostyka, TEST_OVD1);
@@ -4033,7 +4031,7 @@ void umin1_handler(unsigned int *p_active_functions, unsigned int number_group_s
                                          (measurement[IM_IB] <= setpoint3) &&
                                          (measurement[IM_IC] <= setpoint3);
   //М
-  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umin & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umin & CTR_UMIN1) != 0)                                                            << 2;
@@ -4145,7 +4143,7 @@ void umin2_handler(unsigned int *p_active_functions, unsigned int number_group_s
                                          (measurement[IM_IB] <= setpoint3) &&
                                          (measurement[IM_IC] <= setpoint3);
   //М
-  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umin & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umin & CTR_UMIN2) != 0)                                                            << 2;
@@ -4252,7 +4250,7 @@ void umax1_handler(unsigned int *p_active_functions, unsigned int number_group_s
   _Bool Uc_is_larger_than_Umax1 = measurement[IM_UC] >= setpoint1;
   
   //М
-  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umax & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umax & CTR_PO_UMAX1_OR_AND) != 0)                                                  << 2;
@@ -4311,7 +4309,7 @@ void umax2_handler(unsigned int *p_active_functions, unsigned int number_group_s
   _Bool Uc_is_larger_than_Umax2 = measurement[IM_UC] >= setpoint1;
   
   //М
-  unsigned int tmp_value = ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) << 0;
+  unsigned int tmp_value = ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) << 0;
 //  tmp_value |= ((current_settings_prt.control_Umax & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)                                 << 1;
 //  _INVERTOR(tmp_value, 1, tmp_value, 1);
   tmp_value |= ((current_settings_prt.control_Umax & CTR_PO_UMAX2_OR_AND) != 0)                                                  << 2;
@@ -6929,7 +6927,7 @@ inline void start_monitoring_min_U(unsigned int time_tmp)
   measurements_U_min_dr[25] = (unsigned int)UNDEF_VMP;
   measurements_U_min_dr[26] = 0;
   
-  if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
+  if ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0)
   {
     //Визначаємо мінімальної фазну напругу між трьома фазами
     min_voltage_dr = measurements_U_min_dr[9];
@@ -6960,7 +6958,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
   //Перевірка, чи не є зарза досліджувана напуга менша, ніж та що помічена мінімальною
   if (
       (
-       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) &&
+       ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) &&
        (  
         (min_voltage_dr > measurement[IM_UA]) ||
         (min_voltage_dr > measurement[IM_UB]) ||
@@ -6969,7 +6967,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
       )   
       || 
       (
-       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0) &&
+       ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) != 0) &&
        (  
         (min_voltage_dr > measurement[IM_UAB]) ||
         (min_voltage_dr > measurement[IM_UBC]) ||
@@ -7008,7 +7006,7 @@ inline void continue_monitoring_min_U(unsigned int time_tmp)
     measurements_U_min_dr[23] = (unsigned int)resistance[R_CA];
     measurements_U_min_dr[24] = (unsigned int)resistance[X_CA];
 
-    if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
+    if ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0)
     {
       //Визначаємо мінімальну фазну напругу між трьома фазами
       min_voltage_dr = measurements_U_min_dr[9];
@@ -7069,7 +7067,7 @@ inline void start_monitoring_max_U(unsigned int time_tmp)
   measurements_U_max_dr[25] = (unsigned int)UNDEF_VMP;
   measurements_U_max_dr[26] = 0;
   
-  if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
+  if ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0)
   {
     //Визначаємо макисальну фазну напругу між трьома фазами
     max_voltage_dr = measurements_U_max_dr[9];
@@ -7100,7 +7098,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
   //Перевірка, чи не є зарза досліджувана напуга більша, ніж та що помічена максимальною
   if (
       (
-       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0) &&
+       ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0) &&
        (  
         (max_voltage_dr < measurement[IM_UA]) ||
         (max_voltage_dr < measurement[IM_UB]) ||
@@ -7109,7 +7107,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
       )   
       || 
       (
-       ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) != 0) &&
+       ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) != 0) &&
        (  
         (max_voltage_dr < measurement[IM_UAB]) ||
         (max_voltage_dr < measurement[IM_UBC]) ||
@@ -7148,7 +7146,7 @@ inline void continue_monitoring_max_U(unsigned int time_tmp)
     measurements_U_max_dr[23] = (unsigned int)resistance[R_CA];
     measurements_U_max_dr[24] = (unsigned int)resistance[X_CA];
 
-    if ((current_settings_prt.control_transformator & CTR_TRANSFORMATOR_PHASE_LINE) == 0)
+    if ((current_settings_prt.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE)) == 0)
     {
       //Визначаємо макисальну фазну напругу між трьома фазами
       max_voltage_dr = measurements_U_max_dr[9];
@@ -9921,26 +9919,26 @@ inline void main_protection(void)
       
       global_timers[INDEX_TIMER_DZ1] = -1;
       global_timers[INDEX_TIMER_DZ1_AMTZ] = -1;
-      global_timers[INDEX_TIMER_DZ2_VPERED] = -1;
-      global_timers[INDEX_TIMER_DZ2_VPERED_PR] = -1;
-      global_timers[INDEX_TIMER_DZ2_NAZAD] = -1;
-      global_timers[INDEX_TIMER_DZ2_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_DIR] = -1;
+      global_timers[INDEX_TIMER_DZ2_DIR_PR] = -1;
+      global_timers[INDEX_TIMER_DZ2_INV] = -1;
+      global_timers[INDEX_TIMER_DZ2_INV_PR] = -1;
       global_timers[INDEX_TIMER_DZ2_AMTZ] = -1;
       global_timers[INDEX_TIMER_DZ2_AMTZ_PR] = -1;
       global_timers[INDEX_TIMER_DZ2_VVID_PR] = -1;
       global_timers[INDEX_TIMER_DZ2_AMTZ_VVID_PR] = -1;
-      global_timers[INDEX_TIMER_DZ3_VPERED] = -1;
-      global_timers[INDEX_TIMER_DZ3_VPERED_PR] = -1;
-      global_timers[INDEX_TIMER_DZ3_NAZAD] = -1;
-      global_timers[INDEX_TIMER_DZ3_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_DIR] = -1;
+      global_timers[INDEX_TIMER_DZ3_DIR_PR] = -1;
+      global_timers[INDEX_TIMER_DZ3_INV] = -1;
+      global_timers[INDEX_TIMER_DZ3_INV_PR] = -1;
       global_timers[INDEX_TIMER_DZ3_AMTZ] = -1;
       global_timers[INDEX_TIMER_DZ3_AMTZ_PR] = -1;
       global_timers[INDEX_TIMER_DZ3_VVID_PR] = -1;
       global_timers[INDEX_TIMER_DZ3_AMTZ_VVID_PR] = -1;
-      global_timers[INDEX_TIMER_DZ4_VPERED] = -1;
-      global_timers[INDEX_TIMER_DZ4_VPERED_PR] = -1;
-      global_timers[INDEX_TIMER_DZ4_NAZAD] = -1;
-      global_timers[INDEX_TIMER_DZ4_NAZAD_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_DIR] = -1;
+      global_timers[INDEX_TIMER_DZ4_DIR_PR] = -1;
+      global_timers[INDEX_TIMER_DZ4_INV] = -1;
+      global_timers[INDEX_TIMER_DZ4_INV_PR] = -1;
       global_timers[INDEX_TIMER_DZ4_AMTZ] = -1;
       global_timers[INDEX_TIMER_DZ4_AMTZ_PR] = -1;
       global_timers[INDEX_TIMER_DZ4_VVID_PR] = -1;

@@ -1496,14 +1496,14 @@ void min_settings(__SETTINGS *target_label)
     target_label->pickup_dz2_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
     target_label->pickup_dz2_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
     
-    target_label->pickup_dz2_vpered[i] = PICKUP_DZ2_VPERED_MIN;
-    target_label->pickup_dz2_nazad[i] = PICKUP_DZ2_NAZAD_MIN;
+    target_label->pickup_dz2_dir[i] = PICKUP_DZ2_DIR_MIN;
+    target_label->pickup_dz2_inv[i] = PICKUP_DZ2_INV_MIN;
     target_label->pickup_dz2_amtz[i] = PICKUP_DZ2_AMTZ_MIN;
     
-    target_label->timeout_dz2_vpered[i] = TIMEOUT_DZ2_VPERED_MIN;
-    target_label->timeout_dz2_vpered_pr[i] = TIMEOUT_DZ2_VPERED_PR_MIN;
-    target_label->timeout_dz2_nazad[i] = TIMEOUT_DZ2_NAZAD_MIN;
-    target_label->timeout_dz2_nazad_pr[i] = TIMEOUT_DZ2_NAZAD_PR_MIN;
+    target_label->timeout_dz2_dir[i] = TIMEOUT_DZ2_DIR_MIN;
+    target_label->timeout_dz2_dir_pr[i] = TIMEOUT_DZ2_DIR_PR_MIN;
+    target_label->timeout_dz2_inv[i] = TIMEOUT_DZ2_INV_MIN;
+    target_label->timeout_dz2_inv_pr[i] = TIMEOUT_DZ2_INV_PR_MIN;
     target_label->timeout_dz2_amtz[i] = TIMEOUT_DZ2_AMTZ_MIN;
     target_label->timeout_dz2_amtz_pr[i] = TIMEOUT_DZ2_AMTZ_PR_MIN;
     target_label->timeout_dz2_vvid_pr[i] = TIMEOUT_DZ2_VVID_PR_MIN;
@@ -1515,14 +1515,14 @@ void min_settings(__SETTINGS *target_label)
     target_label->pickup_dz3_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
     target_label->pickup_dz3_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
     
-    target_label->pickup_dz3_vpered[i] = PICKUP_DZ3_VPERED_MIN;
-    target_label->pickup_dz3_nazad[i] = PICKUP_DZ3_NAZAD_MIN;
+    target_label->pickup_dz3_dir[i] = PICKUP_DZ3_DIR_MIN;
+    target_label->pickup_dz3_inv[i] = PICKUP_DZ3_INV_MIN;
     target_label->pickup_dz3_amtz[i] = PICKUP_DZ3_AMTZ_MIN;
     
-    target_label->timeout_dz3_vpered[i] = TIMEOUT_DZ3_VPERED_MIN;
-    target_label->timeout_dz3_vpered_pr[i] = TIMEOUT_DZ3_VPERED_PR_MIN;
-    target_label->timeout_dz3_nazad[i] = TIMEOUT_DZ3_NAZAD_MIN;
-    target_label->timeout_dz3_nazad_pr[i] = TIMEOUT_DZ3_NAZAD_PR_MIN;
+    target_label->timeout_dz3_dir[i] = TIMEOUT_DZ3_DIR_MIN;
+    target_label->timeout_dz3_dir_pr[i] = TIMEOUT_DZ3_DIR_PR_MIN;
+    target_label->timeout_dz3_inv[i] = TIMEOUT_DZ3_INV_MIN;
+    target_label->timeout_dz3_inv_pr[i] = TIMEOUT_DZ3_INV_PR_MIN;
     target_label->timeout_dz3_amtz[i] = TIMEOUT_DZ3_AMTZ_MIN;
     target_label->timeout_dz3_amtz_pr[i] = TIMEOUT_DZ3_AMTZ_PR_MIN;
     target_label->timeout_dz3_vvid_pr[i] = TIMEOUT_DZ3_VVID_PR_MIN;
@@ -1534,14 +1534,14 @@ void min_settings(__SETTINGS *target_label)
     target_label->pickup_dz4_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
     target_label->pickup_dz4_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
     
-    target_label->pickup_dz4_vpered[i] = PICKUP_DZ4_VPERED_MIN;
-    target_label->pickup_dz4_nazad[i] = PICKUP_DZ4_NAZAD_MIN;
+    target_label->pickup_dz4_dir[i] = PICKUP_DZ4_DIR_MIN;
+    target_label->pickup_dz4_inv[i] = PICKUP_DZ4_INV_MIN;
     target_label->pickup_dz4_amtz[i] = PICKUP_DZ4_AMTZ_MIN;
 
-    target_label->timeout_dz4_vpered[i] = TIMEOUT_DZ4_VPERED_MIN;
-    target_label->timeout_dz4_vpered_pr[i] = TIMEOUT_DZ4_VPERED_PR_MIN;
-    target_label->timeout_dz4_nazad[i] = TIMEOUT_DZ4_NAZAD_MIN;
-    target_label->timeout_dz4_nazad_pr[i] = TIMEOUT_DZ4_NAZAD_PR_MIN;
+    target_label->timeout_dz4_dir[i] = TIMEOUT_DZ4_DIR_MIN;
+    target_label->timeout_dz4_dir_pr[i] = TIMEOUT_DZ4_DIR_PR_MIN;
+    target_label->timeout_dz4_inv[i] = TIMEOUT_DZ4_INV_MIN;
+    target_label->timeout_dz4_inv_pr[i] = TIMEOUT_DZ4_INV_PR_MIN;
     target_label->timeout_dz4_amtz[i] = TIMEOUT_DZ4_AMTZ_MIN;
     target_label->timeout_dz4_amtz_pr[i] = TIMEOUT_DZ4_AMTZ_PR_MIN;
     target_label->timeout_dz4_vvid_pr[i] = TIMEOUT_DZ4_VVID_PR_MIN;
@@ -1766,7 +1766,7 @@ void min_settings(__SETTINGS *target_label)
   target_label->T0 = KOEF_TO_MIN;
   target_label->TCurrent = KOEF_TT_MIN;
   target_label->TVoltage = KOEF_TN_MIN;
-  target_label->control_transformator = CTR_TRANSFORMATOR_PHASE_LINE;
+  target_label->control_transformator = MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE);
 
   for(unsigned int i=0; i< ((M_ADDRESS_LAST_USER_REGISTER_DATA - M_ADDRESS_FIRST_USER_REGISTER_DATA) + 1); i++) target_label->user_register[i] = 0;
 

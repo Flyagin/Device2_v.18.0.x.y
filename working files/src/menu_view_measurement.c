@@ -1186,11 +1186,6 @@ void make_ekran_resistance(unsigned int pervynna_vtorynna)
   };
   const unsigned int index_of_start_position_array[MAX_NAMBER_LANGUAGE] = {4, 4, 5, 4};
 
-#define SIZE_R_DIMENSION    2
-  const unsigned int size_dimension_array[MAX_NAMBER_LANGUAGE] = {SIZE_R_DIMENSION, SIZE_R_DIMENSION, SIZE_R_DIMENSION - 1, SIZE_R_DIMENSION};
-
-  const unsigned char resistance_dimension[MAX_NAMBER_LANGUAGE][SIZE_R_DIMENSION] = {"Ом", "Ом", "Ї ", "Ом"}; /*Ї тут іде як замінник великої букви Омега для англійської розкладки*/
-  
   int index_language = index_language_in_array(current_settings.language);
   unsigned int start_position = index_of_start_position_array[index_language];
   unsigned int size_dimension = size_dimension_array[index_language];
@@ -1204,7 +1199,6 @@ void make_ekran_resistance(unsigned int pervynna_vtorynna)
       name_string[j][start_position] = '=';
     }
   }
-#undef SIZE_R_DIMENSION
   start_position++;
   
   

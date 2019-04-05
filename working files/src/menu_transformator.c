@@ -251,16 +251,20 @@ void make_ekran_transformator_control(void)
   const unsigned char name_string[MAX_NAMBER_LANGUAGE][MAX_ROW_FOR_TRANSFORMATOR_INFO_CONTROL][MAX_COL_LCD] = 
   {
     {
-      " Выб.U для защит"
+      " Выб.U для защит",
+      "   Соединение   "
     },
     {
-      " Виб.U для зах. "
+      " Виб.U для зах. ",
+      "   З'єднання    "
     },
     {
-      " Выб.U для защит"
+      " Выб.U для защит",
+      "   Connection   "
     },
     {
-      " Выб.U для защит"
+      " Выб.U для защит",
+      "   Соединение   "
     }
   };
   int index_language = index_language_in_array(current_settings.language);
@@ -290,6 +294,12 @@ void make_ekran_transformator_control(void)
             {"     Фазні      ", "    Лінійні     "},
             {"     Фазные     ", "    Линейные    "},
             {"     Фазные     ", "    Линейные    "}
+          },
+          {
+            {"      3I0       ", "     3I0-1      "},
+            {"      3I0       ", "     3I0-1      "},
+            {"      3I0       ", "     3I0-1      "},
+            {"      3I0       ", "     3I0-1      "}
           }
         };
         const unsigned int cursor_x[MAX_ROW_FOR_TRANSFORMATOR_INFO_CONTROL][MAX_NAMBER_LANGUAGE][2] = 
@@ -299,6 +309,12 @@ void make_ekran_transformator_control(void)
             {3, 4},
             {3, 4},
             {3, 4}
+          },
+          {
+            {5, 4},
+            {5, 4},
+            {5, 4},
+            {5, 4}
           }
         };
       

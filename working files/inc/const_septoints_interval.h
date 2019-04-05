@@ -14,48 +14,49 @@
 #define SETPOINT_GRUPA_USTAVOK_MAX    4
 
 #define PICKUP_DZ_K_MIN                0
-#define PICKUP_DZ_K_MAX                3000
+#define PICKUP_DZ_K_MAX                300
 
 #define PICKUP_DZ1_MIN                 10
 #define PICKUP_DZ1_MAX                 300000
 
-#define PICKUP_DZ1_AMTZ_MIN            2
+//Приведено в соотв с п.5.27.18.3
+#define PICKUP_DZ1_AMTZ_MIN            2000
 #define PICKUP_DZ1_AMTZ_MAX            150000
 
 #define PICKUP_DZ2_ANGLE_MIN           (-10)
 #define PICKUP_DZ2_ANGLE_MAX           40
 
-#define PICKUP_DZ2_VPERED_MIN          10
-#define PICKUP_DZ2_VPERED_MAX          300000
+#define PICKUP_DZ2_DIR_MIN          10
+#define PICKUP_DZ2_DIR_MAX          300000
 
-#define PICKUP_DZ2_NAZAD_MIN           10
-#define PICKUP_DZ2_NAZAD_MAX           300000
+#define PICKUP_DZ2_INV_MIN           10
+#define PICKUP_DZ2_INV_MAX           300000
 
-#define PICKUP_DZ2_AMTZ_MIN            2
+#define PICKUP_DZ2_AMTZ_MIN            2000
 #define PICKUP_DZ2_AMTZ_MAX            150000
 
 #define PICKUP_DZ3_ANGLE_MIN           (-10)
 #define PICKUP_DZ3_ANGLE_MAX           40
 
-#define PICKUP_DZ3_VPERED_MIN          10
-#define PICKUP_DZ3_VPERED_MAX          300000
+#define PICKUP_DZ3_DIR_MIN          10
+#define PICKUP_DZ3_DIR_MAX          300000
 
-#define PICKUP_DZ3_NAZAD_MIN           10
-#define PICKUP_DZ3_NAZAD_MAX           300000
+#define PICKUP_DZ3_INV_MIN           10
+#define PICKUP_DZ3_INV_MAX           300000
 
-#define PICKUP_DZ3_AMTZ_MIN            2
+#define PICKUP_DZ3_AMTZ_MIN            2000
 #define PICKUP_DZ3_AMTZ_MAX            150000
 
 #define PICKUP_DZ4_ANGLE_MIN           (-10)
 #define PICKUP_DZ4_ANGLE_MAX           40
 
-#define PICKUP_DZ4_VPERED_MIN          10
-#define PICKUP_DZ4_VPERED_MAX          300000
+#define PICKUP_DZ4_DIR_MIN          10
+#define PICKUP_DZ4_DIR_MAX          300000
 
-#define PICKUP_DZ4_NAZAD_MIN           10
-#define PICKUP_DZ4_NAZAD_MAX           300000
+#define PICKUP_DZ4_INV_MIN           10
+#define PICKUP_DZ4_INV_MAX           300000
 
-#define PICKUP_DZ4_AMTZ_MIN            2
+#define PICKUP_DZ4_AMTZ_MIN            2000
 #define PICKUP_DZ4_AMTZ_MAX            150000
 
 #define TIMEOUT_DZ1_MIN                50
@@ -64,17 +65,17 @@
 #define TIMEOUT_DZ1_AMTZ_MIN           50
 #define TIMEOUT_DZ1_AMTZ_MAX           32000
 
-#define TIMEOUT_DZ2_VPERED_MIN         50
-#define TIMEOUT_DZ2_VPERED_MAX         32000
+#define TIMEOUT_DZ2_DIR_MIN            50
+#define TIMEOUT_DZ2_DIR_MAX            32000
 
-#define TIMEOUT_DZ2_VPERED_PR_MIN      0
-#define TIMEOUT_DZ2_VPERED_PR_MAX      5000
+#define TIMEOUT_DZ2_DIR_PR_MIN         0
+#define TIMEOUT_DZ2_DIR_PR_MAX         5000
 
-#define TIMEOUT_DZ2_NAZAD_MIN          50
-#define TIMEOUT_DZ2_NAZAD_MAX          32000
+#define TIMEOUT_DZ2_INV_MIN            50
+#define TIMEOUT_DZ2_INV_MAX            32000
 
-#define TIMEOUT_DZ2_NAZAD_PR_MIN       0
-#define TIMEOUT_DZ2_NAZAD_PR_MAX       5000
+#define TIMEOUT_DZ2_INV_PR_MIN         0
+#define TIMEOUT_DZ2_INV_PR_MAX         5000
 
 #define TIMEOUT_DZ2_AMTZ_MIN           50
 #define TIMEOUT_DZ2_AMTZ_MAX           32000
@@ -88,17 +89,17 @@
 #define TIMEOUT_DZ2_AMTZ_VVID_PR_MIN   200
 #define TIMEOUT_DZ2_AMTZ_VVID_PR_MAX   5000
 
-#define TIMEOUT_DZ3_VPERED_MIN         50
-#define TIMEOUT_DZ3_VPERED_MAX         32000
+#define TIMEOUT_DZ3_DIR_MIN            50
+#define TIMEOUT_DZ3_DIR_MAX            32000
 
-#define TIMEOUT_DZ3_VPERED_PR_MIN      0
-#define TIMEOUT_DZ3_VPERED_PR_MAX      5000
+#define TIMEOUT_DZ3_DIR_PR_MIN         0
+#define TIMEOUT_DZ3_DIR_PR_MAX         5000
 
-#define TIMEOUT_DZ3_NAZAD_MIN          50
-#define TIMEOUT_DZ3_NAZAD_MAX          32000
+#define TIMEOUT_DZ3_INV_MIN            50
+#define TIMEOUT_DZ3_INV_MAX            32000
 
-#define TIMEOUT_DZ3_NAZAD_PR_MIN       0
-#define TIMEOUT_DZ3_NAZAD_PR_MAX       5000
+#define TIMEOUT_DZ3_INV_PR_MIN         0
+#define TIMEOUT_DZ3_INV_PR_MAX         5000
 
 #define TIMEOUT_DZ3_AMTZ_MIN           50
 #define TIMEOUT_DZ3_AMTZ_MAX           32000
@@ -112,17 +113,17 @@
 #define TIMEOUT_DZ3_AMTZ_VVID_PR_MIN   200
 #define TIMEOUT_DZ3_AMTZ_VVID_PR_MAX   5000
 
-#define TIMEOUT_DZ4_VPERED_MIN         50
-#define TIMEOUT_DZ4_VPERED_MAX         32000
+#define TIMEOUT_DZ4_DIR_MIN            50
+#define TIMEOUT_DZ4_DIR_MAX            32000
 
-#define TIMEOUT_DZ4_VPERED_PR_MIN      0
-#define TIMEOUT_DZ4_VPERED_PR_MAX      5000
+#define TIMEOUT_DZ4_DIR_PR_MIN         0
+#define TIMEOUT_DZ4_DIR_PR_MAX         5000
 
-#define TIMEOUT_DZ4_NAZAD_MIN          50
-#define TIMEOUT_DZ4_NAZAD_MAX          32000
+#define TIMEOUT_DZ4_INV_MIN            50
+#define TIMEOUT_DZ4_INV_MAX            32000
 
-#define TIMEOUT_DZ4_NAZAD_PR_MIN       0
-#define TIMEOUT_DZ4_NAZAD_PR_MAX       5000
+#define TIMEOUT_DZ4_INV_PR_MIN         0
+#define TIMEOUT_DZ4_INV_PR_MAX         5000
 
 #define TIMEOUT_DZ4_AMTZ_MIN           50
 #define TIMEOUT_DZ4_AMTZ_MAX           32000
