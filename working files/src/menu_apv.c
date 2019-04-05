@@ -332,40 +332,88 @@ void make_ekran_control_apv()
       "      јѕ¬2      ",
       "      јѕ¬3      ",
       "      јѕ¬4      ",
+      "   ѕуск от ƒ«1  ",
+      " ѕуск от јћ“«1  ",
+      "   ѕуск от ƒ«2  ",
+      " ѕуск от јћ“«2  ",
+      "   ѕуск от ƒ«3  ",
+      " ѕуск от јћ“«3  ",
+      "   ѕуск от ƒ«4  ",
+      " ѕуск от јћ“«4  ",
       "  ѕуск от ћ“«1  ",
       "  ѕуск от ћ“«2  ",
       "  ѕуск от ћ“«3  ",
-      "  ѕуск от ћ“«4  "
+      "  ѕуск от ћ“«4  ",
+      " ѕуск от “«Ќѕ1  ",
+      " ѕуск от “«Ќѕ2  ",
+      " ѕуск от “«Ќѕ3  ",
+      " ѕуск от “«Ќѕ4  "
     },
     {
       "      јѕ¬       ",
       "      јѕ¬2      ",
       "      јѕ¬3      ",
       "      јѕ¬4      ",
+      "  ѕуск в≥д ƒ«1  ",
+      " ѕуск в≥д јћ—«1 ",
+      "  ѕуск в≥д ƒ«2  ",
+      " ѕуск в≥д јћ—«2 ",
+      "  ѕуск в≥д ƒ«3  ",
+      " ѕуск в≥д јћ—«3 ",
+      "  ѕуск в≥д ƒ«4  ",
+      " ѕуск в≥д јћ—«4 ",
       " ѕуск в≥д ћ—«1  ",
       " ѕуск в≥д ћ—«2  ",
       " ѕуск в≥д ћ—«3  ",
-      " ѕуск в≥д ћ—«4  "
+      " ѕуск в≥д ћ—«4  ",
+      " ѕуск в≥д —«Ќѕ1 ",
+      " ѕуск в≥д —«Ќѕ2 ",
+      " ѕуск в≥д —«Ќѕ3 ",
+      " ѕуск в≥д —«Ќѕ4 "
     },
     {
       "       AR       ",
       "      AR2       ",
       "      AR3       ",
       "      AR4       ",
+      " Start from ƒ«1 ",
+      "Start from јћ“«1",
+      " Start from ƒ«2 ",
+      "Start from јћ“«2",
+      " Start from ƒ«3 ",
+      "Start from јћ“«3",
+      " Start from ƒ«4 ",
+      "Start from јћ“«4",
       " Start from OCP1",
       " Start from OCP2",
       " Start from OCP3",
-      " Start from OCP4"
+      " Start from OCP4",
+      " Start frm “«Ќѕ1",
+      " Start frm “«Ќѕ2",
+      " Start frm “«Ќѕ3",
+      " Start frm “«Ќѕ4"
     },
     {
       "      јѕ¬       ",
       "      јѕ¬2      ",
       "      јѕ¬3      ",
       "      јѕ¬4      ",
+      "   ѕуск от ƒ«1  ",
+      " ѕуск от јћ“«1  ",
+      "   ѕуск от ƒ«2  ",
+      " ѕуск от јћ“«2  ",
+      "   ѕуск от ƒ«3  ",
+      " ѕуск от јћ“«3  ",
+      "   ѕуск от ƒ«4  ",
+      " ѕуск от јћ“«4  ",
       "  ѕуск от ћ“«1  ",
       "  ѕуск от ћ“«2  ",
       "  ѕуск от ћ“«3  ",
-      "  ѕуск от ћ“«4  "
+      "  ѕуск от ћ“«4  ",
+      " ѕуск от “«Ќѕ1  ",
+      " ѕуск от “«Ќѕ2  ",
+      " ѕуск от “«Ќѕ3  ",
+      " ѕуск от “«Ќѕ4  "
     }
   };
   unsigned char name_string_tmp[MAX_ROW_FOR_CONTROL_APV][MAX_COL_LCD];
@@ -376,32 +424,90 @@ void make_ekran_control_apv()
     for(int index_2 = 0; index_2 < MAX_COL_LCD; index_2++)
       name_string_tmp[index_1][index_2] = name_string[index_language][index_1][index_2];
   }
+
+  unsigned int temp_data;
+  if(current_ekran.edition == 0) temp_data = current_settings.control_apv;
+  else temp_data = edition_settings.control_apv;
   
   /******************************************/
   //¬иключаЇмо пол€, €к≥ не треба в≥дображати
   /******************************************/
-  int additional_current_mtz = 0;
+  int additional_current_dz = 0, additional_current_mtz = 0, additional_current_tznp = 0;
   int position_temp = current_ekran.index_position;
   int index_of_ekran;
-  
-  if ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
+
+  int additional_current = additional_current_dz + additional_current_mtz + additional_current_tznp;
+  for (int current_index = 0; current_index < MAX_ROW_FOR_CONTROL_APV; current_index++ )
   {
-    for (int current_index = INDEX_ML_CTRAPV_STARTED_FROM_MTZ1; current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4; current_index++ )
+
+    if (
+        (  
+         (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
+         )   
+         &&
+         ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+        )  
+        ||
+        (
+         (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_MTZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4)
+         )   
+         &&
+         ((current_settings.configuration & (1<<MTZ_BIT_CONFIGURATION)) == 0)
+        )  
+        ||
+        (
+         (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+         )   
+         &&
+         ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
+        )  
+       )   
     {
-      int i = current_index - additional_current_mtz;
+      int i = current_index - additional_current;
+      unsigned int maska_1, maska_2;
+      maska_1 = (1 << i) - 1;
+      maska_2 = (unsigned int)(~maska_1);
     
       if ((i+1) <= position_temp) position_temp--;
       do
       {
-        for(unsigned int j = 0; j<MAX_COL_LCD; j++)
+        for(unsigned int j = 0; j < MAX_COL_LCD; j++)
         {
-          if ((i+1) < (MAX_ROW_FOR_CONTROL_APV - additional_current_mtz)) name_string_tmp[i][j] = name_string_tmp[i + 1][j];
+          if ((i+1) < (MAX_ROW_FOR_CONTROL_APV - additional_current)) name_string_tmp[i][j] = name_string_tmp[i + 1][j];
           else name_string_tmp[i][j] = ' ';
         }
         i++;
       }
-      while (i < (MAX_ROW_FOR_CONTROL_APV - additional_current_mtz));
-      additional_current_mtz++;
+      while (i < (MAX_ROW_FOR_CONTROL_APV -  additional_current));
+    
+      unsigned int temp_data_1 = (temp_data >> 1) & maska_2;
+      temp_data = (temp_data & maska_1) | temp_data_1;
+
+      if (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
+         )   
+        additional_current_dz++;
+
+      if (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_MTZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4)
+         )   
+        additional_current_mtz++;
+
+      if (
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+         )   
+        additional_current_tznp++;
+
+      additional_current = additional_current_dz + additional_current_mtz + additional_current_tznp;
     }
   }
   /******************************************/
@@ -412,7 +518,7 @@ void make_ekran_control_apv()
   for (unsigned int i=0; i< MAX_ROW_LCD; i++)
   {
     int index_of_ekran_tmp = index_of_ekran >> 1;
-    if (index_of_ekran_tmp < (MAX_ROW_FOR_CONTROL_APV - additional_current_mtz))
+    if (index_of_ekran_tmp < (MAX_ROW_FOR_CONTROL_APV - additional_current))
     {
       if ((i & 0x1) == 0)
       {
@@ -439,11 +545,6 @@ void make_ekran_control_apv()
         
         unsigned int index_ctr = index_of_ekran_tmp;
 
-        unsigned int temp_data;
-          
-        if(current_ekran.edition == 0) temp_data = current_settings.control_apv;
-        else temp_data = edition_settings.control_apv;
-          
         for (unsigned int j = 0; j<MAX_COL_LCD; j++) working_ekran[i][j] = information[index_language][(temp_data >> index_ctr) & 0x1][j];
         if (position_temp == index_of_ekran_tmp)current_ekran.position_cursor_x = cursor_x[index_language][(temp_data >> index_ctr) & 0x1];
       }
