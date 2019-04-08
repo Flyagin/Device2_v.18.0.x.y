@@ -275,7 +275,7 @@ extern unsigned int get_order(int);
 extern void calc_angle(void);
 extern void calc_power(int*);
 extern void calc_power_and_energy(void);
-extern void calc_resistance(int*, int*);
+extern void calc_resistance(int*, unsigned int, int*);
 
 extern void velychyna_zvorotnoi_poslidovnosti(int*, const __index_I_U);
 extern void detector_kuta_nzz(int*);

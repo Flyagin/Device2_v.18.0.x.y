@@ -96,7 +96,7 @@ extern double energy[MAX_NUMBER_INDEXES_ENERGY];
 extern unsigned int clean_energy;
 extern unsigned int information_about_clean_energy;
 
-extern int resistance[MAX_NUMBER_INDEXES_RESISTANCE];
+extern int resistance[MAX_NUMBER_INDEXES_RESISTANCE_FULL];
 extern int resistance_middle[MAX_NUMBER_INDEXES_RESISTANCE];
 extern int resistance_low[MAX_NUMBER_INDEXES_RESISTANCE];
 

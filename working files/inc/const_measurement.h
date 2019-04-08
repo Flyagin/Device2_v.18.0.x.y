@@ -319,14 +319,41 @@ enum _index_energy
 
 enum _resistance_index
 {
-  R_AB = 0,
+  R_A = 0,
+  X_A,
+  Z_A,
+  R_B,
+  X_B,
+  Z_B,
+  R_Ñ,
+  X_Ñ,
+  Z_C,
+  
+  R_AB,
   X_AB,
+  Z_AB,
   R_BC,
   X_BC,
+  Z_BC,
   R_CA,
   X_CA,
+  Z_CA,
   
   MAX_NUMBER_INDEXES_RESISTANCE,
+  
+  Z_3 = MAX_NUMBER_INDEXES_RESISTANCE,
+  
+  Za_A,
+  Za_B,
+  Za_C,
+  
+  Za_AB,
+  Za_BC,
+  Za_CA,
+  
+  Za_3,
+  
+  MAX_NUMBER_INDEXES_RESISTANCE_FULL
 };
 
 #endif

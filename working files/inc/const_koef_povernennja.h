@@ -22,6 +22,7 @@
 
 #define I_NOM                           5000
 #define U_LINEAR_NOM                    100000
+#define U_PHASE_NOM                     57735
 
 #define KOEF_1_2_I                      1.2
 #define KOEF_0_2_U                      0.2

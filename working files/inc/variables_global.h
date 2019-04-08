@@ -241,7 +241,7 @@ double energy[MAX_NUMBER_INDEXES_ENERGY];
 unsigned int clean_energy;
 unsigned int information_about_clean_energy;
 
-int resistance[MAX_NUMBER_INDEXES_RESISTANCE]; //формат{ Rab, Zab, Rbc, Zbc, Rca, Xca}
+int resistance[MAX_NUMBER_INDEXES_RESISTANCE_FULL];
 int resistance_middle[MAX_NUMBER_INDEXES_RESISTANCE];
 int resistance_low[MAX_NUMBER_INDEXES_RESISTANCE];
 

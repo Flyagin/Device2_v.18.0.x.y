@@ -773,12 +773,98 @@ inline void directional_tznp(int ortogonal_local_calc[], unsigned int number_gro
 /*****************************************************/
 //Визначенням опорів
 /*****************************************************/
-inline void calc_resistance(int ortogonal_local_calc[], int resistance_output[]) 
+inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_group_stp, int resistance_output[]) 
 {
-  const unsigned int index_line_voltage[3]  = {FULL_ORT_Uab, FULL_ORT_Ubc, FULL_ORT_Uca};
-  const unsigned int index_begin_current[3] = {FULL_ORT_Ia , FULL_ORT_Ib , FULL_ORT_Ic };
-  const unsigned int index_end_current[3]   = {FULL_ORT_Ib , FULL_ORT_Ic , FULL_ORT_Ia };
+  const unsigned int index_phase_voltage[3]  = {FULL_ORT_Ua , FULL_ORT_Ub , FULL_ORT_Uc };
+  const unsigned int index_line_voltage[3]   = {FULL_ORT_Uab, FULL_ORT_Ubc, FULL_ORT_Uca};
+  const unsigned int index_begin_current[3]  = {FULL_ORT_Ia , FULL_ORT_Ib , FULL_ORT_Ic };
+  const unsigned int index_end_current[3]    = {FULL_ORT_Ib , FULL_ORT_Ic , FULL_ORT_Ia };
   
+  //Однофазний опір
+  int I0_x, I0_y;
+  if (current_settings.control_transformator & INDEX_ML_CTR_TRANSFORMATOR_3I0_3I0_1)
+  {
+    //3I0-1
+    I0_x = (ortogonal_local_calc[2*FULL_ORT_Ia + 0] + ortogonal_local_calc[2*FULL_ORT_Ib + 0] + ortogonal_local_calc[2*FULL_ORT_Ic + 0])/3;
+    I0_y = (ortogonal_local_calc[2*FULL_ORT_Ia + 1] + ortogonal_local_calc[2*FULL_ORT_Ib + 1] + ortogonal_local_calc[2*FULL_ORT_Ic + 1])/3;
+  }
+  else
+  {
+    //3I0
+#if (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA) >= VAGA_DILENNJA_I_DIJUCHE  
+    I0_x = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 0]) >> (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA - VAGA_DILENNJA_I_DIJUCHE))/(MNOGNYK_I_DIJUCHE*3);
+    I0_y = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 1]) >> (4 + VAGA_DILENNJA_3I0_DIJUCHE_D_mA - VAGA_DILENNJA_I_DIJUCHE))/(MNOGNYK_I_DIJUCHE*3);
+#else
+    I0_x = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 0]) << (VAGA_DILENNJA_I_DIJUCHE - (VAGA_DILENNJA_3I0_DIJUCHE_D_mA + 4)))/(MNOGNYK_I_DIJUCHE*3);
+    I0_y = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 1]) << (VAGA_DILENNJA_I_DIJUCHE - (VAGA_DILENNJA_3I0_DIJUCHE_D_mA + 4)))/(MNOGNYK_I_DIJUCHE*3);
+#endif
+  }
+  uint32_t k = current_settings_prt.pickup_dz_k[number_group_stp];
+  for (size_t i = 0; i < 3; i++)
+  {
+    //Розраховуємо координати струму Ix + k*I0
+    int _a2, _b2;
+    /*
+    З наведених теоретичних роззрахунків у функції обрахунку діючих значень (calc_measurement())
+    випливає, що максимальне значення ортогональних для струму може бути 0x6E51, для фазної напруги 
+    0x907E
+    3I0 приведений до масштабу фазних стурмів
+
+    Ix + k*I0, де k може приймати значення 3
+    тоді
+    0x6E51*3 = 0x14AF3. Це є 17 бітне число (+ можливий знак) - тобто число виходить 18-бітне
+    Додавання може додати ще один біт. Тому (Ix + k*I0) може бути 18 бітним числом  (+ можливий знак) - тобто число виходить 19-бітне
+    */
+    
+    _a2 = ortogonal_local_calc[2*index_begin_current[i] + 0] + k*I0_x/100;
+    _b2 = ortogonal_local_calc[2*index_begin_current[i] + 1] + k*I0_y/100;
+
+#define _A1     ortogonal_local_calc[2*index_phase_voltage[i] + 0]
+#define _B1     ortogonal_local_calc[2*index_phase_voltage[i] + 1]
+    
+    long long mod = (long long)_a2*(long long)_a2 + (long long)_b2*(long long)_b2;
+    
+    //Розраховуємо амплітуду струму Ix
+    unsigned int Ix = ( MNOGNYK_I_DIJUCHE*(sqrt_64(mod)) ) >> (VAGA_DILENNJA_I_DIJUCHE + 4);
+    
+    if (Ix >= PORIG_Ixy)
+    {
+      //Можна розраховувати однофазний опір
+      /*
+          .            .
+          Ux          Ux       Re(Ux) + iIm(Ux)    a1 + ib1    (a1 + ib1)(a2 - ib2)    (a1a2 + b1b2) + i(a2b1 - a1b2)    a1a2 + b1b2      a2b1 - a1b2
+      --------- = --------- = ------------------ = --------- = --------------------- = ------------------------------ =  ------------ + i--------------
+       .     .        .                                                                         2      2                     2      2         2      2
+      Ixy + kIo      sum      Re(sum) + iIm(Isum)   a2 + ib2    (a2 + ib2)(a2 - ib2)          a2   + b2                    a2   + b2        a2   + b2
+      */
+      
+      float R = MNOGNYK_R_FLOAT*((float)((long long)_A1*(long long)_a2 + (long long)_B1*(long long)_b2))/((float)mod);
+      float X = MNOGNYK_R_FLOAT*((float)((long long)_a2*(long long)_B1 - (long long)_A1*(long long)_b2))/((float)mod);
+      resistance_output[R_A + 3*i    ] = (int)R;
+      resistance_output[R_A + 3*i + 1] = (int)X;
+      
+      float Z;
+      arm_status res = arm_sqrt_f32((R*R + X*X), &Z);
+      resistance_output[R_A + 3*i + 2] = (res == ARM_MATH_SUCCESS) ? (int)Z : UNDEF_RESISTANCE;
+
+      resistance_output[Za_A + i] = U_PHASE_NOM/Ix;
+    }
+    else
+    {
+      //Не можна розраховувати міжфазний опір
+      resistance_output[R_A + 3*i    ] = UNDEF_RESISTANCE;
+      resistance_output[R_A + 3*i + 1] = UNDEF_RESISTANCE;
+      resistance_output[R_A + 3*i + 2] = UNDEF_RESISTANCE;
+      
+      resistance_output[Za_A + i] =  UNDEF_RESISTANCE;
+    }
+    
+#undef _A1
+#undef _B1
+  }
+  
+  //Міжфазний опір
+  uint32_t Uxy_min, Ixy_max = 0; /*Ixy_max треба проініціалізувати нулем. бо може бути випадок, що три лінійні струми менші за поріг чутливості і це треба якось зафіксуватим*/
   for (unsigned int i = 0; i < 3; i++)
   {
     //Розраховуємо координати струму Ixy
@@ -815,18 +901,53 @@ inline void calc_resistance(int ortogonal_local_calc[], int resistance_output[])
       Ixy   Re(Ixy) + iIm(Ixy)   a2 + ib2    (a2 + ib2)(a2 - ib2)          a2   + b2                    a2   + b2        a2   + b2
       */
       
-      resistance_output[2*i    ] = (int)(MNOGNYK_R_FLOAT*((float)((long long)_A1*(long long)_a2 + (long long)_B1*(long long)_b2))/((float)mod));
-      resistance_output[2*i + 1] = (int)(MNOGNYK_R_FLOAT*((float)((long long)_a2*(long long)_B1 - (long long)_A1*(long long)_b2))/((float)mod));
+      float R = MNOGNYK_R_FLOAT*((float)((long long)_A1*(long long)_a2 + (long long)_B1*(long long)_b2))/((float)mod);
+      float X = MNOGNYK_R_FLOAT*((float)((long long)_a2*(long long)_B1 - (long long)_A1*(long long)_b2))/((float)mod);
+      resistance_output[R_AB + 3*i    ] = (int)R;
+      resistance_output[R_AB + 3*i + 1] = (int)X;
+      
+      float Z;
+      arm_status res = arm_sqrt_f32((R*R + X*X), &Z);
+      resistance_output[R_AB + 3*i + 2] = (res == ARM_MATH_SUCCESS) ? (int)Z : UNDEF_RESISTANCE;
+
+      resistance_output[Za_AB + i] = U_LINEAR_NOM/Ixy;
+      
+      if (Ixy_max < Ixy) Ixy_max =Ixy;
     }
     else
     {
       //Не можна розраховувати міжфазний опір
-      resistance_output[2*i    ] = UNDEF_RESISTANCE;
-      resistance_output[2*i + 1] = UNDEF_RESISTANCE;
+      resistance_output[R_AB + 3*i    ] = UNDEF_RESISTANCE;
+      resistance_output[R_AB + 3*i + 1] = UNDEF_RESISTANCE;
+      resistance_output[R_AB + 3*i + 2] = UNDEF_RESISTANCE;
+      
+      resistance_output[Za_AB + i] =  UNDEF_RESISTANCE;
+    }
+    
+    if (i == 0)  
+    {
+      Uxy_min = measurement[IM_UAB + 0];
+    }
+    else
+    {
+      if (Uxy_min > measurement[IM_UAB + i]) Uxy_min = measurement[IM_UAB + i];
     }
     
 #undef _A1
 #undef _B1
+  }
+  
+  if (Ixy_max > 0)
+  {
+    //Є можливість розрахувати трифазний опір
+    resistance_output[Z_3] = Uxy_min/Ixy_max;
+    resistance_output[Za_3] = U_LINEAR_NOM/Ixy_max;
+  }
+  else
+  {
+    //Немає можливості розрахувати трифазний опір
+    resistance_output[Z_3] = UNDEF_RESISTANCE;
+    resistance_output[Za_3] = UNDEF_RESISTANCE;
   }
 }
 /*****************************************************/
@@ -839,56 +960,81 @@ inline void calc_power(int ortogonal_local_calc[])
   /*
   Розраховуємо дійсну і уявну частину потужності у компдексній площині
   
-  .    .  .     .  .
-  S = UabIa* - UbcIc*
+  .    . .     . .     . .
+  S = UaIa* + UbIb* + UcIc*
   */
   
-#define IA_SIN          ortogonal_local_calc[2*FULL_ORT_Ia + 1]
-#define IA_COS          ortogonal_local_calc[2*FULL_ORT_Ia + 0]
-#define UAB_SIN         ortogonal_local_calc[2*FULL_ORT_Uab + 1]
-#define UAB_COS         ortogonal_local_calc[2*FULL_ORT_Uab + 0]
+#define IA_SIN          ortogonal_local_calc[2*IM_IA + 1]
+#define IA_COS          ortogonal_local_calc[2*IM_IA + 0]
+#define UA_SIN          ortogonal_local_calc[2*IM_UA + 1]
+#define UA_COS          ortogonal_local_calc[2*IM_UA + 0]
   
-#define IC_SIN          ortogonal_local_calc[2*FULL_ORT_Ic + 1]
-#define IC_COS          ortogonal_local_calc[2*FULL_ORT_Ic + 0]
-#define UBC_SIN         ortogonal_local_calc[2*FULL_ORT_Ubc + 1]
-#define UBC_COS         ortogonal_local_calc[2*FULL_ORT_Ubc + 0]
+#define IB_SIN          ortogonal_local_calc[2*IM_IB + 1]
+#define IB_COS          ortogonal_local_calc[2*IM_IB + 0]
+#define UB_SIN          ortogonal_local_calc[2*IM_UB + 1]
+#define UB_COS          ortogonal_local_calc[2*IM_UB + 0]
+
+#define IC_SIN          ortogonal_local_calc[2*IM_IC + 1]
+#define IC_COS          ortogonal_local_calc[2*IM_IC + 0]
+#define UC_SIN          ortogonal_local_calc[2*IM_UC + 1]
+#define UC_COS          ortogonal_local_calc[2*IM_UC + 0]
   
-  long long Re_IaUab, Im_IaUab;
+  long long Re_UaIa, Im_UaIa;
   if (measurement[IM_IA] >= PORIG_I_ENERGY)
   {
-    Re_IaUab = UAB_COS*IA_COS + UAB_SIN*IA_SIN;
-    Im_IaUab = UAB_SIN*IA_COS - UAB_COS*IA_SIN;
+    Re_UaIa = UA_COS*IA_COS + UA_SIN*IA_SIN;
+    Im_UaIa = UA_SIN*IA_COS - UA_COS*IA_SIN;
   
   }
   else
   {
-    Re_IaUab = 0;
-    Im_IaUab = 0;
+    Re_UaIa = 0;
+    Im_UaIa = 0;
   }
-
-  long long Re_IcUbc, Im_IcUbc;
-  if (measurement[IM_IC] >= PORIG_I_ENERGY)
-  {  
-    Re_IcUbc = UBC_COS*IC_COS + UBC_SIN*IC_SIN;
-    Im_IcUbc = UBC_SIN*IC_COS - UBC_COS*IC_SIN;
+  
+  long long Re_UbIb, Im_UbIb;
+  if (measurement[IM_IB] >= PORIG_I_ENERGY)
+  {
+    Re_UbIb = UB_COS*IB_COS + UB_SIN*IB_SIN;
+    Im_UbIb = UB_SIN*IB_COS - UB_COS*IB_SIN;
+  
   }
   else
   {
-    Re_IcUbc = 0;
-    Im_IcUbc = 0;
+    Re_UbIb = 0;
+    Im_UbIb = 0;
   }
+  
+  long long Re_UcIc, Im_UcIc;
+  if (measurement[IM_IC] >= PORIG_I_ENERGY)
+  {
+    Re_UcIc = UC_COS*IC_COS + UC_SIN*IC_SIN;
+    Im_UcIc = UC_SIN*IC_COS - UC_COS*IC_SIN;
+  
+  }
+  else
+  {
+    Re_UcIc = 0;
+    Im_UcIc = 0;
+  }
+
 #undef IA_SIN
 #undef IA_COS
-#undef UAB_SIN
-#undef UAB_COS
+#undef UA_SIN
+#undef UA_COS
+  
+#undef IB_SIN
+#undef IB_COS
+#undef UB_SIN
+#undef UB_COS
   
 #undef IC_SIN
 #undef IC_COS
-#undef UBC_SIN
-#undef UBC_COS
+#undef UC_SIN
+#undef UC_COS
   
-  long long P_adc_x16 = Re_IaUab - Re_IcUbc; /*  активна потужність у поділках АЦП і з вхідними сигналами, які є підсилені у 16 разів*/
-  long long Q_adc_x16 = Im_IaUab - Im_IcUbc; /*реактивна потужність у поділках АЦП і з вхідними сигналами, які є підсилені у 16 разів*/
+  long long P_adc_x16 = Re_UaIa + Re_UbIb + Re_UcIc; /*  активна потужність у поділках АЦП і з вхідними сигналами, які є підсилені у 16 разів*/
+  long long Q_adc_x16 = Im_UaIa + Im_UbIb + Im_UcIc; /*реактивна потужність у поділках АЦП і з вхідними сигналами, які є підсилені у 16 разів*/
   
   /*
   Коли перемножимо на коефіцієнти MNOGNYK_I_DIJUCHE_FLOAT і MNOGNYK_U_DIJUCHE_FLOAT,
@@ -1318,7 +1464,7 @@ inline void calc_measurement(unsigned int number_group_stp)
   /***/
   //Розраховуємо опори
   /***/
-  calc_resistance(ortogonal_calc, resistance);
+  calc_resistance(ortogonal_calc, number_group_stp, resistance);
   /***/
 
   if(++number_inputs_for_fix_one_period >= 20)

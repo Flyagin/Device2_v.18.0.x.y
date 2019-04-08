@@ -273,7 +273,7 @@ unsigned int get_order(int);
 void calc_angle(void);
 void calc_power(int*);
 void calc_power_and_energy(void);
-void calc_resistance(int*, int*);
+void calc_resistance(int*, unsigned int, int*);
 
 void velychyna_zvorotnoi_poslidovnosti(int*, const __index_I_U);
 void detector_kuta_nzz(int*);
