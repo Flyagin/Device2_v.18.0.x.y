@@ -16,6 +16,8 @@
 #define POPRAVKA_MTZ_TZNP  0/*3*/
 #define SECTOR2_MTZ_TZNP   2
 
+#define DELTA_SECTOR_DZ    6.0f
+
 #define MEASUREMENT_TIM_FREQUENCY       60000000 //ÌÃö
 
 #define MAIN_FREQUENCY  50      //Ãö

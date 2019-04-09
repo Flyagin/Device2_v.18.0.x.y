@@ -9110,8 +9110,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz2_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz2_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz2_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
 
                         fix_change_settings(0, 1);
                       }
@@ -9185,8 +9187,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz3_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz3_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz3_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
                         
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         fix_change_settings(0, 1);
@@ -9262,8 +9266,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz4_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz4_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz4_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         fix_change_settings(0, 1);
@@ -18848,7 +18854,7 @@ void main_manu_function(void)
                   default:
                     {
                       //Теоретично цього ніколи не мало б бути
-                      total_error_sw_fixed(97);
+                      total_error_sw_fixed(73);
                     }
                   }
                     

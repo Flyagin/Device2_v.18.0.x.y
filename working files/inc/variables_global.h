@@ -376,6 +376,10 @@ unsigned int TZNP_3U0_bilshe_porogu;
 unsigned int TZNP_3I0_r_bilshe_porogu;
 unsigned int sector_directional_tznp[3];
 
+//Направлена ДЗ
+int32_t sector_directional_dz[4 - 1][3] = {{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}};
+unsigned int Uxy_bilshe_porogu_dz[3];
+unsigned int Ix_bilshe_porogu_dz[3];
 
 unsigned int i1_bilshe_porogu, i2_bilshe_porogu;
 

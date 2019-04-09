@@ -327,6 +327,50 @@ inline void detector_kuta_nzz(int ortogonal_local_calc[])
 /*****************************************************/
 inline void directional_mtz(int ortogonal_local_calc[], unsigned int number_group_stp) 
 {
+  for (unsigned int i = 0; i < 3; i++)
+  {
+    unsigned int index_I, index_U;
+    switch (i)
+    {
+    case 0:
+      {
+        index_I = IM_IA;
+        index_U = IM_UBC;
+
+        break;
+      }
+    case 1:
+      {
+        index_I = IM_IB;
+        index_U = IM_UCA;
+
+        break;
+      }
+    case 2:
+      {
+        index_I = IM_IC;
+        index_U = IM_UAB;
+
+        break;
+      }
+    default:
+      {
+        //Теоретично цього ніколи не мало б бути
+        total_error_sw_fixed(89);
+      }
+    }
+
+    unsigned int porig_Uxy;
+    if (Uxy_bilshe_porogu[i] == 0) porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE*KOEF_POVERNENNJA_SECTOR_BLK/100;
+    else porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE;
+    Uxy_bilshe_porogu[i] = (measurement[index_U] >= porig_Uxy);
+      
+    unsigned int porig_Ix;
+    if (Ix_bilshe_porogu[i] == 0) porig_Ix = PORIG_CHUTLYVOSTI_CURRENT*KOEF_POVERNENNJA_SECTOR_BLK/100;
+    else porig_Ix = PORIG_CHUTLYVOSTI_CURRENT;
+    Ix_bilshe_porogu[i]  = (measurement[index_I] >= porig_Ix );
+  }
+      
   for (unsigned int mtz = 0; mtz < 4; mtz++)
   {
     int a_cos_fi, a_sin_fi;
@@ -377,62 +421,42 @@ inline void directional_mtz(int ortogonal_local_calc[], unsigned int number_grou
   
     for (unsigned int i = 0; i < 3; i++)
     {
-      unsigned int index_I, index_U;
-      unsigned int index_I_ort, index_U_ort;
-      switch (i)
-      {
-      case 0:
-        {
-          index_I = IM_IA;
-          index_U = IM_UBC;
-
-          index_I_ort = FULL_ORT_Ia;
-          index_U_ort = FULL_ORT_Ubc;
-
-          break;
-        }
-      case 1:
-        {
-          index_I = IM_IB;
-          index_U = IM_UCA;
-
-          index_I_ort = FULL_ORT_Ib;
-          index_U_ort = FULL_ORT_Uca;
-
-          break;
-        }
-      case 2:
-        {
-          index_I = IM_IC;
-          index_U = IM_UAB;
-
-          index_I_ort = FULL_ORT_Ic;
-          index_U_ort = FULL_ORT_Uab;
-
-          break;
-        }
-      default:
-        {
-          //Теоретично цього ніколи не мало б бути
-          total_error_sw_fixed(60);
-        }
-      }
-
-      unsigned int porig_Uxy;
-      if (Uxy_bilshe_porogu[i] == 0) porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE*KOEF_POVERNENNJA_SECTOR_BLK/100;
-      else porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE;
-      unsigned int Uxy_bilshe_porogu_tmp = Uxy_bilshe_porogu[i] = (measurement[index_U] >= porig_Uxy);
-      
-      unsigned int porig_Ix;
-      if (Ix_bilshe_porogu[i] == 0) porig_Ix = PORIG_CHUTLYVOSTI_CURRENT*KOEF_POVERNENNJA_SECTOR_BLK/100;
-      else porig_Ix = PORIG_CHUTLYVOSTI_CURRENT;
-      unsigned int Ix_bilshe_porogu_tmp = Ix_bilshe_porogu[i]  = (measurement[index_I] >= porig_Ix );
-
       if (
-          (Uxy_bilshe_porogu_tmp != 0) &&
-          (Ix_bilshe_porogu_tmp  != 0)
+          (Uxy_bilshe_porogu[i] != 0) &&
+          (Ix_bilshe_porogu[i]  != 0)
          )
       {
+        unsigned int index_I_ort, index_U_ort;
+        switch (i)
+        {
+        case 0:
+          {
+            index_I_ort = FULL_ORT_Ia;
+            index_U_ort = FULL_ORT_Ubc;
+
+            break;
+          }
+        case 1:
+          {
+            index_I_ort = FULL_ORT_Ib;
+            index_U_ort = FULL_ORT_Uca;
+
+            break;
+          }
+        case 2:
+          {
+            index_I_ort = FULL_ORT_Ic;
+            index_U_ort = FULL_ORT_Uab;
+
+            break;
+          }
+        default:
+          {
+            //Теоретично цього ніколи не мало б бути
+            total_error_sw_fixed(60);
+          }
+        }
+
 #define SIN_I   ortogonal_local_calc[2*index_I_ort    ]
 #define COS_I   ortogonal_local_calc[2*index_I_ort + 1]
 #define SIN_U   ortogonal_local_calc[2*index_U_ort    ]
@@ -953,6 +977,320 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
 /*****************************************************/
 
 /*****************************************************/
+//Фазочутливий елемент  для опорів
+/*****************************************************/
+inline void directional_dz(int ortogonal_local_calc[], unsigned int number_group_stp) 
+{
+  for (size_t i = 0; i < 3; i++)
+  {
+    uint32_t index_I, index_U;
+    switch (i)
+    {
+    case 0:
+      {
+        index_I = IM_IA;
+        index_U = IM_UBC;
+
+        break;
+      }
+    case 1:
+      {
+        index_I = IM_IB;
+        index_U = IM_UCA;
+
+        break;
+      }
+    case 2:
+      {
+        index_I = IM_IC;
+        index_U = IM_UAB;
+
+        break;
+      }
+    default:
+      {
+        //Теоретично цього ніколи не мало б бути
+        total_error_sw_fixed(85);
+      }
+    }
+
+    unsigned int porig_Uxy;
+    if (Uxy_bilshe_porogu_dz[i] == 0) porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE_DZ*KOEF_POVERNENNJA_SECTOR_BLK/100;
+    else porig_Uxy = PORIG_CHUTLYVOSTI_VOLTAGE_ANGLE_DZ;
+    Uxy_bilshe_porogu_dz[i] = (measurement[index_U] >= porig_Uxy);
+      
+    unsigned int porig_Ix;
+    if (Ix_bilshe_porogu_dz[i] == 0) porig_Ix = PORIG_CHUTLYVOSTI_CURRENT_ANGLE_DZ*KOEF_POVERNENNJA_SECTOR_BLK/100;
+    else porig_Ix = PORIG_CHUTLYVOSTI_CURRENT_ANGLE_DZ;
+    Ix_bilshe_porogu_dz[i]  = (measurement[index_I] >= porig_Ix );
+  }
+
+
+  for (size_t dz = 0; dz < (4 - 1); dz++)
+  {
+    int32_t sector_L[2][2];
+    switch (dz)
+    {
+    case 0:
+      {
+        sector_L[0][0] = current_settings_prt.pickup_dz2_angle_sin1[number_group_stp];
+        sector_L[0][1] = current_settings_prt.pickup_dz2_angle_cos1[number_group_stp];
+        
+        sector_L[1][0] = current_settings_prt.pickup_dz2_angle_sin2[number_group_stp];
+        sector_L[1][1] = current_settings_prt.pickup_dz2_angle_cos2[number_group_stp];
+
+        break;
+      }
+    case 1:
+      {
+        sector_L[0][0] = current_settings_prt.pickup_dz3_angle_sin1[number_group_stp];
+        sector_L[0][1] = current_settings_prt.pickup_dz3_angle_cos1[number_group_stp];
+        
+        sector_L[1][0] = current_settings_prt.pickup_dz3_angle_sin2[number_group_stp];
+        sector_L[1][1] = current_settings_prt.pickup_dz3_angle_cos2[number_group_stp];
+        
+        break;
+      }
+    case 2:
+      {
+        sector_L[0][0] = current_settings_prt.pickup_dz4_angle_sin1[number_group_stp];
+        sector_L[0][1] = current_settings_prt.pickup_dz4_angle_cos1[number_group_stp];
+        
+        sector_L[1][0] = current_settings_prt.pickup_dz4_angle_sin2[number_group_stp];
+        sector_L[1][1] = current_settings_prt.pickup_dz4_angle_cos2[number_group_stp];
+        
+        break;
+      }
+    default:
+      {
+        //Теоретично цього ніколи не мало б бути
+        total_error_sw_fixed(84);
+      }
+    }
+
+    /*
+    За розрахунком описаним при розрахунку діючих значень наші ортогональні є у ворматі (15 біт + знак) = 16-розряжне число
+    */
+    for (size_t i = 0; i < 3; i++)
+    {
+      if (
+          (Uxy_bilshe_porogu_dz[i] != 0) &&
+          (Ix_bilshe_porogu_dz[i]  != 0)
+         )
+      {
+        uint32_t index_I_ort, index_U_ort;
+        switch (i)
+        {
+        case 0:
+          {
+            index_I_ort = FULL_ORT_Ia;
+            index_U_ort = FULL_ORT_Ubc;
+
+            break;
+          }
+        case 1:
+          {
+            index_I_ort = FULL_ORT_Ib;
+            index_U_ort = FULL_ORT_Uca;
+
+            break;
+          }
+        case 2:
+          {
+            index_I_ort = FULL_ORT_Ic;
+            index_U_ort = FULL_ORT_Uab;
+
+            break;
+          }
+        default:
+          {
+            //Теоретично цього ніколи не мало б бути
+            total_error_sw_fixed(25);
+          }
+        }
+
+#define SIN_I   ortogonal_local_calc[2*index_I_ort    ]
+#define COS_I   ortogonal_local_calc[2*index_I_ort + 1]
+#define SIN_U   ortogonal_local_calc[2*index_U_ort    ]
+#define COS_U   ortogonal_local_calc[2*index_U_ort + 1]
+
+        //Робимо доповорот на 90°
+        int32_t amp_cos_U_90 = -SIN_U;
+        int32_t amp_sin_U_90 =  COS_U;
+
+        //Вираховуємо COS і SIN кута різниці між (U[i]+90°) і I[i]
+        int32_t cos_fi, sin_fi;
+        /*
+        З наведених теоретичних роззрахунків у функції обрахунку діючих значень (calc_measurement())
+        випливає, що максимальне значення ортогональних для струму може бути 0x6E51, для лінійної напруги 
+        0x120FC, то добуток їх має дати 0x7C87B7BC  - 31 бітне число (плюс знак біту)
+        Тобто ми вкладаємося у тип int.
+        */
+        sin_fi = SIN_I*amp_cos_U_90 - COS_I*amp_sin_U_90;
+        cos_fi = COS_I*amp_cos_U_90 + SIN_I*amp_sin_U_90;
+
+#undef SIN_I
+#undef COS_I
+#undef SIN_U
+#undef COS_U
+
+        /*
+        З вище наведених розрахункыв виходить, що COS і SIN різниці струму і напруги може бути 31-бітне число
+        Векторні координати границь секторів задано 7-бінтими числами + знак
+        Тоді щоб не отримати переповнення треба гарантувати, що розрядність різниці векторів
+        COS і SIN буде = 31 - (7 + 1) = 23
+        7 - це розрядність координат векторів границь секторів
+        1 - це врахування що ми використовіємо формулу (ab+cd)
+        */
+        uint32_t order_cos, order_sin, max_order, shift = 0;
+        order_cos = get_order(cos_fi);
+        order_sin = get_order(sin_fi);
+        if (order_cos > order_sin) max_order = order_cos; else max_order = order_sin;
+        if (max_order > 23) shift = max_order - 23;
+  
+        /*
+        Сам зсув я роблю після визначення квадранта - це хоч і втрата на розмірі програмного коду,
+        але мало б підвищити точність визначення квадранту.
+        Хоч може тут я перемудровую?..
+        */
+
+        const int32_t sector_H[2][2] = {{126, -22}, {123, -35}};
+        //Визначення сектору
+        int sin_fi1_minus_fi2;
+        const int *sector;
+        if ((sin_fi >= 0) && (cos_fi >= 0))
+        {
+          //1-ий квадрант
+
+          if (sector_directional_dz[dz][i] != 1)
+            sector = sector_L[0];
+          else
+            sector = sector_L[1];
+
+          if (*(sector + 0) < 0)
+          {
+            //Нижня границя знаходиться  у IV квадранті, тому I квадрант повністю є у зоні "1"
+            sector_directional_dz[dz][i] = 1;
+          }
+          else
+          {
+            //Нижня границя знаходиться  у I квадранті, тому треба робити перевірку
+            cos_fi = cos_fi >> shift;
+            sin_fi = sin_fi >> shift;
+          
+            sin_fi1_minus_fi2 = sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0));
+            sector_directional_dz[dz][i] = (sin_fi1_minus_fi2 >= 0) ?  1 : 0;
+          }
+        }
+        else if ((sin_fi >= 0) && (cos_fi < 0))
+        {
+          //2-ий квадрант
+          cos_fi = cos_fi >> shift;
+          sin_fi = sin_fi >> shift;
+
+          //Перевірка на верхню границю зони "1"
+          if (sector_directional_dz[dz][i] != 1)
+            sector = sector_H[0];
+          else
+            sector = sector_H[1];
+          
+          sin_fi1_minus_fi2 = sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0));
+          if (sin_fi1_minus_fi2 <= 0) sector_directional_dz[dz][i] = 1;
+          else
+          {
+            //Перевірка на зону "2" (у цій зоні sin i cos треба брати з протилежними знаками, бо зона "2" є повернутою зоною "1" на 180°)
+            if (sector_directional_dz[dz][i] != 2)
+              sector = sector_L[0];
+            else
+              sector = sector_L[1];
+
+            if ((-*(sector + 0)) < 0)
+            {
+              //Нижня границя знаходиться  у III квадранті, тому факт II квадранту відповідає зоні "0" (перевірка на зону "1" попердньо була непідтвердженою)
+              sector_directional_dz[dz][i] = 0;
+            }
+            else
+            {
+              //Нижня границя знаходиться  у II квадранті, тому треба робити перевірку
+          
+              sin_fi1_minus_fi2 = -(sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0))); /*-1 перед виразом - це sin i cos нижньої границі зони "1" з протилежними знаками*/
+              sector_directional_dz[dz][i] = (sin_fi1_minus_fi2 >= 0) ?  2 : 0;
+            }
+          }
+          
+        }
+        else if ((sin_fi < 0) && (cos_fi < 0))
+        {
+          //3-ій квадрант
+          //Перевірка на зону "2" (у цій зоні sin i cos треба брати з протилежними знаками, бо зона "2" є повернутою зоною "1" на 180°)
+
+          if (sector_directional_dz[dz][i] != 2)
+            sector = sector_L[0];
+          else
+            sector = sector_L[1];
+
+          if ((-*(sector + 0)) > 0)
+          {
+            //Нижня границя знаходиться  у II квадранті, тому III квадрант повністю є у зоні "2"
+            sector_directional_dz[dz][i] = 2;
+          }
+          else
+          {
+            //Нижня границя знаходиться  у III квадранті, тому треба робити перевірку
+            cos_fi = cos_fi >> shift;
+            sin_fi = sin_fi >> shift;
+          
+            sin_fi1_minus_fi2 = -(sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0))); /*-1 перед виразом - це sin i cos нижньої границі зони "1" з протилежними знаками*/
+            sector_directional_dz[dz][i] = (sin_fi1_minus_fi2 >= 0) ?  2 : 0;
+          }
+        }
+        else
+        {
+          //4-ий квадрант
+          cos_fi = cos_fi >> shift;
+          sin_fi = sin_fi >> shift;
+
+          //Перевірка на верхню границю зони "2"
+          //Перевірка на зону "2" (у цій зоні sin i cos треба брати з протилежними знаками, бо зона "2" є повернутою зоною "1" на 180°)
+          if (sector_directional_dz[dz][i] != 2)
+            sector = sector_H[0];
+          else
+            sector = sector_H[1];
+          
+          sin_fi1_minus_fi2 = -(sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0))); /*-1 перед виразом - це sin i cos нижньої границі зони "1" з протилежними знаками*/
+          if (sin_fi1_minus_fi2 <= 0) sector_directional_dz[dz][i] = 2;
+          else
+          {
+            if (sector_directional_dz[dz][i] != 1)
+              sector = sector_L[0];
+            else
+              sector = sector_L[1];
+
+            if (*(sector + 0) > 0)
+            {
+              //Нижня границя знаходиться  у I квадранті, тому факт IV квадранту відповідає зоні "0" (перевірка на зону "2" попердньо була непідтвердженою)
+              sector_directional_dz[dz][i] = 0;
+            }
+            else
+            {
+              //Нижня границя знаходиться  у IV квадранті, тому треба робити перевірку
+          
+              sin_fi1_minus_fi2 = sin_fi*(*(sector + 1)) - cos_fi*(*(sector + 0));
+              sector_directional_dz[dz][i] = (sin_fi1_minus_fi2 >= 0) ?  1 : 0;
+            }
+          }
+        }
+      }
+      else
+      {
+        sector_directional_dz[dz][i] = -1;
+      }
+    }
+  }
+}
+/*****************************************************/
+
+/*****************************************************/
 //Визначенням миттєвої потужності
 /*****************************************************/
 inline void calc_power(int ortogonal_local_calc[]) 
@@ -1429,18 +1767,54 @@ inline void calc_measurement(unsigned int number_group_stp)
   /***/
 
   /***/
+  //Фазочутливий елемент для ДЗ (всіх ступенів)
+  /***/
+  if ((current_settings_prt.configuration & (1<<DZ_BIT_CONFIGURATION)) != 0)
+  {
+    directional_dz(ortogonal_calc, number_group_stp);
+  }
+  else
+  {
+    for (size_t i = 0; i < 3; i++)
+    {
+      Uxy_bilshe_porogu_dz[i] = 0;
+      Ix_bilshe_porogu_dz[i] = 0;
+      for (size_t dz = 0; dz < (4 - 1); dz++) sector_directional_dz[dz][i] = -1;
+    }
+  }
+  /***/
+
+  /***/
   //Фазочутливий елемент для МТЗ (всіх ступенів)
   /***/
-  directional_mtz(ortogonal_calc, number_group_stp);
+  if ((current_settings_prt.configuration & (1<<MTZ_BIT_CONFIGURATION)) != 0)
+  {
+    directional_mtz(ortogonal_calc, number_group_stp);
+  }
+  else
+  {
+    for (size_t i = 0; i < 3; i++)
+    {
+      Uxy_bilshe_porogu[i] = 0;
+      Ix_bilshe_porogu[i] = 0;
+      for (size_t msz = 0; msz < 4; msz++) sector_directional_mtz[msz][i] = 0;
+    }
+  }
   /***/
 
   if ((current_settings_prt.configuration & (1<<TZNP_BIT_CONFIGURATION)) != 0)
   {
     /***/
-    //Фазочутливий елемент для ТЗНП (всіх ступенів)
+    //Фазочутливий елемент для СЗНП (всіх ступенів)
     /***/
     directional_tznp(ortogonal_calc, number_group_stp);
     /***/
+  }
+  else
+  {
+    TZNP_3U0_bilshe_porogu = 0;
+    TZNP_3I0_r_bilshe_porogu = 0;
+    for (size_t sznp = 0; sznp < 3; sznp++) sector_directional_tznp[sznp] = 0;
   }
   
   if ((current_settings_prt.configuration & (1<<ZZ_BIT_CONFIGURATION)) != 0)
@@ -1453,6 +1827,11 @@ inline void calc_measurement(unsigned int number_group_stp)
       detector_kuta_nzz(ortogonal_calc);
       /***/
     }
+  }
+  else
+  {
+    sector_i_minus_u_1 = 0;
+    sector_i_minus_u_2 = 0;
   }
   
   /***/
@@ -3385,7 +3764,7 @@ inline void zdz_handler(unsigned int *p_active_functions, unsigned int number_gr
   else
   {
     //Якщо сюди дійшла програма, значить відбулася недопустива помилка, тому треба зациклити програму, щоб вона пішла на перезагрузку
-    total_error_sw_fixed(88);
+    total_error_sw_fixed(45);
   }
   
   //"ПО ЗДЗ"

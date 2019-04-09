@@ -1493,8 +1493,10 @@ void min_settings(__SETTINGS *target_label)
     angle = PICKUP_DZ2_ANGLE_MIN;
     angle_f = (float)angle;
     target_label->pickup_dz2_angle[i] = angle;
-    target_label->pickup_dz2_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-    target_label->pickup_dz2_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz2_angle_cos1[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz2_angle_sin1[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz2_angle_cos2[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+    target_label->pickup_dz2_angle_sin2[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
     
     target_label->pickup_dz2_dir[i] = PICKUP_DZ2_DIR_MIN;
     target_label->pickup_dz2_inv[i] = PICKUP_DZ2_INV_MIN;
@@ -1512,8 +1514,10 @@ void min_settings(__SETTINGS *target_label)
     angle = PICKUP_DZ3_ANGLE_MIN;
     angle_f = (float)angle;
     target_label->pickup_dz3_angle[i] = angle;
-    target_label->pickup_dz3_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-    target_label->pickup_dz3_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz3_angle_cos1[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz3_angle_sin1[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz3_angle_cos2[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+    target_label->pickup_dz3_angle_sin2[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
     
     target_label->pickup_dz3_dir[i] = PICKUP_DZ3_DIR_MIN;
     target_label->pickup_dz3_inv[i] = PICKUP_DZ3_INV_MIN;
@@ -1531,8 +1535,10 @@ void min_settings(__SETTINGS *target_label)
     angle = PICKUP_DZ4_ANGLE_MIN;
     angle_f = (float)angle;
     target_label->pickup_dz4_angle[i] = angle;
-    target_label->pickup_dz4_angle_cos[i] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-    target_label->pickup_dz4_angle_sin[i] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz4_angle_cos1[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz4_angle_sin1[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+    target_label->pickup_dz4_angle_cos2[i] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+    target_label->pickup_dz4_angle_sin2[i] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
     
     target_label->pickup_dz4_dir[i] = PICKUP_DZ4_DIR_MIN;
     target_label->pickup_dz4_inv[i] = PICKUP_DZ4_INV_MIN;

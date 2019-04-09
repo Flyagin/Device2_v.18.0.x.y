@@ -282,6 +282,7 @@ extern void detector_kuta_nzz(int*);
 
 extern void directional_mtz(int*, unsigned int);
 extern void directional_tznp(int*, unsigned int);
+extern void directional_dz(int*, unsigned int);
 
 extern void main_routines_for_spi1(void);
 extern void main_function_for_dataflash_resp(int);

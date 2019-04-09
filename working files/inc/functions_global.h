@@ -277,6 +277,7 @@ void calc_resistance(int*, unsigned int, int*);
 
 void velychyna_zvorotnoi_poslidovnosti(int*, const __index_I_U);
 void detector_kuta_nzz(int*);
+void directional_dz(int*, unsigned int);
 
 void directional_mtz(int*, unsigned int);
 void directional_tznp(int*, unsigned int);

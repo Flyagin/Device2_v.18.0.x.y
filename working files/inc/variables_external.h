@@ -136,6 +136,10 @@ extern unsigned int TZNP_3U0_bilshe_porogu;
 extern unsigned int TZNP_3I0_r_bilshe_porogu;
 extern unsigned int sector_directional_tznp[3];
 
+extern int32_t sector_directional_dz[4 - 1][3];
+extern unsigned int Uxy_bilshe_porogu_dz[3];
+extern unsigned int Ix_bilshe_porogu_dz[3];
+
 extern unsigned int i1_bilshe_porogu, i2_bilshe_porogu;
 
 extern uint32_t TIM_PRT_write_tick;
