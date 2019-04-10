@@ -5325,7 +5325,7 @@ inline void urov_handler(unsigned int *p_active_functions, unsigned int number_g
   uint32_t start_from_UP = false;
   if (
       (state_UROV != 0) &&
-      ((current_settings_prt.control_urov & ((MASKA_FOR_BIT(NUMBER_UP) - 1) << INDEX_ML_CTRUROV_STARTED_FROM_UP1)) != 0)
+      ((current_settings_prt.control_urov & (((uint64_t)(MASKA_FOR_BIT(NUMBER_UP) - 1)) << INDEX_ML_CTRUROV_STARTED_FROM_UP1)) != 0)
      )   
   {
     //Налаштовано запуск ПРЗЗ від УЗ
@@ -5347,14 +5347,14 @@ inline void urov_handler(unsigned int *p_active_functions, unsigned int number_g
       (start_from_UP == true) ||
       (_CHECK_SET_BIT(p_active_functions, RANG_PUSK_UROV_VID_DV) != 0) ||
         
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_DZ1)     ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ1              ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ1   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ1         ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_DZ2)     ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ2              ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ2   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ2         ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_DZ3)     ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ3              ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ3   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ3         ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_DZ4)     ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ4              ) != 0)) ||
-      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ4         ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ1)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ1              ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ1) ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ1         ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ2)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ2              ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ2) ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ2         ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ3)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ3              ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ3) ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ3         ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ4)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_DZ4              ) != 0)) ||
+      ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ4         ) != 0)) ||
         
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1)   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_MTZ1             ) != 0)) ||
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2)   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_MTZ2             ) != 0)) ||
