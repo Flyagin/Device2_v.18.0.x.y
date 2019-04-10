@@ -5335,13 +5335,13 @@ void main_manu_function(void)
               if(current_ekran.index_position >= MAX_ROW_FOR_CONTROL_UROV) current_ekran.index_position = 0;
               while(
                     (
-                     (
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
                      )   
-                     &&
-                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                    )  
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
                     ||
                     (
                      (
@@ -10843,7 +10843,7 @@ void main_manu_function(void)
                 }
                 else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
                 {
-                  if ((edition_settings.control_urov  & ((unsigned int)(~CTR_UROV_MASKA))) == 0)
+                  if ((edition_settings.control_urov  & ((uint64_t)(~CTR_UROV_MASKA))) == 0)
                   {
                     if (edition_settings.control_urov != current_settings.control_urov)
                     {
@@ -13099,15 +13099,15 @@ void main_manu_function(void)
                 
                 if(current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_CONTROL_UROV - 1;
                 while(
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
+                    (
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                     )   
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
+                    ||
                       (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
@@ -14623,15 +14623,15 @@ void main_manu_function(void)
                 
                 if(current_ekran.index_position >= MAX_ROW_FOR_CONTROL_UROV) current_ekran.index_position = 0;
                 while(
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
+                    (
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                     )   
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
+                    ||
                       (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
@@ -16619,44 +16619,8 @@ void main_manu_function(void)
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
-                unsigned int maska = 0;
-          
-                //Виділяємо, який біт треба міняти
-                if (current_ekran.index_position == INDEX_ML_CTRUROV_STATE) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STATE);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZDZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZDZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3I0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3I0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3U0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3U0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_NZZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP3  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZOP1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZOP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR2);
-                else
-                {
-                  for (size_t n_UP = 0; n_UP < NUMBER_UP; n_UP++)
-                  {
-                    if (current_ekran.index_position == (INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP))
-                    {
-                      maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP);
-                      break;
-                    }
-                  }
-                }
-                
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= maska;
+                edition_settings.control_urov ^= MASKA_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();
@@ -18549,44 +18513,8 @@ void main_manu_function(void)
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
-                unsigned int maska = 0;
-          
-                //Виділяємо, який біт треба міняти
-                if (current_ekran.index_position == INDEX_ML_CTRUROV_STATE) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STATE);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZDZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZDZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3I0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3I0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3U0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3U0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_NZZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP3  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZOP1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZOP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR2);
-                else
-                {
-                  for (size_t n_UP = 0; n_UP < NUMBER_UP; n_UP++)
-                  {
-                    if (current_ekran.index_position == (INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP))
-                    {
-                      maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP);
-                      break;
-                    }
-                  }
-                }
-                
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= maska;
+                edition_settings.control_urov ^= MASKA_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();

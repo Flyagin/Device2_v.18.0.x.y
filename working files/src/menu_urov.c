@@ -234,12 +234,20 @@ void make_ekran_control_urov()
   {
     {
       "      ÓÐÎÂ      ",
+      "   Ïóñê îò ÄÇ1  ",
+      " Ïóñê îò ÀÌÒÇ1  ",
+      "   Ïóñê îò ÄÇ2  ",
+      " Ïóñê îò ÀÌÒÇ2  ",
+      "   Ïóñê îò ÄÇ3  ",
+      " Ïóñê îò ÀÌÒÇ3  ",
+      "   Ïóñê îò ÄÇ4  ",
+      " Ïóñê îò ÀÌÒÇ4  ",
       "  Ïóñê îò ÌÒÇ1  ",
       "  Ïóñê îò ÌÒÇ2  ",
       "  Ïóñê îò ÌÒÇ3  ",
       "  Ïóñê îò ÌÒÇ4  ",
-      "Ïóñê îò ÌÒÇ0.4 1",
-      "Ïóñê îò ÌÒÇ0.4 2",
+//      "Ïóñê îò ÌÒÇ0.4 1",
+//      "Ïóñê îò ÌÒÇ0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       "  Ïóñê îò 3I0   ",
       "  Ïóñê îò 3U0   ",
@@ -258,12 +266,20 @@ void make_ekran_control_urov()
     },
     {
       "      ÏÐÂÂ      ",
+      "  Ïóñê â³ä ÄÇ1  ",
+      " Ïóñê â³ä ÀÌÑÇ1 ",
+      "  Ïóñê â³ä ÄÇ2  ",
+      " Ïóñê â³ä ÀÌÑÇ2 ",
+      "  Ïóñê â³ä ÄÇ3  ",
+      " Ïóñê â³ä ÀÌÑÇ3 ",
+      "  Ïóñê â³ä ÄÇ4  ",
+      " Ïóñê â³ä ÀÌÑÇ4 ",
       " Ïóñê â³ä ÌÑÇ1  ",
       " Ïóñê â³ä ÌÑÇ2  ",
       " Ïóñê â³ä ÌÑÇ3  ",
       " Ïóñê â³ä ÌÑÇ4  ",
-      "Ï-ê â³ä ÌÑÇ0.4 1",
-      "Ï-ê â³ä ÌÑÇ0.4 2",
+//      "Ï-ê â³ä ÌÑÇ0.4 1",
+//      "Ï-ê â³ä ÌÑÇ0.4 2",
       "  Ïóñê â³ä ÇÄÇ  ",
       "  Ïóñê â³ä 3I0  ",
       "  Ïóñê â³ä 3U0  ",
@@ -282,12 +298,20 @@ void make_ekran_control_urov()
     },
     {
       "      CBFP      ",
+      " Start from ÄÇ1 ",
+      "Start from ÀÌÒÇ1",
+      " Start from ÄÇ2 ",
+      "Start from ÀÌÒÇ2",
+      " Start from ÄÇ3 ",
+      "Start from ÀÌÒÇ3",
+      " Start from ÄÇ4 ",
+      "Start from ÀÌÒÇ4",
       " Start from OCP1",
       " Start from OCP2",
       " Start from OCP3",
       " Start from OCP4",
-      "Start f.OCP0.4 1",
-      "Start f.OCP0.4 2",
+//      "Start f.OCP0.4 1",
+//      "Start f.OCP0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       " Start from 3I0 ",
       " Start from 3U0 ",
@@ -306,12 +330,20 @@ void make_ekran_control_urov()
     },
     {
       "      ÓÐÎÂ      ",
+      "   Ïóñê îò ÄÇ1  ",
+      " Ïóñê îò ÀÌÒÇ1  ",
+      "   Ïóñê îò ÄÇ2  ",
+      " Ïóñê îò ÀÌÒÇ2  ",
+      "   Ïóñê îò ÄÇ3  ",
+      " Ïóñê îò ÀÌÒÇ3  ",
+      "   Ïóñê îò ÄÇ4  ",
+      " Ïóñê îò ÀÌÒÇ4  ",
       "  Ïóñê îò ÌÒÇ1  ",
       "  Ïóñê îò ÌÒÇ2  ",
       "  Ïóñê îò ÌÒÇ3  ",
       "  Ïóñê îò ÌÒÇ4  ",
-      "Ïóñê îò ÌÒÇ0.4 1",
-      "Ïóñê îò ÌÒÇ0.4 2",
+//      "Ïóñê îò ÌÒÇ0.4 1",
+//      "Ïóñê îò ÌÒÇ0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       "  Ïóñê îò 3I0   ",
       "  Ïóñê îò 3U0   ",
@@ -350,7 +382,7 @@ void make_ekran_control_urov()
     }
   }
   
-  unsigned int temp_data;
+  uint64_t temp_data;
   if(current_ekran.edition == 0) temp_data = current_settings.control_urov;
   else temp_data = edition_settings.control_urov;
         
@@ -374,8 +406,8 @@ void make_ekran_control_urov()
     if (
         (  
          (
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
          )   
          &&
          ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
@@ -474,9 +506,9 @@ void make_ekran_control_urov()
        )   
     {
       int i = current_index - additional_current;
-      unsigned int maska_1, maska_2;
+      uint64_t maska_1, maska_2;
       maska_1 = (1 << i) - 1;
-      maska_2 = (unsigned int)(~maska_1);
+      maska_2 = (uint64_t)(~maska_1);
     
       if ((i+1) <= position_temp) position_temp--;
       do
@@ -490,20 +522,18 @@ void make_ekran_control_urov()
       }
       while (i < (MAX_ROW_FOR_CONTROL_UROV -  additional_current));
     
-      unsigned int temp_data_1 = (temp_data >> 1) & maska_2;
+      uint64_t temp_data_1 = (temp_data >> 1) & maska_2;
       temp_data = (temp_data & maska_1) | temp_data_1;
 
       if (
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
          )   
         additional_current_dz++;
 
       if (
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3) ||
-          (current_index == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
+          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_MTZ1) &&
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4)
          )   
         additional_current_mtz++;
 

@@ -778,7 +778,7 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
 
       if(inOffset>=UROV_CONFIGURATION_BEGIN && inOffset<=UROV_CONFIGURATION_END)
         {
-          (*editControl) = &edition_settings.control_urov;
+       //   (*editControl) = &edition_settings.control_urov;
           if(isValidCONFCondition(**editControl, UROV_BIT_CONFIGURATION, *uprMaska, validData)) isValid = 0;
         }//if
 
@@ -802,7 +802,7 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
     {
       int inupOffset = inOffset-329;
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UP1+inupOffset;
-      (*editControl) = &edition_settings.control_urov;
+    //  (*editControl) = &edition_settings.control_urov;
       if(isValidCONFCondition(**editControl, UROV_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       if(isValidCONFCondition(**editControl, UP_BIT_CONFIGURATION,

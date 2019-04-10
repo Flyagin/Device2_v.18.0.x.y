@@ -333,7 +333,7 @@ typedef struct
   unsigned int setpoint_urov[NUMBER_GROUP_USTAVOK];         //уставка УРОВ
   int timeout_urov_1[NUMBER_GROUP_USTAVOK];                 //Витримка УРОВ першої ступені
   int timeout_urov_2[NUMBER_GROUP_USTAVOK];                 //Витримка УРОВ другої ступені
-  unsigned int control_urov;                                //Поле для управління УРОВ
+  uint64_t control_urov;                                    //Поле для управління УРОВ
 
   //ЗОП(КОФ)
   unsigned int setpoint_zop[NUMBER_GROUP_USTAVOK];          //уставка ЗОП(КОФ)
