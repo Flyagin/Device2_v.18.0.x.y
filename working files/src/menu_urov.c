@@ -246,8 +246,6 @@ void make_ekran_control_urov()
       "  Ïóñê îò ÌÒÇ2  ",
       "  Ïóñê îò ÌÒÇ3  ",
       "  Ïóñê îò ÌÒÇ4  ",
-//      "Ïóñê îò ÌÒÇ0.4 1",
-//      "Ïóñê îò ÌÒÇ0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       "  Ïóñê îò 3I0   ",
       "  Ïóñê îò 3U0   ",
@@ -278,8 +276,6 @@ void make_ekran_control_urov()
       " Ïóñê â³ä ÌÑÇ2  ",
       " Ïóñê â³ä ÌÑÇ3  ",
       " Ïóñê â³ä ÌÑÇ4  ",
-//      "Ï-ê â³ä ÌÑÇ0.4 1",
-//      "Ï-ê â³ä ÌÑÇ0.4 2",
       "  Ïóñê â³ä ÇÄÇ  ",
       "  Ïóñê â³ä 3I0  ",
       "  Ïóñê â³ä 3U0  ",
@@ -310,8 +306,6 @@ void make_ekran_control_urov()
       " Start from OCP2",
       " Start from OCP3",
       " Start from OCP4",
-//      "Start f.OCP0.4 1",
-//      "Start f.OCP0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       " Start from 3I0 ",
       " Start from 3U0 ",
@@ -342,8 +336,6 @@ void make_ekran_control_urov()
       "  Ïóñê îò ÌÒÇ2  ",
       "  Ïóñê îò ÌÒÇ3  ",
       "  Ïóñê îò ÌÒÇ4  ",
-//      "Ïóñê îò ÌÒÇ0.4 1",
-//      "Ïóñê îò ÌÒÇ0.4 2",
       "  Ïóñê îò ÇÄÇ   ",
       "  Ïóñê îò 3I0   ",
       "  Ïóñê îò 3U0   ",
@@ -406,8 +398,8 @@ void make_ekran_control_urov()
     if (
         (  
          (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
+          (current_index >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4)
          )   
          &&
          ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
@@ -526,14 +518,14 @@ void make_ekran_control_urov()
       temp_data = (temp_data & maska_1) | temp_data_1;
 
       if (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
+          (current_index >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+          (current_index <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4)
          )   
         additional_current_dz++;
 
       if (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_MTZ1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4)
+          (current_index >= INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) &&
+          (current_index <= INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)
          )   
         additional_current_mtz++;
 

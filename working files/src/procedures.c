@@ -365,14 +365,14 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
       
       //Виводим ступені ДЗ з УРОВ
       target_label->control_urov &= (uint64_t)(~(
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ1)   | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ1) | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ2)   | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ2) | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ3)   | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ3) | 
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ4)   |
-                                                 MASKA64_FOR_BIT(INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ1)    | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ1) | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ2)    | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ2) | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ3)    | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ3) | 
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_DZ4)    |
+                                                 MASKA64_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
                                                 )
                                                );
       

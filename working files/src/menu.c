@@ -5336,8 +5336,8 @@ void main_manu_function(void)
               while(
                     (
                      (  
-                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
                      )   
                     &&
                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
@@ -13101,8 +13101,8 @@ void main_manu_function(void)
                 while(
                     (
                      (  
-                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
                      )   
                     &&
                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
@@ -14625,8 +14625,8 @@ void main_manu_function(void)
                 while(
                     (
                      (  
-                      (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4) 
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
                      )   
                     &&
                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
