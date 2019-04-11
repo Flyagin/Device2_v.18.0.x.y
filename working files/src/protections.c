@@ -5362,6 +5362,7 @@ inline void urov_handler(unsigned int *p_active_functions, unsigned int number_g
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4)   ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_MTZ4             ) != 0)) ||
         
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZDZ)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_ZDZ              ) != 0)) ||
+        
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3I0)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_3I0              ) != 0)) ||
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3U0)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_3U0              ) != 0)) ||
       ( ((current_settings_prt.control_urov & MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ)    ) != 0) && (_CHECK_SET_BIT(p_active_functions, RANG_NZZ              ) != 0)) ||
@@ -5471,6 +5472,8 @@ inline void apv_handler(unsigned int *p_active_functions, unsigned int number_gr
 {
   unsigned int logic_APV_0 = 0;
   unsigned int logic_APV_1 = 0;
+  unsigned int logic_APV_2 = 0;
+  unsigned int logic_APV_3 = 0;
 
   //Ðåñòàðò ïðèñòðîþ
   logic_APV_1 |= (start_restart != 0) << 19;
@@ -5505,8 +5508,84 @@ inline void apv_handler(unsigned int *p_active_functions, unsigned int number_gr
   logic_APV_0 |= (_CHECK_SET_BIT(p_active_functions, RANG_MTZ4) != 0) << 12;
   _AND2(logic_APV_0, 11, logic_APV_0, 12, logic_APV_0, 13);
   
-  _OR4(logic_APV_0, 4, logic_APV_0, 7, logic_APV_0, 10, logic_APV_0, 13, logic_APV_0, 14);
-  _TIMER_0_T(INDEX_TIMER_APV_TMP1, 1, logic_APV_0, 14, logic_APV_0, 15);
+  /***/
+
+  //Ì:"Ïóñê â³ä ÄÇ1"
+  logic_APV_1 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_DZ1) != 0) << 30;
+  //"ÄÇ1"
+  logic_APV_1 |= (_CHECK_SET_BIT(p_active_functions, RANG_DZ1) != 0) << 31;
+  _AND2(logic_APV_1, 30, logic_APV_1, 31, logic_APV_2, 20);
+
+  //Ì:"Ïóñê â³ä ÄÇ2"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_DZ2) != 0) << 0;
+  //"ÄÇ2"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_DZ2) != 0) << 1;
+  _AND2(logic_APV_2, 0, logic_APV_2, 1, logic_APV_2, 21);
+
+  //Ì:"Ïóñê â³ä ÄÇ3"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_DZ3) != 0) << 2;
+  //"ÄÇ3"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_DZ3) != 0) << 3;
+  _AND2(logic_APV_2, 2, logic_APV_2, 3, logic_APV_2, 22);
+
+  //Ì:"Ïóñê â³ä ÄÇ4"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_DZ4) != 0) << 4;
+  //"ÄÇ4"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_DZ4) != 0) << 5;
+  _AND2(logic_APV_2, 4, logic_APV_2, 5, logic_APV_2, 23);
+
+  _OR4(logic_APV_2, 20, logic_APV_2, 21, logic_APV_2, 22, logic_APV_2, 23, logic_APV_2, 31);
+
+  //Ì:"Ïóñê â³ä ÀÌÑÇ1"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_AMTDZ1) != 0) << 6;
+  //"ÀÌÑÇ1"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ1) != 0) << 7;
+  _AND2(logic_APV_2, 6, logic_APV_2, 7, logic_APV_2, 24);
+
+  //Ì:"Ïóñê â³ä ÀÌÑÇ2"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_AMTDZ2) != 0) << 8;
+  //"ÀÌÑÇ2"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ2) != 0) << 9;
+  _AND2(logic_APV_2, 8, logic_APV_2, 9, logic_APV_2, 25);
+
+  //Ì:"Ïóñê â³ä ÀÌÑÇ3"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_AMTDZ3) != 0) << 10;
+  //"ÀÌÑÇ3"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ3) != 0) << 11;
+  _AND2(logic_APV_2, 10, logic_APV_2, 11, logic_APV_2, 26);
+
+  //Ì:"Ïóñê â³ä ÀÌÑÇ4"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_AMTDZ4) != 0) << 12;
+  //"ÀÌÑÇ4"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_AMTZ_DZ4) != 0) << 13;
+  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 27);
+
+  _OR4(logic_APV_2, 24, logic_APV_2, 25, logic_APV_2, 26, logic_APV_2, 27, logic_APV_3, 0);
+
+  //Ì:"Ïóñê â³ä ÑÇÍÏ1"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP1) != 0) << 14;
+  //"ÑÇÍÏ1"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP1) != 0) << 15;
+  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 28);
+
+  //Ì:"Ïóñê â³ä ÑÇÍÏ2"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP2) != 0) << 16;
+  //"ÑÇÍÏ2"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP2) != 0) << 17;
+  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 29);
+
+  //Ì:"Ïóñê â³ä ÑÇÍÏ3"
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP3) != 0) << 16;
+  //"ÑÇÍÏ3"
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP3) != 0) << 17;
+  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 30);
+  
+  _OR3(logic_APV_2, 28, logic_APV_2, 29, logic_APV_2, 30, logic_APV_3, 1);
+  /***/
+  
+  _OR4(logic_APV_0,  4, logic_APV_0,  7, logic_APV_0, 10, logic_APV_0, 13, logic_APV_0, 14);
+  _OR4(logic_APV_0, 14, logic_APV_2, 31, logic_APV_3,  0, logic_APV_3,  1, logic_APV_3,  2);
+  _TIMER_0_T(INDEX_TIMER_APV_TMP1, 1, logic_APV_3, 2, logic_APV_0, 15);
 
   //Ì:"×ÀÏÂ 1"
   logic_APV_0 |= ((current_settings_prt.control_achr_chapv & CTR_CHAPV1) != 0) << 16;

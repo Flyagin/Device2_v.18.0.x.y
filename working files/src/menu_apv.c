@@ -462,7 +462,7 @@ void make_ekran_control_apv()
         (
          (
           (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
          )   
          &&
          ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -503,7 +503,7 @@ void make_ekran_control_apv()
 
       if (
           (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
          )   
         additional_current_tznp++;
 

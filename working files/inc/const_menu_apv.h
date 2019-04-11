@@ -64,8 +64,6 @@
 #define CTR_APV_STARTED_FROM_TZNP2              (1 << INDEX_ML_CTRAPV_STARTED_FROM_TZNP2)          
 #define INDEX_ML_CTRAPV_STARTED_FROM_TZNP3      18
 #define CTR_APV_STARTED_FROM_TZNP3              (1 << INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)          
-#define INDEX_ML_CTRAPV_STARTED_FROM_TZNP4      19
-#define CTR_APV_STARTED_FROM_TZNP4              (1 << INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)          
 
 #define CTR_APV_MASKA                    (                              \
                                           CTR_APV_STAGE_1            |   \
@@ -86,8 +84,7 @@
                                           CTR_APV_STARTED_FROM_MTZ4  |   \
                                           CTR_APV_STARTED_FROM_TZNP1 |   \
                                           CTR_APV_STARTED_FROM_TZNP2 |   \
-                                          CTR_APV_STARTED_FROM_TZNP3 |   \
-                                          CTR_APV_STARTED_FROM_TZNP4     \
+                                          CTR_APV_STARTED_FROM_TZNP3     \
                                          )
 
 #define COL_TMO_APV_1_BEGIN             4

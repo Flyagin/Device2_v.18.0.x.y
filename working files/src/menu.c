@@ -5260,7 +5260,7 @@ void main_manu_function(void)
                     (
                      (  
                       (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                      )   
                     &&
                     ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -12972,7 +12972,7 @@ void main_manu_function(void)
                       (
                        (  
                         (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                        )   
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -14496,7 +14496,7 @@ void main_manu_function(void)
                       (
                        (  
                         (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                        )   
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
