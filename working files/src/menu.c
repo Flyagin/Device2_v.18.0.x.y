@@ -16620,7 +16620,7 @@ void main_manu_function(void)
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= MASKA_FOR_BIT(current_ekran.index_position);
+                edition_settings.control_urov ^= MASKA64_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();
@@ -18514,7 +18514,7 @@ void main_manu_function(void)
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= MASKA_FOR_BIT(current_ekran.index_position);
+                edition_settings.control_urov ^= MASKA64_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();
