@@ -788,8 +788,7 @@ unsigned int restart_counter;
 
 //Визначення місця до пошкодження
 unsigned int vymknennja_vid_KZ_prt;
-unsigned int I_max_KZ_prt;
-unsigned int number_of_phases_KZ_prt;
+unsigned int MF_KZ;
 unsigned int X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
 int R_KZ_prt;
 

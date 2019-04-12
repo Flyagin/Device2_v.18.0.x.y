@@ -6684,99 +6684,80 @@ inline void vmp_handler(unsigned int p_active_functions[])
     VMP_last_KZ = UNDEF_VMP; /*Помічаємо, що визначення місця до пошкодження ще не визначене*/
     
     //Перевіряємо чи подається команда на вимкнення ВВ ("Робота БО")
-    vymknennja_vid_KZ_prt = _CHECK_SET_BIT(p_active_functions, RANG_WORK_BO);
+    vymknennja_vid_KZ_prt |= (_CHECK_SET_BIT(p_active_functions, RANG_WORK_BO) != 0);
+    MF_KZ |= (_CHECK_SET_BIT(p_active_functions, RANG_2KZ) != 0) || (_CHECK_SET_BIT(p_active_functions, RANG_3KZ) != 0);
 
     
-    //Фіксуємо максимальний фазний струм при КЗ
-    unsigned int max_faze_current = measurement[IM_IA];
-    if (max_faze_current < measurement[IM_IB]) max_faze_current = measurement[IM_IB];
-    if (max_faze_current < measurement[IM_IC]) max_faze_current = measurement[IM_IC];
-    
-    if (max_faze_current > I_max_KZ_prt)
+    int X_resistance[3] = {resistance[X_AB], resistance[X_BC], resistance[X_CA]};
+    if (
+        (((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE)) ||
+        (((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE)) ||
+        (((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE))
+       )
     {
-      //Зафіксовано нове значення максимального фазного струму при КЗ
-      I_max_KZ_prt = max_faze_current;
-      
-      //Визначаємо скільки фаз бере учать у КЗ
-      unsigned int I_max_KZ_0_9 = (unsigned int)(0.9f*((float)max_faze_current));
-      
-      unsigned int number_of_phases_tmp = 0;
-      if (measurement[IM_IA] >= I_max_KZ_0_9) number_of_phases_tmp++;
-      if (measurement[IM_IB] >= I_max_KZ_0_9) number_of_phases_tmp++;
-      if (measurement[IM_IC] >= I_max_KZ_0_9) number_of_phases_tmp++;
-      number_of_phases_KZ_prt = number_of_phases_tmp;
-        
-      int X_resistance[3] = {resistance[X_AB], resistance[X_BC], resistance[X_CA]};
-      if (
-          (((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE)) ||
-          (((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE)) ||
-          (((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE))
-         )
+      //Є реально розраховані міжфазні опори
+
+      //Фіксуємо мінімальний міжфазний реактивний опір при КЗ
+      //Етап 1: Знаходим перший визначений фіжфазний опір і помічаємо його значення як найменше
+      unsigned int min_interphase_X = (unsigned int)UNDEF_RESISTANCE;
+      int R_KZ_tmp;
+      if (((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE))
       {
-        //Є реально розраховані міжфазні опори
-
-        //Фіксуємо мінімальний міжфазний реактивний опір при КЗ
-        //Етап 1: Знаходим перший визначений фіжфазний опір і помічаємо його значення як найменше
-        unsigned int min_interphase_X;
-        int R_KZ_tmp;
-        if (((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE))
-        {
-          min_interphase_X = abs(X_resistance[0]);
-          R_KZ_tmp = resistance[R_AB];
-        }
-        else if (((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE))
-        {
-          min_interphase_X = abs(X_resistance[1]);
-          R_KZ_tmp = resistance[R_BC];
-        }
-        else if (((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE))
-        {
-          min_interphase_X = abs(X_resistance[2]);
-          R_KZ_tmp = resistance[R_CA];
-        }
-        else
-        {
-          //Теоретично цього ніколи не мало б бути
-          total_error_sw_fixed(68);
-        }
-      
-        //Етап 2: Серед всіх визначених міжфазних опорів знаходимо найменше
-        unsigned int X_mod;
-        if ((((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[0])))) 
-        {
-          min_interphase_X = X_mod;
-          R_KZ_tmp = resistance[R_AB];
-        }
-        if ((((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[1]))))
-        {
-          min_interphase_X = X_mod;
-          R_KZ_tmp = resistance[R_BC];
-        }
-        if ((((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[2]))))
-        {
-          min_interphase_X = X_mod;
-          R_KZ_tmp = resistance[R_CA];
-        }
-      
-        //Зафіксовано мінімальное значення міжфазного опору при КЗ
-        X_min_KZ_prt = min_interphase_X;
-        R_KZ_prt = R_KZ_tmp; //Поки що це число потрібно тільки для визначення знаку (щоб визначити у якому напямку відбулося КЗ)
-
-//        //Етап 3: Перевіряємо чи мінімальний опір на цей момент не є мінімальним з початку виникнення КЗ
-//        if (
-//            (X_min_KZ_prt == ((unsigned int)UNDEF_RESISTANCE)) || /*Це є ознакою, що для даного КЗ ми перший раз фіксуємо мінімальний опір, тому і його значення помічаємо як мінімальне*/
-//            (X_min_KZ_prt > min_interphase_X)
-//           )
-//        {
-//          //Зафіксовано нове значення мінімального міжфазного опору при КЗ
-//          X_min_KZ_prt = min_interphase_X;
-//          R_KZ_prt = R_KZ_tmp; //Поки що це число потрібно тільки для визначення знаку (щоб визначити у якому напямку відбулося КЗ)
-//        }
+        min_interphase_X = abs(X_resistance[0]);
+        R_KZ_tmp = resistance[R_AB];
+      }
+      else if (((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE))
+      {
+        min_interphase_X = abs(X_resistance[1]);
+        R_KZ_tmp = resistance[R_BC];
+      }
+      else if (((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE))
+      {
+        min_interphase_X = abs(X_resistance[2]);
+        R_KZ_tmp = resistance[R_CA];
       }
       else
       {
-        X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
+        //Теоретично цього ніколи не мало б бути
+        total_error_sw_fixed(68);
       }
+      
+      //Етап 2: Серед всіх визначених міжфазних опорів знаходимо найменше
+      unsigned int X_mod;
+      if ((((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[0])))) 
+      {
+        min_interphase_X = X_mod;
+        R_KZ_tmp = resistance[R_AB];
+      }
+      if ((((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[1]))))
+      {
+        min_interphase_X = X_mod;
+        R_KZ_tmp = resistance[R_BC];
+      }
+      if ((((unsigned int)X_resistance[2]) != ((unsigned int)UNDEF_RESISTANCE)) && (min_interphase_X > (X_mod = abs(X_resistance[2]))))
+      {
+        min_interphase_X = X_mod;
+        R_KZ_tmp = resistance[R_CA];
+      }
+      
+      //Етап 3: Перевіряємо чи мінімальний опір на цей момент не є мінімальним з початку виникнення КЗ
+      if (
+          (min_interphase_X != ((unsigned int)UNDEF_RESISTANCE))
+          &&
+          (
+           (X_min_KZ_prt == ((unsigned int)UNDEF_RESISTANCE)) || /*Це є ознакою, що для даного КЗ ми перший раз фіксуємо мінімальний опір, тому і його значення помічаємо як мінімальне*/
+           (X_min_KZ_prt > min_interphase_X)
+          )   
+         )
+      {
+        //Зафіксовано нове значення мінімального міжфазного опору при КЗ
+        X_min_KZ_prt = min_interphase_X;
+        R_KZ_prt = R_KZ_tmp; //Поки що це число потрібно тільки для визначення знаку (щоб визначити у якому напямку відбулося КЗ)
+      }
+    }
+    else
+    {
+      X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
     }
   }
   else
@@ -6784,7 +6765,7 @@ inline void vmp_handler(unsigned int p_active_functions[])
     //На даний момент немає фазного КЗ
     if(
        (vymknennja_vid_KZ_prt != 0) &&  /*Умова, що відбувалося вимкнення під час останнього КЗ*/
-       ((number_of_phases_last_KZ = number_of_phases_KZ_prt) > 1) && /*Умова, що КЗ є міжфазним*/
+       (MF_KZ != 1) && /*Умова, що КЗ є міжфазним*/
        ((current_settings_prt.control_vmp & CTR_VMP_STATE) != 0) && /*ВМП ввімкнено*/ 
        (X_min_KZ_prt != ((unsigned int)UNDEF_RESISTANCE)) /*Умова, що хоча б один міжфазний опір був визначений, а тому і є зафіксований мінімальний реактивний міжфазний опір*/
       )
@@ -6835,8 +6816,7 @@ inline void vmp_handler(unsigned int p_active_functions[])
     Я думаю, що їх не так багато і вони б не мали сильно знизити ресурс процесора
     */
     vymknennja_vid_KZ_prt = 0;
-    I_max_KZ_prt = 0;
-    number_of_phases_KZ_prt = 0;
+    MF_KZ = false;
     X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
     R_KZ_prt = 0;
   }

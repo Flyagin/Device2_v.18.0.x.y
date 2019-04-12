@@ -1790,11 +1790,20 @@ enum __mtz_abc_direction_const {
 /*****************************************/
 //Макска моніторингу максимального фазного струму для фіксації КЗ
 /*****************************************/
-#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_0        0
-#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_1        0
+#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_0   0
+
+#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_1 (unsigned int)( \
+     (1 << (RANG_PO_DZ1 - 32))                               \
+   | (1 << (RANG_PO_DIR_DZ2 - 32))                           \
+   | (1 << (RANG_PO_INV_DZ2 - 32))                           \
+   | (1 << (RANG_PO_DIR_DZ3 - 32))                           \
+   | (1 << (RANG_PO_INV_DZ3 - 32))                           \
+   | (1 << (RANG_PO_DIR_DZ4 - 32))                           \
+)
 
 #define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_2 (unsigned int)(  \
-     (1 << (RANG_PO_MTZ1 - 64))                               \
+     (1 << (RANG_PO_INV_DZ4 - 64))                           \
+   | (1 << (RANG_PO_MTZ1 - 64))                               \
    | (1 << (RANG_PO_MTZN1_VPERED - 64))                       \
    | (1 << (RANG_PO_MTZN1_NAZAD - 64))                        \
    | (1 << (RANG_PO_MTZPN1 - 64))                             \

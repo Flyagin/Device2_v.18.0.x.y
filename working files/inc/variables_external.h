@@ -448,8 +448,7 @@ extern unsigned int restart_counter;
 
 //Визначення місця до пошкодження
 extern unsigned int vymknennja_vid_KZ_prt;
-extern unsigned int I_max_KZ_prt;
-extern unsigned int number_of_phases_KZ_prt;
+extern unsigned int MF_KZ;
 extern unsigned int X_min_KZ_prt;
 extern int R_KZ_prt;
 
