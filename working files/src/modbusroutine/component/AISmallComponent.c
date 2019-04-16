@@ -96,14 +96,14 @@ int getAISmallModbusRegister(int adrReg)
 #endif
       }
 
-    case 6://I04
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 338;
-#else
-        return (measurement_low[IM_I04] >> 2) &0xFFFF;
-#endif
-      }
+//    case 6://I04
+//      {
+//#ifdef TESTZBIRKA_VERSII_PZ
+//        return 338;
+//#else
+//        return (measurement_low[IM_I04] >> 2) &0xFFFF;
+//#endif
+//      }
     case 7://P
       {
 #ifdef TESTZBIRKA_VERSII_PZ

@@ -1159,13 +1159,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -1389,11 +1390,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -1427,13 +1428,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -1657,11 +1659,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -1695,13 +1697,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -1925,11 +1928,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -1966,13 +1969,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -2104,11 +2108,11 @@
                                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\OS</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
-                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
-                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                             </option>
                             <option>
                                 <name>CCStdIncCheck</name>
@@ -2196,11 +2200,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -2234,13 +2238,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -2464,11 +2469,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -2542,6 +2547,7 @@
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
                                 <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -2765,11 +2771,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -2828,13 +2834,14 @@
                                     <debug>1</debug>
                                     <option>
                                         <name>CCOptimizationNoSizeConstraints</name>
-                                        <state>0</state>
+                                        <state>1</state>
                                     </option>
                                     <option>
                                         <name>CCDefines</name>
                                         <state>USE_STDPERIPH_DRIVER</state>
                                         <state>STM32F2XX</state>
-                                        <state>USE_USB_OTG_FS </state>
+                                        <state>USE_USB_OTG_FS</state>
+                                        <state>KEYBOARD_VER_2_1</state>
                                     </option>
                                     <option>
                                         <name>CCPreprocFile</name>
@@ -2927,7 +2934,7 @@
                                     </option>
                                     <option>
                                         <name>CCRequirePrototypes</name>
-                                        <state>0</state>
+                                        <state>1</state>
                                     </option>
                                     <option>
                                         <name>CCDiagWarnAreErr</name>
@@ -3058,11 +3065,11 @@
                                     </option>
                                     <option>
                                         <name>CCEncSource</name>
-                                        <state>0</state>
+                                        <state>1</state>
                                     </option>
                                     <option>
                                         <name>CCEncOutput</name>
-                                        <state>0</state>
+                                        <state>1</state>
                                     </option>
                                     <option>
                                         <name>CCEncOutputBom</name>
@@ -3121,13 +3128,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
-                                    <state>USE_USB_OTG_FS </state>
+                                    <state>USE_USB_OTG_FS</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -3220,7 +3228,7 @@
                                 </option>
                                 <option>
                                     <name>CCRequirePrototypes</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDiagWarnAreErr</name>
@@ -3351,11 +3359,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -3392,13 +3400,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
-                                    <state>USE_USB_OTG_FS </state>
+                                    <state>USE_USB_OTG_FS</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -3491,7 +3500,7 @@
                                 </option>
                                 <option>
                                     <name>CCRequirePrototypes</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDiagWarnAreErr</name>
@@ -3622,11 +3631,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -3688,13 +3697,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
-                                <state>USE_USB_OTG_FS </state>
+                                <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -3787,7 +3797,7 @@
                             </option>
                             <option>
                                 <name>CCRequirePrototypes</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDiagWarnAreErr</name>
@@ -3918,11 +3928,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -3956,13 +3966,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
-                                <state>USE_USB_OTG_FS </state>
+                                <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -4055,7 +4066,7 @@
                             </option>
                             <option>
                                 <name>CCRequirePrototypes</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDiagWarnAreErr</name>
@@ -4186,11 +4197,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -4224,13 +4235,14 @@
                             <debug>1</debug>
                             <option>
                                 <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDefines</name>
                                 <state>USE_STDPERIPH_DRIVER</state>
                                 <state>STM32F2XX</state>
-                                <state>USE_USB_OTG_FS </state>
+                                <state>USE_USB_OTG_FS</state>
+                                <state>KEYBOARD_VER_2_1</state>
                             </option>
                             <option>
                                 <name>CCPreprocFile</name>
@@ -4323,7 +4335,7 @@
                             </option>
                             <option>
                                 <name>CCRequirePrototypes</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCDiagWarnAreErr</name>
@@ -4362,11 +4374,11 @@
                                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\OS</state>
                                 <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
-                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
-                                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                             </option>
                             <option>
                                 <name>CCStdIncCheck</name>
@@ -4454,11 +4466,11 @@
                             </option>
                             <option>
                                 <name>CCEncSource</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutput</name>
-                                <state>0</state>
+                                <state>1</state>
                             </option>
                             <option>
                                 <name>CCEncOutputBom</name>
@@ -5067,14 +5079,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
                                     <state>USE_USB_OTG_FS</state>
-                                    <state>KEYBOARD_VER_1</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -5298,11 +5310,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -5372,13 +5384,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
                                     <state>USE_USB_OTG_FS</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -5602,11 +5615,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -5640,14 +5653,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
                                     <state>USE_USB_OTG_FS</state>
-                                    <state>KEYBOARD_VER_1</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -5871,11 +5884,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -5909,13 +5922,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
                                     <state>USE_USB_OTG_FS</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -6139,11 +6153,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>
@@ -6177,13 +6191,14 @@
                                 <debug>1</debug>
                                 <option>
                                     <name>CCOptimizationNoSizeConstraints</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCDefines</name>
                                     <state>USE_STDPERIPH_DRIVER</state>
                                     <state>STM32F2XX</state>
                                     <state>USE_USB_OTG_FS</state>
+                                    <state>KEYBOARD_VER_2_1</state>
                                 </option>
                                 <option>
                                     <name>CCPreprocFile</name>
@@ -6407,11 +6422,11 @@
                                 </option>
                                 <option>
                                     <name>CCEncSource</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutput</name>
-                                    <state>0</state>
+                                    <state>1</state>
                                 </option>
                                 <option>
                                     <name>CCEncOutputBom</name>

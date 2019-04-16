@@ -253,7 +253,6 @@ enum _index_meas
   IM_IC,
   IM_I2,
   IM_I1,
-  IM_I04,
   IM_UA,
   IM_UB,
   IM_UC,

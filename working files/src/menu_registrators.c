@@ -233,54 +233,22 @@ void make_ekran_list_titles_for_record_of_digital_registrator(void)
       {
         " Метка времени  ",
         " Изм.дискр.сигн.",
-        " Изм.при м.фазе ",
-        " Изм.при м.ф.0.4",
-        " Изм.при 3I0-max",
-        " Изм.при 3U0-max",
-        " Изм.при U-min  ",
-        " Изм.при U-max  ",
-        " Изм.при I2-max ",
-        " Изм.при f-min  ",
-        " Изм.при f-ЧАПВ "
+        " ОМП            "
       },
       {
         " Мітка часу     ",
         " Зм.дискр.сигн. ",
-        " Вим.при м.фазі ",
-        " Вим.при м.ф.0.4",
-        " Вим.при 3I0-max",
-        " Вим.при 3U0-max",
-        " Вим.при U-min  ",
-        " Вим.при U-max  ",
-        " Вим.при I2-max ",
-        " Вим.при f-min  ",
-        " Вим.при f-ЧАПВ "
+        " ВМП            "
       },
       {
         " Time label     ",
         " Digit.S.Changes",
-        "M.at Max.Ph Cur ",
-        "M.at Max.Ph 0.4 ",
-        "M.at 3I0 Max.   ",
-        " Изм.при 3U0-max",
-        " Изм.при U-min  ",
-        " Изм.при U-max  ",
-        " M.at Max.I2 Cur",
-        " Изм.при f-min  ",
-        " Изм.при f-ЧАПВ "
+        " ОМП            "
       },
       {
         " Уакыт белгісі  ",
         " Изм.дискр.сигн.",
-        " Изм.при м.фазе ",
-        " Изм.при м.ф.0.4",
-        " Изм.при 3I0-max",
-        " Изм.при 3U0-max",
-        " Изм.при U-min  ",
-        " Изм.при U-max  ",
-        " Изм.при I2-max ",
-        " Изм.при f-min  ",
-        " Изм.при f-ЧАПВ "
+        " ОМП            "
       }
     };
 
@@ -583,484 +551,112 @@ void make_ekran_data_and_time_of_records_registrator(unsigned int type_of_regist
 /*****************************************************/
 
 /*****************************************************/
-//Формуємо екран відображення діючих значень при фіксації максимальних/мінімальних вимірювань запису дискретного реєстратора
-/*****************************************************/
-void make_ekran_title_analog_value_records_digital_registrator(void)
-{
-  unsigned char name_string[MAX_ROW_FOR_TITLE_EKRAN_ANALOG_VALUES_DR][MAX_COL_LCD];
-  for(int index_1 = 0; index_1 < MAX_ROW_LCD; index_1++)
-  {
-    for(int index_2 = 0; index_2 < MAX_COL_LCD; index_2++) name_string[index_1][index_2] = ' ';
-  }
-  int index_language = index_language_in_array(current_settings.language);
-  
-  unsigned int position_temp = current_ekran.index_position;
-  unsigned int index_of_ekran;
-  unsigned int number_info_records;
-  
-  number_info_records = buffer_for_manu_read_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR + type_view_max_values_dr - IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE];
-  
-  index_of_ekran = (position_temp >> POWER_MAX_ROW_LCD) << POWER_MAX_ROW_LCD;
-
-  index_cell_into_array_for_min_max_measurement_dr = -1; //Помічаємо, що ми покищо не знайшли індекс комірки, який відповідає першому блоку, який визначений курсором
-  if(number_info_records == 0)
-  {
-    const unsigned char information[MAX_NAMBER_LANGUAGE][2][MAX_COL_LCD] = 
-    {
-      {
-        "      Нет       ",
-        "    записей     "
-      },
-      {
-        "     Нема       ",
-        "    записів     "
-      },
-      {
-        "    Records     ",
-        "   are absent   "
-      },
-      {
-        "      Нет       ",
-        "    записей     "
-      }
-    };
-
-    for(int index_1 = 0; index_1 < 2; index_1++)
-    {
-      for(int index_2 = 0; index_2 < MAX_COL_LCD; index_2++)
-        name_string[index_1][index_2] = information[index_language][index_1][index_2];
-    }
-
-    //Курсор не видимий
-    current_ekran.cursor_on = 0;
-  }
-  else if (current_ekran.index_position < ((int)number_info_records))
-  {
-    unsigned int k = 0;
-    while (((index_of_ekran + k) < number_info_records) && (k < MAX_ROW_FOR_TITLE_EKRAN_ANALOG_VALUES_DR))
-    {
-      //Шукаємо блок, який відповідає заданому типу струму
-      unsigned int number_finded_this_type_of_current = 0;
-      unsigned int index_cell_into_array = (FIRST_INDEX_FIRST_BLOCK_DR + (sizeof(unsigned int)*SIZE_ARRAY_FIX_MAX_MEASUREMENTS - 1));//Індекс комірки пам'яті встановлюємо на байт першого блоку, який відображає тип струму по якому йшов моніторинг
-      while ((number_finded_this_type_of_current != (index_of_ekran + k + 1)) && (index_cell_into_array < FIRST_INDEX_FIRST_DATA_DR))
-      {
-        if (buffer_for_manu_read_record[index_cell_into_array] == type_view_max_values_dr)
-          number_finded_this_type_of_current++;
-        if (number_finded_this_type_of_current != (index_of_ekran + k + 1))
-          index_cell_into_array += (sizeof(unsigned int)*SIZE_ARRAY_FIX_MAX_MEASUREMENTS);
-      }
-      
-      unsigned char information[MAX_COL_LCD] = "                ";
-      const unsigned char ms[MAX_NAMBER_LANGUAGE][3] = 
-      {
-        "мс.",
-        "мс.",
-        "ms.",
-        "мс."
-      };
-      if ((number_finded_this_type_of_current == (index_of_ekran + k + 1)) && (index_cell_into_array < FIRST_INDEX_FIRST_DATA_DR))
-      {
-        //Ми знайшли потрібний блок
-        //Якщо у цьому рядку ще і знаходиться курсор, то треба запам'ятати індекс першого елементу найденого блоку
-        if (position_temp  == (index_of_ekran + k))
-          index_cell_into_array_for_min_max_measurement_dr = index_cell_into_array - (sizeof(unsigned int)*SIZE_ARRAY_FIX_MAX_MEASUREMENTS - 1);
-
-        //Визначаємо час зрізу
-        index_cell_into_array -= 3; //Переводимо індекс на початок часової мітки
-        unsigned char sring_of_time[8] = "        ";
-        unsigned int time_of_slice = buffer_for_manu_read_record[index_cell_into_array] + (buffer_for_manu_read_record[index_cell_into_array + 1]<<8) + (buffer_for_manu_read_record[index_cell_into_array + 2]<<16);
-
-        //Конвертуємо цей час у рядок
-        unsigned int ost, local_index = 0;
-        while ((time_of_slice >= 10) && (local_index < (8 - 1)))
-        {
-          ost = time_of_slice % 10;
-          sring_of_time[7-local_index] = ost + 0x30;
-          time_of_slice /= 10;
-          local_index++;
-        }
-        sring_of_time[7-local_index] =  time_of_slice + 0x30;
-
-        //Копіюємо цей рідок часу у наш робочий рядок
-        local_index = 0;
-        while ((sring_of_time[local_index] == ' ') && (local_index < 8)) local_index++;
-        unsigned int local_index1 = 1;
-        while (local_index < 8) information[local_index1++] = sring_of_time[local_index++];
-        information[local_index1++] = ' ';
-        information[local_index1++] = ms[index_language][0];
-        information[local_index1++] = ms[index_language][1];
-        information[local_index1++] = ms[index_language][2];
-      }
-      else
-      {
-        //теоретично ми сюди б не мали ніколи заходити, але якщо ми сюди зайшли, то виводимо сигналізацію про помилку на екран
-        const unsigned char error_meas[MAX_NAMBER_LANGUAGE][MAX_COL_LCD] = 
-        {
-          " Ошибка         ",
-          " Помилка        ",
-          " Error          ",
-          " Ошибка         "
-        };
-        for (unsigned int i = 0; i < MAX_COL_LCD; i++) information[i] = error_meas[index_language][i];
-      }
-
-      for (unsigned int i = 0; i < MAX_COL_LCD; i++) name_string[k][i] = information[i];
-      k++;
-    }
-
-    //Курсор видимий
-    current_ekran.cursor_on = 1;
-  }
-  else
-  {
-    //Зафіксована помилкова ситуація
-    const unsigned char information[MAX_NAMBER_LANGUAGE][2][MAX_COL_LCD] = 
-    {
-      {
-        "     Ошибка     ",
-        "  отображения   "
-      },
-      {
-        "    Помилка     ",
-        "  відображення  "
-      },
-      {
-        "    Display     ",
-        "     error      "
-      },
-      {
-        "     Ошибка     ",
-        "  отображения   "
-      }
-    };
-
-    for(int index_1 = 0; index_1 < 2; index_1++)
-    {
-      for(int index_2 = 0; index_2 < MAX_COL_LCD; index_2++)
-        name_string[index_1][index_2] = information[index_language][index_1][index_2];
-    }
-
-    //Курсор не видимий
-    current_ekran.cursor_on = 0;
-  }
-  
-  //Копіюємо  рядки у робочий екран
-  for (unsigned int i=0; i< MAX_ROW_LCD; i++)
-  {
-    for (unsigned int j = 0; j<MAX_COL_LCD; j++) working_ekran[i][j] = name_string[i][j];
-  }
-
-  //Курсор по горизонталі відображається на першій позиції
-  current_ekran.position_cursor_x = 0;
-  //Відображення курору по вертикалі
-  current_ekran.position_cursor_y = position_temp & (MAX_ROW_LCD - 1);
-  //Курсор не мигає
-  current_ekran.cursor_blinking_on = 0;
-  //Обновити повністю весь екран
-  current_ekran.current_action = ACTION_WITH_CARRENT_EKRANE_FULL_UPDATE;
-}
-/*****************************************************/
-
-/*****************************************************/
 //Формуємо екран відображення діючих значень при фіксації максимального струму 3I0/фази/ЗОП(КОФ) запису дискретного реєстратора
 /*****************************************************/
-void make_ekran_analog_value_records_digital_registrator(void)
+void make_ekran_vmp_value_records_digital_registrator(void)
 {
   int index_language = index_language_in_array(current_settings.language);
 
   if (buffer_for_manu_read_record[FIRST_INDEX_START_START_RECORD_DR] == LABEL_START_RECORD_DR)
   {
     //Пеший байт сходиться із міткою початку запису - вважаємо, що у буфері достовірні дані
-    unsigned char name_string[MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR][MAX_COL_LCD] = 
+    unsigned char name_string[MAX_ROW_FOR_EKRAN_VALUE_VMP][MAX_COL_LCD] = 
     {
-      " 3I0  =         ",
-      " 3I0**=         ",
-      " 3I0-1=         ",
-      " Ia   =         ",
-      " Ib   =         ",
-      " Ic   =         ",
-      " I2   =         ",
-      " I1   =         ",
-      " I0.4 =         ",
-      " Ua   =         ",
-      " Ub   =         ",
-      " Uc   =         ",
-      " 3U0  =         ",
-      " U2   =         ",
-      " U1   =         ",
-      " Uab  =         ",
-      " Ubc  =         ",
-      " Uca  =         ",
-      " f  =           ",
-      " Rab            ",
-      " Xab            ",
-      " Rbc            ",
-      " Xbc            ",
-      " Rca            ",
-      " Xca            ",
       "                "
     };
-    unsigned char *point_unsigned_char = (unsigned char *)(buffer_for_manu_read_record + index_cell_into_array_for_min_max_measurement_dr);
-    unsigned int *point_unsigned_int = (unsigned int*)point_unsigned_char;
 
-    for (unsigned int i = 0; i < MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR; i++)
+    for (unsigned int i = 0; i < MAX_ROW_FOR_EKRAN_VALUE_VMP; i++)
     {
-      if (i < 18)
-      {
-       //Струми і напруги
-//       if (i == 2)
-//       {
-//         if (index_language == INDEX_LANGUAGE_EN) name_string[i][4] = 'c';
-//         else name_string[i][4] = 'р';
-//       }
-
-        unsigned int temp_measurement = *(point_unsigned_int + i);
-        unsigned int start_number_digit_after_point;
-        if ((i == 0) || (i == 1)) start_number_digit_after_point = 2;
-        else start_number_digit_after_point = 3;
-        convert_and_insert_char_for_measurement(start_number_digit_after_point, temp_measurement, 1, 1, name_string[i], 7);
-      }
-      else if (i == 18)
-      {
-        //Частота
-        int temp_measurement = *(((int *)point_unsigned_int) + i);
-        if (temp_measurement < 0)
-        {
-          if (temp_measurement == (-2*1000))
-          {
-            /*Частота нижче порогу визначеного константою MIN_FREQUENCY*/
-            name_string[i][4] = '<';
-            temp_measurement = MIN_FREQUENCY*1000;
-          }
-          if (temp_measurement == (-3*1000))
-          {
-            /*Частота вище порогу визначеного константою MAX_FREQUENCY*/
-            name_string[i][4] = '>';
-            temp_measurement = MAX_FREQUENCY*1000;
-          }       
-        }
-        convert_and_insert_char_for_frequency(temp_measurement, name_string[i]);
-      }
-      else if (i < 25)
-      {
-       //Опори
-        const unsigned int index_of_start_position_array[MAX_NAMBER_LANGUAGE] = {4, 4, 5, 4};
-
-        unsigned int start_position = index_of_start_position_array[index_language];
-        unsigned int size_dimension = size_dimension_array[index_language];
-        for (unsigned int j = 0; j < size_dimension; j++)
-        {
-          name_string[i][MAX_COL_LCD - size_dimension + j] = resistance_dimension[index_language][j];
-        }
-        name_string[i][start_position] = '=';
-
-        start_position++;
-
-        int temp_measurement = *(point_unsigned_int + i);
-        if(((unsigned int)temp_measurement) != ((unsigned int)UNDEF_RESISTANCE))
-        {
-          /********************************/
-          //Вводимо вимірювальні значення
-          /********************************/
-          if (temp_measurement < 0)
-          {
-            temp_measurement = -temp_measurement;
-            name_string[i][start_position] = '-';
-          }
-          convert_and_insert_char_for_measurement(3, temp_measurement, 1, 1, name_string[i], (start_position + 1));
-
-          unsigned int shift = 0;
-          unsigned int start_position_to_shift = start_position + 1;
-          while (
-                 (name_string[i][start_position_to_shift] == ' ') &&
-                 ((start_position_to_shift + shift) < MAX_COL_LCD)  
-                ) 
-          {
-            for (unsigned int j = start_position_to_shift; j < (MAX_COL_LCD - 1); j++ ) name_string[i][j] = name_string[i][j + 1];
-            name_string[i][MAX_COL_LCD - 1] = ' ';
-            shift++;
-          }
-          /********************************/
-        }
-        else
-        {
-#define SIZE_UNDEF      9
-          const unsigned char undefined[MAX_NAMBER_LANGUAGE][SIZE_UNDEF] =
-          {
-            "Неопред. ",
-            "Невизнач.",
-            "Undef.   ",
-            "Неопред. "  
-          };
-          for (unsigned int j = 0; j < size_dimension; j++) name_string[i][MAX_COL_LCD - size_dimension + j] = ' ';
-          for (unsigned int j = 0; j < SIZE_UNDEF; j++) name_string[i][start_position + 1 + j] = undefined[index_language][j];
-#undef SIZE_UNDEF
-        }
-      }
-      else if ((i == 25) && (type_view_max_values_dr == IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE))
-      {
-        //Місце пошкодження
+      //Місце пошкодження
 #define SIZE_NAME_FIELD         2
-        const unsigned char name_field[MAX_NAMBER_LANGUAGE][SIZE_NAME_FIELD] = {"МП", "МП", "FP", "МП"};
-        for (unsigned int j = 0; j < SIZE_NAME_FIELD; j++)
-        {
-          name_string[i][1 + j] = name_field[index_language][j];
-        }
+      const unsigned char name_field[MAX_NAMBER_LANGUAGE][SIZE_NAME_FIELD] = {"МП", "МП", "FP", "МП"};
+      for (unsigned int j = 0; j < SIZE_NAME_FIELD; j++)
+      {
+        name_string[i][1 + j] = name_field[index_language][j];
+      }
 #undef SIZE_NAME_FIELD
 
 #define INDEX_LESS_EQUAL_MORE   4
 #define SIZE_L_DIMENSION        2
 
-        const unsigned char km[MAX_NAMBER_LANGUAGE][SIZE_L_DIMENSION] = {"км", "км", "km", "км"};
+      const unsigned char km[MAX_NAMBER_LANGUAGE][SIZE_L_DIMENSION] = {"км", "км", "km", "км"};
   
+      for (unsigned int j = 0; j < SIZE_L_DIMENSION; j++)
+      {
+        name_string[i][INDEX_LESS_EQUAL_MORE + 2 + 7 + j] = km[index_language][j];
+      }
+
+      unsigned char *point_unsigned_char = (unsigned char *)(buffer_for_manu_read_record + FIRST_INDEX_VMP_VALUE);
+      unsigned int *point_unsigned_int = (unsigned int*)point_unsigned_char;
+      int temp_measurement_1 = *point_unsigned_int;
+        
+      point_unsigned_char = (unsigned char *)(buffer_for_manu_read_record + FIRST_INDEX_VMP_EQUAL_MORE);
+      int temp_measurement_2 = *point_unsigned_char;
+        
+      if(((unsigned int)temp_measurement_1) != ((unsigned int)UNDEF_VMP))
+      {
+        if (temp_measurement_2 == true) name_string[i][INDEX_LESS_EQUAL_MORE] = '=';
+        else name_string[i][INDEX_LESS_EQUAL_MORE] = '>';
+        /********************************/
+        //Вводимо вимірювальні значення
+        /********************************/
+        if (temp_measurement_1 < 0)
+        {
+          temp_measurement_1 = -temp_measurement_1;
+          name_string[i][INDEX_LESS_EQUAL_MORE + 1] = '-';
+        }
+        convert_and_insert_char_for_measurement(3, temp_measurement_1, 1, 1, name_string[i], (INDEX_LESS_EQUAL_MORE + 2));
+          
+        //Є можливісьт між числом і розмірністю поставити один пробіл
         for (unsigned int j = 0; j < SIZE_L_DIMENSION; j++)
         {
-          name_string[i][INDEX_LESS_EQUAL_MORE + 2 + 7 + j] = km[index_language][j];
+          name_string[i][MAX_COL_LCD - 1 - j] = name_string[i][MAX_COL_LCD - 1 - j - 1];
         }
+        name_string[i][MAX_COL_LCD - 1 - SIZE_L_DIMENSION] = ' ';
 
-        int temp_measurement_1 = *(point_unsigned_int + i);
-        int temp_measurement_2 = *(point_unsigned_int + i + 1);
-        if(((unsigned int)temp_measurement_1) != ((unsigned int)UNDEF_VMP))
+        unsigned int shift = 0;
+        unsigned int start_position_to_shift = INDEX_LESS_EQUAL_MORE + 1 + 1;
+        while (
+               (name_string[i][start_position_to_shift] == ' ') &&
+               ((start_position_to_shift + shift) < MAX_COL_LCD)  
+              ) 
         {
-          if (temp_measurement_2 == true) name_string[i][INDEX_LESS_EQUAL_MORE] = '=';
-          else name_string[i][INDEX_LESS_EQUAL_MORE] = '>';
-          /********************************/
-          //Вводимо вимірювальні значення
-          /********************************/
-          if (temp_measurement_1 < 0)
-          {
-            temp_measurement_1 = -temp_measurement_1;
-            name_string[i][INDEX_LESS_EQUAL_MORE + 1] = '-';
-          }
-          convert_and_insert_char_for_measurement(3, temp_measurement_1, 1, 1, name_string[i], (INDEX_LESS_EQUAL_MORE + 2));
-          
-          //Є можливісьт між числом і розмірністю поставити один пробіл
-          for (unsigned int j = 0; j < SIZE_L_DIMENSION; j++)
-          {
-            name_string[i][MAX_COL_LCD - 1 - j] = name_string[i][MAX_COL_LCD - 1 - j - 1];
-          }
-          name_string[i][MAX_COL_LCD - 1 - SIZE_L_DIMENSION] = ' ';
-
-          unsigned int shift = 0;
-          unsigned int start_position_to_shift = INDEX_LESS_EQUAL_MORE + 1 + 1;
-          while (
-                 (name_string[i][start_position_to_shift] == ' ') &&
-                 ((start_position_to_shift + shift) < MAX_COL_LCD)  
-                ) 
-          {
-            for (unsigned int j = start_position_to_shift; j < (MAX_COL_LCD - 1); j++ ) name_string[i][j] = name_string[i][j + 1];
-            name_string[i][MAX_COL_LCD - 1] = ' ';
-            shift++;
-          }
-          /********************************/
+          for (unsigned int j = start_position_to_shift; j < (MAX_COL_LCD - 1); j++ ) name_string[i][j] = name_string[i][j + 1];
+          name_string[i][MAX_COL_LCD - 1] = ' ';
+          shift++;
         }
-        else
-        {
-          name_string[i][INDEX_LESS_EQUAL_MORE] = '=';
-          
-#define SIZE_UNDEF      9
-          const unsigned char undefined[MAX_NAMBER_LANGUAGE][SIZE_UNDEF] =
-          {
-            "Неопред. ",
-            "Невизнач.",
-            "Undef.   ",
-            "Неопред. "  
-          };
-          for (unsigned int j = 0; j < SIZE_L_DIMENSION; j++) name_string[i][INDEX_LESS_EQUAL_MORE + 2 + 7 + j] = ' ';
-          for (unsigned int j = 0; j < SIZE_UNDEF; j++) name_string[i][INDEX_LESS_EQUAL_MORE + 2 + j] = undefined[index_language][j];
-#undef SIZE_UNDEF
-        }
-#undef SIZE_L_DIMENSION
-#undef INDEX_LESS_EQUAL_MORE
+        /********************************/
       }
-      
-      if (i < 9)
-        name_string[i][MAX_COL_LCD - 1] = odynyci_vymirjuvannja[index_language][INDEX_A];
-      else if (i < 18)
-        name_string[i][MAX_COL_LCD - 1] = odynyci_vymirjuvannja[index_language][INDEX_V];
       else
       {
-        //Герци і оми ми вже вивели під час відображення значення
+        name_string[i][INDEX_LESS_EQUAL_MORE] = '=';
+          
+#define SIZE_UNDEF      9
+        const unsigned char undefined[MAX_NAMBER_LANGUAGE][SIZE_UNDEF] =
+        {
+          "Неопред. ",
+          "Невизнач.",
+          "Undef.   ",
+          "Неопред. "  
+        };
+        for (unsigned int j = 0; j < SIZE_L_DIMENSION; j++) name_string[i][INDEX_LESS_EQUAL_MORE + 2 + 7 + j] = ' ';
+        for (unsigned int j = 0; j < SIZE_UNDEF; j++) name_string[i][INDEX_LESS_EQUAL_MORE + 2 + j] = undefined[index_language][j];
+#undef SIZE_UNDEF
       }
+#undef SIZE_L_DIMENSION
+#undef INDEX_LESS_EQUAL_MORE
     }
   
     int position_temp = current_ekran.index_position;
     unsigned int index_of_ekran;
 
-    /******************************************/
-    //Виключаємо поля, які не треба відображати
-    /******************************************/
-    int additional_current = 0;
-    
-//    {
-//      int shift_ind;
-//      
-//      if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) shift_ind = 8 - additional_current;
-//      else shift_ind = 4 - additional_current; 
-//      
-//      if ((shift_ind + 1) <= position_temp) position_temp--;
-//      do  
-//      {
-//        for(unsigned int j = 0; j<MAX_COL_LCD; j++)
-//        {
-//          if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
-//          else name_string[shift_ind][j] = ' ';
-//        }
-//        shift_ind++;
-//      }
-//      while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
-//      additional_current++;
-//    }
-//
-//    if ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0)
-//    {
-//      int shift_ind_min = 9;
-//      int shift_ind_max = 11;
-//      
-//      for (int i = 0; i <= (shift_ind_max - shift_ind_min); i++)
-//      {
-//        int shift_ind = shift_ind_min - additional_current + i;
-//    
-//        if ((shift_ind_max - additional_current + 1) <= position_temp) position_temp--;
-//        do  
-//        {
-//          for(unsigned int j = 0; j<MAX_COL_LCD; j++)
-//          {
-//            if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
-//            else name_string[shift_ind][j] = ' ';
-//          }
-//          shift_ind++;
-//        }
-//        while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
-//        additional_current++;
-//      }
-//    }
-
-    if (type_view_max_values_dr != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE)
-    {
-      int shift_ind = 25 - additional_current;
-      if ((shift_ind + 1) <= position_temp) position_temp--;
-      do  
-      {
-        for(unsigned int j = 0; j<MAX_COL_LCD; j++)
-        {
-          if ((shift_ind + 1) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current)) name_string[shift_ind][j] = name_string[shift_ind + 1][j];
-          else name_string[shift_ind][j] = ' ';
-        }
-        shift_ind++;
-      }
-      while (shift_ind < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current));
-      additional_current++;
-    }
-    /******************************************/
-    
     index_of_ekran = (position_temp >> POWER_MAX_ROW_LCD) << POWER_MAX_ROW_LCD;
   
     //Копіюємо  рядки у робочий екран
     for (unsigned int i=0; i< MAX_ROW_LCD; i++)
     {
       //Наступні рядки треба перевірити, чи їх требе відображати у текучій коффігурації
-      if (((int)index_of_ekran) < (MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - additional_current))
+      if (index_of_ekran < MAX_ROW_FOR_EKRAN_VALUE_VMP)
         for (unsigned int j = 0; j<MAX_COL_LCD; j++) working_ekran[i][j] = name_string[index_of_ekran][j];
       else
         for (unsigned int j = 0; j<MAX_COL_LCD; j++) working_ekran[i][j] = ' ';
@@ -1201,34 +797,34 @@ void make_ekran_changing_signals_digital_registrator(void)
         int index_of_the_slice = 0; //починаємо з першого зрізу
         unsigned int current_number_changes = 0;
         while (
-               ((current_number_changes + buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + (38 - 2)] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + (38 - 1)] << 8)) < (index_of_ekran + 1)) &&
+               ((current_number_changes + buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + (SD_DR - 2)] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + (SD_DR - 1)] << 8)) < (index_of_ekran + 1)) &&
                (index_of_the_slice < MAX_EVENTS_IN_ONE_RECORD)  
               )
         {
-          current_number_changes += (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + (38 - 2)] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + (38 - 1)] << 8));
+          current_number_changes += (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + (SD_DR - 2)] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + (SD_DR - 1)] << 8));
           index_of_the_slice++;
         }
-        array_new[0] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  3] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  4]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  5]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  6]<<24);
-        array_new[1] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  7] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  8]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) +  9]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 10]<<24);
-        array_new[2] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 11] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 12]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 13]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 14]<<24);
-        array_new[3] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 15] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 16]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 17]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 18]<<24);
-        array_new[4] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 19] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 20]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 21]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 22]<<24);
-        array_new[5] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 23] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 24]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 25]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 26]<<24);
-        array_new[6] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 27] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 28]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 29]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 30]<<24);
-        array_new[7] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 31] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 32]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 33]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 34]<<24);
-        array_new[8] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice    ) + 35];
-        array_new[9] = 0; /*поки я не написав правильне значення*/
+        array_new[0] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  3] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  4]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  5]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  6]<<24);
+        array_new[1] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  7] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  8]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) +  9]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 10]<<24);
+        array_new[2] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 11] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 12]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 13]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 14]<<24);
+        array_new[3] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 15] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 16]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 17]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 18]<<24);
+        array_new[4] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 19] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 20]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 21]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 22]<<24);
+        array_new[5] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 23] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 24]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 25]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 26]<<24);
+        array_new[6] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 27] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 28]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 29]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 30]<<24);
+        array_new[7] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 31] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 32]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 33]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 34]<<24);
+        array_new[8] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 35] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 36]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 37]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 38]<<24);
+        array_new[9] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice    ) + 39];
 
-        array_old[0] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  3] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  4]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  5]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  6]<<24);
-        array_old[1] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  7] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  8]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) +  9]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 10]<<24);
-        array_old[2] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 11] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 12]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 13]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 14]<<24);
-        array_old[3] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 15] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 16]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 17]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 18]<<24);
-        array_old[4] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 19] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 20]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 21]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 22]<<24);
-        array_old[5] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 23] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 24]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 25]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 26]<<24);
-        array_old[6] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 27] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 28]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 29]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 30]<<24);
-        array_old[7] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 31] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 32]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 33]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 34]<<24);
-        array_old[8] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice - 1) + 35];
-        array_old[9] = 0; /*поки я не написав правильне значення*/
+        array_old[0] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  3] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  4]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  5]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  6]<<24);
+        array_old[1] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  7] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  8]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) +  9]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 10]<<24);
+        array_old[2] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 11] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 12]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 13]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 14]<<24);
+        array_old[3] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 15] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 16]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 17]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 18]<<24);
+        array_old[4] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 19] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 20]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 21]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 22]<<24);
+        array_old[5] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 23] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 24]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 25]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 26]<<24);
+        array_old[6] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 27] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 28]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 29]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 30]<<24);
+        array_old[7] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 31] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 32]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 33]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 34]<<24);
+        array_old[8] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 35] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 36]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 37]<<16) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 38]<<24);
+        array_old[9] = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice - 1) + 39];
         
         //Визначаємо, які сигнали змінилися
         for (unsigned int j = 0; j < N_BIG; j++) array_changing[j] = array_new[j] ^ array_old[j];
@@ -1277,7 +873,7 @@ void make_ekran_changing_signals_digital_registrator(void)
                   {"Pass.", "Act. "},
                   {"Пасс.", "Акт. "}
                 };
-                unsigned int time_of_slice = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + 0] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + 1]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + 38*(1 + index_of_the_slice) + 2]<<16);
+                unsigned int time_of_slice = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 0] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 1]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 2]<<16);
                 
                 //Конвертуємо цей час у рядок
                 unsigned int ost, local_index = 0;

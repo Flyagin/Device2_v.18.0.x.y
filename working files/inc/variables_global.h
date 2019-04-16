@@ -734,31 +734,6 @@ unsigned int number_record_of_dr_for_RS485 = 0xffff; //Це число означає, що номе
 unsigned int part_reading_dr_from_dataflash_for_menu;
 unsigned int part_reading_dr_from_dataflash_for_USB;
 unsigned int part_reading_dr_from_dataflash_for_RS485;
-unsigned int state_current_monitoring;
-unsigned int measurements_phase_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];        //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_phase04_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];      //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_3I0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_3U0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_U_min_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];            //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_U_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];            //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_ZOP_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_f_min_achr_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];       //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_f_chapv_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int max_phase_current_dr;   //максимальний фазний струм
-unsigned int min_voltage_dr;  //мінімальнва фазна/лінійна напруга
-unsigned int max_voltage_dr;  //максимальна фазна/лінійна напруга
-unsigned int number_max_phase_dr;
-unsigned int number_min_Z;
-unsigned int number_max_3I0_dr;
-unsigned int number_max_3U0_dr;
-unsigned int number_min_U_dr;
-unsigned int number_max_U_dr;
-unsigned int number_max_ZOP_dr;
-unsigned int number_min_f_achr_dr;
-unsigned int number_f_chapv_dr;
-unsigned int type_view_max_values_dr;
-int index_cell_into_array_for_min_max_measurement_dr;
-//unsigned int control_extra_settings_1_dr_for_manu;
 
 //Реєстратор програмних помилок
 unsigned char crc_info_rejestrator_pr_err;
@@ -794,7 +769,7 @@ int R_KZ_prt;
 
 unsigned int number_of_phases_last_KZ;
 int VMP_last_KZ = UNDEF_VMP;
-int unsigned equal_more_KZ;
+unsigned int equal_more_KZ;
 
 //RS-485
 SRAM1 unsigned char TxBuffer_RS485[BUFFER_RS485];

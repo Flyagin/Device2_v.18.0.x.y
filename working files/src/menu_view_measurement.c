@@ -466,8 +466,7 @@ void make_ekran_current(unsigned int pervynna_vtorynna)
     " Ib   =         ",
     " Ic   =         ",
     " I2   =         ",
-    " I1   =         ",
-    " I0.4 =         "
+    " I1   =         "
   };
   unsigned int index_array[MAX_ROW_FOR_MEASURMENT_CURRENT] = 
   {
@@ -479,8 +478,7 @@ void make_ekran_current(unsigned int pervynna_vtorynna)
     IM_IB,
     IM_IC,
     IM_I2,
-    IM_I1,
-    IM_I04
+    IM_I1
   };
   
   //Копіюємо вимірювання які потрібні для відображення

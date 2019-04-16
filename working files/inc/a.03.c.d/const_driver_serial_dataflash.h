@@ -25,30 +25,23 @@
 #define NUMBER_PAGES_INTO_DR            480
 #define NUMBER_PAGES_INTO_PR_ERR        (NUMBER_PAGES_INTO_DATAFLASH_1 - NUMBER_PAGES_INTO_DR)
 
-#define NUMBER_PAGES_IN_ONE_DR_RECORD         10
+#define NUMBER_PAGES_IN_ONE_DR_RECORD         6
 #define SIZE_BUFFER_FOR_DR_RECORD             (SIZE_PAGE_DATAFLASH_1*NUMBER_PAGES_IN_ONE_DR_RECORD) 
-#define MAX_NUMBER_RECORDS_INTO_DR            48
+#define MAX_NUMBER_RECORDS_INTO_DR            80
 #define MIN_ADDRESS_DR_AREA                   0x0
 #define SIZE_DR_AREA                          (NUMBER_PAGES_INTO_DR<<VAGA_SIZE_PAGE_DATAFLASH_1)
 #define MAX_ADDRESS_DR_AREA                   (MIN_ADDRESS_DR_AREA + SIZE_DR_AREA - 1)
 
 #define FIRST_INDEX_START_START_RECORD_DR     0
 #define FIRST_INDEX_DATA_TIME_DR              1
-//#define FIRST_INDEX_EXTRA_SETTINGS_DR         8
-#define FIRST_INDEX_NAME_OF_CELL_DR           12
-#define FIRST_INDEX_NUMBER_ITEMS_DR           44
-#define FIRST_INDEX_NUMBER_CHANGES_DR         45
-#define FIRST_INDEX_NUMBER_MAX_PHASE_DR       47
-#define FIRST_INDEX_NUMBER_MIN_Z_DR           48
-#define FIRST_INDEX_NUMBER_MAX_3I0_DR         49
-#define FIRST_INDEX_NUMBER_MAX_3U0_DR         50
-#define FIRST_INDEX_NUMBER_MIN_U_DR           51
-#define FIRST_INDEX_NUMBER_MAX_U_DR           52
-#define FIRST_INDEX_NUMBER_MAX_ZOP_DR         53
-#define FIRST_INDEX_NUMBER_MIN_F_ACHR_DR      54
-#define FIRST_INDEX_NUMBER_F_CHAPV_DR         55
-#define FIRST_INDEX_FIRST_BLOCK_DR            56
-#define FIRST_INDEX_FIRST_DATA_DR             1176
+#define FIRST_INDEX_NAME_OF_CELL_DR           8
+#define FIRST_INDEX_NUMBER_ITEMS_DR           40
+#define FIRST_INDEX_NUMBER_CHANGES_DR         41
+#define FIRST_INDEX_VMP_VALUE                 43
+#define FIRST_INDEX_VMP_EQUAL_MORE            47
+#define FIRST_INDEX_FIRST_DATA_DR             48
+
+#define SD_DR                                 42  
 
 #define VAGA_SIZE_ONE_RECORD_PR_ERR           6
 #define SIZE_ONE_RECORD_PR_ERR                (1<<VAGA_SIZE_ONE_RECORD_PR_ERR)
@@ -127,21 +120,9 @@
 #define STATE_DR_CUT_RECORD                       4 //ќформлен≥ под≥њ оформити €к запис, але ще не дос€гнуто умови завершенн€ роботи дискретного реЇстратора тому при наступному проход≥ розпочати новий запис
 
 #define MAX_TIME_OFFSET_FROM_START                      0xFFFFFF // 4 год. 39 хв. 37 сек. 215 м≥л≥сек.
-#define MAX_EVENTS_IN_ONE_RECORD                        36
-#define MAX_NUMBER_FIX_MAX_MEASUREMENTS                 10
-#define SIZE_ARRAY_FIX_MAX_MEASUREMENTS                 (NUMBER_ANALOG_CANALES + 20)
+#define MAX_EVENTS_IN_ONE_RECORD                        35
 
 #define LABEL_START_RECORD_DR           0xA5
-
-#define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE          1
-#define IDENTIFIER_BIT_ARRAY_MIN_Z                      2
-#define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_3I0            3
-#define IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE_3U0            4
-#define IDENTIFIER_BIT_ARRAY_MIN_VOLTAGE                5
-#define IDENTIFIER_BIT_ARRAY_MAX_VOLTAGE                6
-#define IDENTIFIER_BIT_ARRAY_MAX_CURRENT_ZOP            7
-#define IDENTIFIER_BIT_ARRAY_MIN_FREQUENCY_ACHR         8
-#define IDENTIFIER_BIT_ARRAY_FREQUENCY_CHAPV            9
 
 #define READING_DR_FOR_MENU             1
 #define READING_DR_FOR_USB              2
