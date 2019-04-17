@@ -1175,12 +1175,24 @@ void make_ekran_resistance(unsigned int pervynna_vtorynna)
 {
   unsigned char name_string[MAX_ROW_FOR_MEASURMENT_RESISTANCE][MAX_COL_LCD] = 
   {
+    " R_a            ",
+    " X_a            ",
+    " Z_a            ",
+    " R_b            ",
+    " X_b            ",
+    " Z_b            ",
+    " R_c            ",
+    " X_c            ",
+    " Z_c            ",
     " Rab            ",
     " Xab            ",
+    " Zab            ",
     " Rbc            ",
     " Xbc            ",
+    " Zbc            ",
     " Rca            ",
-    " Xca            "
+    " Xca            ",
+    " Zca            "
   };
   const unsigned int index_of_start_position_array[MAX_NAMBER_LANGUAGE] = {4, 4, 5, 4};
 
