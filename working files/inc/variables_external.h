@@ -413,6 +413,9 @@ extern const unsigned char extra_letters[12][1 + MAX_NAMBER_LANGUAGE];
 
 extern int current_language;
 
+extern const uint8_t information_off_on[MAX_NAMBER_LANGUAGE][2][MAX_COL_LCD];
+extern const uint32_t cursor_x_off_on[MAX_NAMBER_LANGUAGE][2];
+
 //Лічильник ресурсу
 extern unsigned int koef_resurs_changed;
 extern float K_resurs_prt, K_resurs;

@@ -935,6 +935,22 @@ const unsigned char extra_letters[12][1 + MAX_NAMBER_LANGUAGE] =
 
 int current_language = LANGUAGE_ABSENT;
 
+const uint8_t information_off_on[MAX_NAMBER_LANGUAGE][2][MAX_COL_LCD] = 
+{
+  {"     Откл.      ", "      Вкл.      "},
+  {"     Вимк.      ", "     Ввімк.     "},
+  {"      Off       ", "       On       "},
+  {"     Сљнд.      ", "     Косу.      "}
+};
+const uint32_t cursor_x_off_on[MAX_NAMBER_LANGUAGE][2] = 
+{
+ {4, 5},
+ {4, 4},
+ {5, 6},
+ {4, 4}
+};
+
+
 extern unsigned short const __checksum;
 extern unsigned int __checksum_begin;
 extern unsigned int __checksum_end;
