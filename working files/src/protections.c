@@ -170,7 +170,7 @@ inline void velychyna_zvorotnoi_poslidovnosti(int ortogonal_local_calc[], const 
   measurement[const_val[i_u][1]] = (unsigned int)((unsigned long long)( const_val[i_u][2]*(sqrt_32((unsigned int)ortogonal_tmp[0]*ortogonal_tmp[0] + (unsigned int)ortogonal_tmp[1]*ortogonal_tmp[1])) ) >> const_val[i_u][3]);
 }
 /*****************************************************/
-
+#include "dz.c"
 /*****************************************************
 ort_i  - вказівник на ортогональні 3I0
 ort_u  - вказівник на ортогональні 3U0
@@ -4226,8 +4226,10 @@ void umin2_handler(unsigned int *p_active_functions, unsigned int number_group_s
 /*****************************************************/
 void dz_handler(unsigned int *p_active_functions, unsigned int number_group_stp)
 {
-  UNUSED(p_active_functions);
-  UNUSED(number_group_stp);
+	mf_of_handler(p_active_functions,number_group_stp);
+	fault_U_handler(p_active_functions,number_group_stp);
+	dz1_handler(p_active_functions,number_group_stp);
+	dz2_handler(p_active_functions,number_group_stp);
 }
 
 /*****************************************************/

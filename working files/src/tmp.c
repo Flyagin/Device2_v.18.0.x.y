@@ -1,5 +1,5 @@
-I_NOM
-		
+rU = p1.lVl&((1<<2)|(1<<3)); 
+            if(rU == ((1<<2)|(1<<3)))re
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
@@ -24,7 +24,10 @@ long Ii,Ip;
 
 }sLV;  
 _Bool ctrl_ready_tu = ((current_settings_prt.control_extra_settings_1 & CTR_EXTRA_SETTINGS_1_CTRL_READY_TU) == 0);
-
+			lV = 1<<(STP_I_A_MCP_DST_LP_STAGE2_BIT+sLV.ch_stage_selector);
+unsigned long pick_up_I_Amcp_dstLp2 = 0;			
+			if(bw_dstLp_dt.ulStpDzfield &
+            
 
 register union { 
    struct {
@@ -68,7 +71,48 @@ __SETTINGS *p_current_settings_prt;
     sLV.conter_and++;
     }
 	lCmpVl = MIN_LIMIT_I1_I2_P;
-    
+//					else{
+//						//p3.bool_vars.or27_i_0 = rU;//Must be already setup
+//						p3.bool_vars.or29_i_0 = lV;
+//						lV = p3.bool_vars.and32_o_0;//Loop link
+//						rU = p3.bool_vars.and31_o_0;//Loop link
+//						p3.bool_vars.or29_i_1 = lV;
+//						p3.bool_vars.or27_i_1 = rU;
+//						p3.bool_vars.not30_o_0 = !lV;
+//						p3.bool_vars.not28_o_0 = !rU;
+//						p3.bool_vars.and31_i_1 = !lV;
+//						p3.bool_vars.and32_i_1 = !rU;
+//						if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
+//							p3.bool_vars.and31_i_0 = 1; 
+//						else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
+//							p3.bool_vars.and31_i_0 = 0; 
+//                
+//						 if( (p3.lVl&((1<<2)|(1<<3))) != 0 )//or29 customer
+//							p3.bool_vars.and32_i_2 = 1;
+//						else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
+//							p3.bool_vars.and32_i_2 = 0;
+//							
+//						rU = p1.lVl&((1<<5)|(1<<6)|(1<<7));
+//						if(rU == ((1<<5)|(1<<6)|(1<<7))){	
+//							p3.bool_vars.and31_o_0 = 1;
+//							u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
+//						}else{
+//							p3.bool_vars.and31_o_0 = 1;
+//				
+//						}						
+//						rU = p1.lVl&((1<<8)|(1<<9)|(1<<10));
+//						if(rU == ((1<<8)|(1<<9)|(1<<10)))}	
+//							p3.bool_vars.and32_o_0 = 1;
+//							u32_bit_holder |= 1<<T_AMCP_IN_BIT;
+//							}
+//						else{
+//							p3.bool_vars.and32_o_0 = 0;
+//						}
+//						 _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ,  sLV.p_current_settings_prt->timeout_dz2_amtz[number_group_stp],
+//						u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
+//						_TIMER_T_0(INDEX_TIMER_DZ2_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz2_amtz_pr[number_group_stp],
+//						u32_bit_holder, T_ACC_AMCP_IN_BIT, u32_bit_holder, T_ACC_AMCP_OUT_BIT);
+//					}    
 		
 //    if (i1_bilshe_porogu == 0) setpoint_i1 = MIN_LIMIT_FOR_I1_AND_I2*KOEF_POVERNENNJA_ZOP_BLK/100;
 //    else setpoint_i1 = MIN_LIMIT_FOR_I1_AND_I2;
