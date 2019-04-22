@@ -1191,7 +1191,7 @@ int dataDiskretRegistrator(int offsetRegister, int recordNumber, int recordLen)
 
   if(recordNumber>(*(point_to_buffer + FIRST_INDEX_NUMBER_ITEMS_DR))) return MARKER_ERRORPERIMETR;//уйти если превышение
 
-  unsigned int offset = FIRST_INDEX_FIRST_DATA_DR + (recordNumber + 1)*38; //бо найперший запис містить попереднє значення (до фіксації запуску роботи дискретного реєстратора)
+  unsigned int offset = FIRST_INDEX_FIRST_DATA_DR + (recordNumber + 1)*SD_DR; //бо найперший запис містить попереднє значення (до фіксації запуску роботи дискретного реєстратора)
 
   switch(offsetRegister)
     {

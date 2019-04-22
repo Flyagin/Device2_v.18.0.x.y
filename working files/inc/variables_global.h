@@ -241,7 +241,7 @@ double energy[MAX_NUMBER_INDEXES_ENERGY];
 unsigned int clean_energy;
 unsigned int information_about_clean_energy;
 
-int resistance[MAX_NUMBER_INDEXES_RESISTANCE]; //формат{ Rab, Zab, Rbc, Zbc, Rca, Xca}
+int resistance[MAX_NUMBER_INDEXES_RESISTANCE_FULL];
 int resistance_middle[MAX_NUMBER_INDEXES_RESISTANCE];
 int resistance_low[MAX_NUMBER_INDEXES_RESISTANCE];
 
@@ -376,6 +376,10 @@ unsigned int TZNP_3U0_bilshe_porogu;
 unsigned int TZNP_3I0_r_bilshe_porogu;
 unsigned int sector_directional_tznp[3];
 
+//Направлена ДЗ
+int32_t sector_directional_dz[4 - 1][3] = {{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}};
+unsigned int Uxy_bilshe_porogu_dz[3];
+unsigned int Ix_bilshe_porogu_dz[3];
 
 unsigned int i1_bilshe_porogu, i2_bilshe_porogu;
 
@@ -730,31 +734,6 @@ unsigned int number_record_of_dr_for_RS485 = 0xffff; //Це число означає, що номе
 unsigned int part_reading_dr_from_dataflash_for_menu;
 unsigned int part_reading_dr_from_dataflash_for_USB;
 unsigned int part_reading_dr_from_dataflash_for_RS485;
-unsigned int state_current_monitoring;
-unsigned int measurements_phase_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];        //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_phase04_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];      //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_3I0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_3U0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_U_min_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];            //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_U_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];            //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_ZOP_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_f_min_achr_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];       //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int measurements_f_chapv_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];          //частоти + розрахункові величини + величина типу unsigned int (найстарший байт - це мітка типу запуску, а решта байт - це мітка часу)
-unsigned int max_phase_current_dr;   //максимальний фазний струм
-unsigned int min_voltage_dr;  //мінімальнва фазна/лінійна напруга
-unsigned int max_voltage_dr;  //максимальна фазна/лінійна напруга
-unsigned int number_max_phase_dr;
-unsigned int number_min_Z;
-unsigned int number_max_3I0_dr;
-unsigned int number_max_3U0_dr;
-unsigned int number_min_U_dr;
-unsigned int number_max_U_dr;
-unsigned int number_max_ZOP_dr;
-unsigned int number_min_f_achr_dr;
-unsigned int number_f_chapv_dr;
-unsigned int type_view_max_values_dr;
-int index_cell_into_array_for_min_max_measurement_dr;
-//unsigned int control_extra_settings_1_dr_for_manu;
 
 //Реєстратор програмних помилок
 unsigned char crc_info_rejestrator_pr_err;
@@ -784,14 +763,13 @@ unsigned int restart_counter;
 
 //Визначення місця до пошкодження
 unsigned int vymknennja_vid_KZ_prt;
-unsigned int I_max_KZ_prt;
-unsigned int number_of_phases_KZ_prt;
+unsigned int MF_KZ;
 unsigned int X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
 int R_KZ_prt;
 
 unsigned int number_of_phases_last_KZ;
 int VMP_last_KZ = UNDEF_VMP;
-int unsigned equal_more_KZ;
+unsigned int equal_more_KZ;
 
 //RS-485
 SRAM1 unsigned char TxBuffer_RS485[BUFFER_RS485];

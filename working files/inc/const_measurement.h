@@ -16,6 +16,8 @@
 #define POPRAVKA_MTZ_TZNP  0/*3*/
 #define SECTOR2_MTZ_TZNP   2
 
+#define DELTA_SECTOR_DZ    6.0f
+
 #define MEASUREMENT_TIM_FREQUENCY       60000000 //ÌÃö
 
 #define MAIN_FREQUENCY  50      //Ãö
@@ -251,7 +253,6 @@ enum _index_meas
   IM_IC,
   IM_I2,
   IM_I1,
-  IM_I04,
   IM_UA,
   IM_UB,
   IM_UC,
@@ -319,14 +320,41 @@ enum _index_energy
 
 enum _resistance_index
 {
-  R_AB = 0,
+  R_A = 0,
+  X_A,
+  Z_A,
+  R_B,
+  X_B,
+  Z_B,
+  R_Ñ,
+  X_Ñ,
+  Z_C,
+  
+  R_AB,
   X_AB,
+  Z_AB,
   R_BC,
   X_BC,
+  Z_BC,
   R_CA,
   X_CA,
+  Z_CA,
   
   MAX_NUMBER_INDEXES_RESISTANCE,
+  
+  Z_3 = MAX_NUMBER_INDEXES_RESISTANCE,
+  
+  Za_A,
+  Za_B,
+  Za_C,
+  
+  Za_AB,
+  Za_BC,
+  Za_CA,
+  
+  Za_3,
+  
+  MAX_NUMBER_INDEXES_RESISTANCE_FULL
 };
 
 #endif

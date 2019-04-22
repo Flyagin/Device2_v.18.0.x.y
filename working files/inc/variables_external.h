@@ -96,7 +96,7 @@ extern double energy[MAX_NUMBER_INDEXES_ENERGY];
 extern unsigned int clean_energy;
 extern unsigned int information_about_clean_energy;
 
-extern int resistance[MAX_NUMBER_INDEXES_RESISTANCE];
+extern int resistance[MAX_NUMBER_INDEXES_RESISTANCE_FULL];
 extern int resistance_middle[MAX_NUMBER_INDEXES_RESISTANCE];
 extern int resistance_low[MAX_NUMBER_INDEXES_RESISTANCE];
 
@@ -135,6 +135,10 @@ extern unsigned int Nzz_3U0_bilshe_porogu, Nzz_3I0_bilshe_porogu;
 extern unsigned int TZNP_3U0_bilshe_porogu;
 extern unsigned int TZNP_3I0_r_bilshe_porogu;
 extern unsigned int sector_directional_tznp[3];
+
+extern int32_t sector_directional_dz[4 - 1][3];
+extern unsigned int Uxy_bilshe_porogu_dz[3];
+extern unsigned int Ix_bilshe_porogu_dz[3];
 
 extern unsigned int i1_bilshe_porogu, i2_bilshe_porogu;
 
@@ -385,31 +389,6 @@ extern unsigned int number_record_of_dr_for_RS485;
 extern unsigned int part_reading_dr_from_dataflash_for_menu;
 extern unsigned int part_reading_dr_from_dataflash_for_USB;
 extern unsigned int part_reading_dr_from_dataflash_for_RS485;
-extern unsigned int state_current_monitoring;
-extern unsigned int measurements_phase_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];
-extern unsigned int measurements_phase04_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];
-extern unsigned int measurements_3I0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];  
-extern unsigned int measurements_3U0_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];  
-extern unsigned int measurements_U_min_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];    
-extern unsigned int measurements_U_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];    
-extern unsigned int measurements_ZOP_max_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];  
-extern unsigned int measurements_f_min_achr_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];    
-extern unsigned int measurements_f_chapv_dr[SIZE_ARRAY_FIX_MAX_MEASUREMENTS];    
-extern unsigned int max_phase_current_dr;
-extern unsigned int min_voltage_dr;
-extern unsigned int max_voltage_dr;
-extern unsigned int number_max_phase_dr;
-extern unsigned int number_min_Z;
-extern unsigned int number_max_3I0_dr;
-extern unsigned int number_max_3U0_dr;
-extern unsigned int number_min_U_dr;
-extern unsigned int number_max_U_dr;
-extern unsigned int number_max_ZOP_dr;
-extern unsigned int number_min_f_achr_dr;
-extern unsigned int number_f_chapv_dr;
-extern unsigned int type_view_max_values_dr;
-extern int index_cell_into_array_for_min_max_measurement_dr;
-//extern unsigned int control_extra_settings_1_dr_for_manu;
 
 //Реєстратор програмних помилок
 extern unsigned char crc_info_rejestrator_pr_err;
@@ -444,8 +423,7 @@ extern unsigned int restart_counter;
 
 //Визначення місця до пошкодження
 extern unsigned int vymknennja_vid_KZ_prt;
-extern unsigned int I_max_KZ_prt;
-extern unsigned int number_of_phases_KZ_prt;
+extern unsigned int MF_KZ;
 extern unsigned int X_min_KZ_prt;
 extern int R_KZ_prt;
 

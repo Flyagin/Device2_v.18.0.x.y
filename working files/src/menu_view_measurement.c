@@ -466,8 +466,7 @@ void make_ekran_current(unsigned int pervynna_vtorynna)
     " Ib   =         ",
     " Ic   =         ",
     " I2   =         ",
-    " I1   =         ",
-    " I0.4 =         "
+    " I1   =         "
   };
   unsigned int index_array[MAX_ROW_FOR_MEASURMENT_CURRENT] = 
   {
@@ -479,8 +478,7 @@ void make_ekran_current(unsigned int pervynna_vtorynna)
     IM_IB,
     IM_IC,
     IM_I2,
-    IM_I1,
-    IM_I04
+    IM_I1
   };
   
   //Копіюємо вимірювання які потрібні для відображення
@@ -1177,12 +1175,24 @@ void make_ekran_resistance(unsigned int pervynna_vtorynna)
 {
   unsigned char name_string[MAX_ROW_FOR_MEASURMENT_RESISTANCE][MAX_COL_LCD] = 
   {
+    " R_a            ",
+    " X_a            ",
+    " Z_a            ",
+    " R_b            ",
+    " X_b            ",
+    " Z_b            ",
+    " R_c            ",
+    " X_c            ",
+    " Z_c            ",
     " Rab            ",
     " Xab            ",
+    " Zab            ",
     " Rbc            ",
     " Xbc            ",
+    " Zbc            ",
     " Rca            ",
-    " Xca            "
+    " Xca            ",
+    " Zca            "
   };
   const unsigned int index_of_start_position_array[MAX_NAMBER_LANGUAGE] = {4, 4, 5, 4};
 

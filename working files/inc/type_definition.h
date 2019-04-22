@@ -121,22 +121,28 @@ typedef struct
   uint32_t pickup_dz1_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ1 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
 
   int32_t pickup_dz2_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ2 п.5.27.10 [-10, 40] крок 1
-  int32_t pickup_dz2_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 
-  int32_t pickup_dz2_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2
+  int32_t pickup_dz2_angle_cos1[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 (сектор спрацювання)
+  int32_t pickup_dz2_angle_sin1[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2 (сектор спрацювання)
+  int32_t pickup_dz2_angle_cos2[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
+  int32_t pickup_dz2_angle_sin2[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
   uint32_t pickup_dz2_dir[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz2_inv[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ2 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz2_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ2 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
 
   int32_t pickup_dz3_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ3 п.5.27.10 [-10, 40] крок 1
-  int32_t pickup_dz3_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ3 
-  int32_t pickup_dz3_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ3
+  int32_t pickup_dz3_angle_cos1[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ3 (сектор спрацювання) 
+  int32_t pickup_dz3_angle_sin1[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ3 (сектор спрацювання)
+  int32_t pickup_dz3_angle_cos2[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
+  int32_t pickup_dz3_angle_sin2[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
   uint32_t pickup_dz3_dir[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ3 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz3_inv[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ3 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz3_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ3 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
 
   int32_t pickup_dz4_angle[NUMBER_GROUP_USTAVOK];               //Кут нижньої межі сектора для ДЗ4 п.5.27.10 [-10, 40] крок 1
-  int32_t pickup_dz4_angle_cos[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ4
-  int32_t pickup_dz4_angle_sin[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ4
+  int32_t pickup_dz4_angle_cos1[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ4 (сектор спрацювання)
+  int32_t pickup_dz4_angle_sin1[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ4 (сектор спрацювання)
+  int32_t pickup_dz4_angle_cos2[NUMBER_GROUP_USTAVOK];           //Косинус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
+  int32_t pickup_dz4_angle_sin2[NUMBER_GROUP_USTAVOK];           //Синус кута нижньої межі сектора для ДЗ2 (сектор відпускання)
   uint32_t pickup_dz4_dir[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ4 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz4_inv[NUMBER_GROUP_USTAVOK];                //Уставка ДЗ4 за опором п.5.27.7 [0.01; 300] крок 0,01 Ом
   uint32_t pickup_dz4_amtz[NUMBER_GROUP_USTAVOK];               //Уставка ДЗ4 для АМСЗ за струмом п.5.27.18 [2; 150] крок 0,01А
@@ -327,7 +333,7 @@ typedef struct
   unsigned int setpoint_urov[NUMBER_GROUP_USTAVOK];         //уставка УРОВ
   int timeout_urov_1[NUMBER_GROUP_USTAVOK];                 //Витримка УРОВ першої ступені
   int timeout_urov_2[NUMBER_GROUP_USTAVOK];                 //Витримка УРОВ другої ступені
-  unsigned int control_urov;                                //Поле для управління УРОВ
+  uint64_t control_urov;                                    //Поле для управління УРОВ
 
   //ЗОП(КОФ)
   unsigned int setpoint_zop[NUMBER_GROUP_USTAVOK];          //уставка ЗОП(КОФ)

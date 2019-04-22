@@ -1495,8 +1495,7 @@ void main_manu_function(void)
     case EKRAN_TITLES_DIGITAL_REGISTRATOR:
     case EKRAN_DATA_LADEL_DR:
     case EKRAN_CHANGES_SIGNALS_DR:
-    case EKRAN_TITLE_MAX_VALUES:
-    case EKRAN_MAX_VALUES:
+    case EKRAN_VALUE_VMP:
     case EKRAN_TITLES_PR_ERR_REGISTRATOR:
     case EKRAN_DATA_LADEL_PR_ERR:
     case EKRAN_CHANGES_DIAGNOSTICS_PR_ERR:
@@ -2058,49 +2057,12 @@ void main_manu_function(void)
               //Формуємо екран відображення змін сигналів - записаних у дискретному реєстраторі
               make_ekran_changing_signals_digital_registrator();
             }
-            else if (current_ekran.current_level == EKRAN_TITLE_MAX_VALUES)
+            else if (current_ekran.current_level == EKRAN_VALUE_VMP)
             {
-              unsigned int number_records = buffer_for_manu_read_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR + type_view_max_values_dr - IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE];
+              if(current_ekran.index_position >= MAX_ROW_FOR_EKRAN_VALUE_VMP) current_ekran.index_position = 0;
 
-              if(current_ekran.index_position >= ((int)number_records)) current_ekran.index_position = 0;
-              position_in_current_level_menu[EKRAN_TITLE_MAX_VALUES] = current_ekran.index_position;
-
-              //Формуємо екран відображення міток часу записів міксації максимальних струмів
-              make_ekran_title_analog_value_records_digital_registrator();
-            }
-            else if (current_ekran.current_level == EKRAN_MAX_VALUES)
-            {
-              do
-              {
-                if(current_ekran.index_position >= MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR) current_ekran.index_position = 0;
-                
-                while (
-//                       (
-//                        ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0) &&
-//                        (current_ekran.index_position >= 9) && (current_ekran.index_position <= 11)
-//                       )
-//                       || 
-//                       (
-//                        ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) &&
-//                        (current_ekran.index_position == 8)
-//                       )
-//                       || 
-//                       (
-//                        ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) != 0) &&
-//                        (current_ekran.index_position == 4)
-//                       )
-//                       || 
-                       (
-                        (type_view_max_values_dr != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE) && 
-                        (current_ekran.index_position == 25)  
-                       )   
-                      )   
-                  current_ekran.index_position++;
-              }
-              while (current_ekran.index_position >= MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR);
-
-              //Формуємо екран відображення аналогових значень з запису дискретного реєстратора
-              make_ekran_analog_value_records_digital_registrator();
+              //Формуємо екран відображення значення ВМП
+              make_ekran_vmp_value_records_digital_registrator();
             }
             else if (current_ekran.current_level == EKRAN_TITLES_PR_ERR_REGISTRATOR)
             {
@@ -3470,23 +3432,10 @@ void main_manu_function(void)
                   }
                   else
                   {
-                    //Переходимо на меню відображення зафіксованих аналоговихзначень у запису дискретного реєстратора
-                    current_ekran.current_level = EKRAN_TITLE_MAX_VALUES;
-                    type_view_max_values_dr = (current_ekran.index_position - INDEX_ML_TITLE_DR_MAX_PHASE) + IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE;
+                    //Переходимо на меню відображення значення ВМП
+                    current_ekran.current_level = EKRAN_VALUE_VMP;
                   }
                   current_ekran.index_position = 0;
-                  current_ekran.edition = 0;
-                }
-              }
-              else if (current_ekran.current_level == EKRAN_TITLE_MAX_VALUES)
-              {
-                //Натиснута кнопка Enter у вікні списку зафіксованих максимальних струмів
-                if((index_cell_into_array_for_min_max_measurement_dr >= FIRST_INDEX_FIRST_BLOCK_DR) && (index_cell_into_array_for_min_max_measurement_dr <= ((int)(FIRST_INDEX_FIRST_DATA_DR - sizeof(unsigned int)*SIZE_ARRAY_FIX_MAX_MEASUREMENTS))))
-                {
-                  //Переходимо у нове вікно тільки у тому випадку, якщо ми попередньо зафіксували з якого місця розміщається блок, який визначений курсором
-                  current_ekran.current_level = EKRAN_MAX_VALUES;
-
-                  current_ekran.index_position = 0; //Завжди починаэмо з першого вікна
                   current_ekran.edition = 0;
                 }
               }
@@ -3599,6 +3548,7 @@ void main_manu_function(void)
               }
               else if(current_ekran.current_level == EKRAN_MEASURMENT_CURRENT)
               {
+                if(--current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_MEASURMENT_CURRENT - 1;
                 position_in_current_level_menu[EKRAN_MEASURMENT_CURRENT] = current_ekran.index_position;
                 //Формуємо екран вимірювання струмів вікна
                 make_ekran_current(pervynna_vtorynna);
@@ -4141,50 +4091,12 @@ void main_manu_function(void)
                 //Формуємо екран відображення змін сигналів - записаних у дискретному реєстраторі
                 make_ekran_changing_signals_digital_registrator();
               }
-              else if (current_ekran.current_level == EKRAN_TITLE_MAX_VALUES)
+              else if (current_ekran.current_level == EKRAN_VALUE_VMP)
               {
-                unsigned int number_records = buffer_for_manu_read_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR + type_view_max_values_dr - IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE];
-
-                if(--current_ekran.index_position < 0) current_ekran.index_position = number_records -1;
-                position_in_current_level_menu[EKRAN_TITLE_MAX_VALUES] = current_ekran.index_position;
-
-                //Формуємо екран відображення міток часу записів міксації максимальних струмів
-                make_ekran_title_analog_value_records_digital_registrator();
-              }
-              else if (current_ekran.current_level == EKRAN_MAX_VALUES)
-              {
-                current_ekran.index_position--;
-                do
-                { 
-                  if(current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR - 1;
-
-                  while (
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0) &&
-//                          (current_ekran.index_position >= 9) && (current_ekran.index_position <= 11)
-//                         )
-//                         || 
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) &&
-//                          (current_ekran.index_position == 8)
-//                         )
-//                         || 
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) != 0) &&
-//                          (current_ekran.index_position == 4)
-//                         )
-//                         || 
-                         (
-                          (type_view_max_values_dr != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE) && 
-                          (current_ekran.index_position == 25)  
-                         )   
-                        )   
-                    current_ekran.index_position--;
-                }
-                while (current_ekran.index_position < 0);
+                if(--current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_EKRAN_VALUE_VMP - 1;
                 
-                //Формуємо екран відображення аналогових значень з запису дискретного реєстратора
-                make_ekran_analog_value_records_digital_registrator();
+                //Формуємо екран відображення ВМП
+                make_ekran_vmp_value_records_digital_registrator();
               }
               else if (current_ekran.current_level == EKRAN_TITLES_PR_ERR_REGISTRATOR)
               {
@@ -4774,50 +4686,12 @@ void main_manu_function(void)
                 //Формуємо екран відображення змін сигналів - записаних у дискретному реєстраторі
                 make_ekran_changing_signals_digital_registrator();
               }
-              else if (current_ekran.current_level == EKRAN_TITLE_MAX_VALUES)
+              else if (current_ekran.current_level == EKRAN_VALUE_VMP)
               {
-                unsigned int number_records = buffer_for_manu_read_record[FIRST_INDEX_NUMBER_MAX_PHASE_DR + type_view_max_values_dr - IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE];
+                if(++current_ekran.index_position >= MAX_ROW_FOR_EKRAN_VALUE_VMP) current_ekran.index_position = 0;
 
-                if(++current_ekran.index_position >= ((int)number_records)) current_ekran.index_position = 0;
-                position_in_current_level_menu[EKRAN_TITLE_MAX_VALUES] = current_ekran.index_position;
-
-                //Формуємо екран відображення міток часу записів міксації максимальних струмів
-                make_ekran_title_analog_value_records_digital_registrator();
-              }
-              else if (current_ekran.current_level == EKRAN_MAX_VALUES)
-              {
-                current_ekran.index_position++;
-                do
-                {
-                  if(current_ekran.index_position >= MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR) current_ekran.index_position = 0;
-                
-                  while (
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_PHASE_LINE) != 0) &&
-//                          (current_ekran.index_position >= 9) && (current_ekran.index_position <= 11)
-//                         )   
-//                         || 
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) == 0) &&
-//                          (current_ekran.index_position == 8)
-//                         )
-//                         || 
-//                         (
-//                          ((control_extra_settings_1_dr_for_manu & CTR_EXTRA_SETTINGS_1_CTRL_IB_I04) != 0) &&
-//                          (current_ekran.index_position == 4)
-//                         )
-//                         || 
-                         (
-                          (type_view_max_values_dr != IDENTIFIER_BIT_ARRAY_MAX_CURRENT_PHASE) && 
-                          (current_ekran.index_position == 25)  
-                         )   
-                        )   
-                    current_ekran.index_position++;
-                }
-                while (current_ekran.index_position >= MAX_ROW_FOR_EKRAN_ANALOG_VALUES_DR);
-
-                //Формуємо екран відображення аналогових значень з запису дискретного реєстратора
-                make_ekran_analog_value_records_digital_registrator();
+                //Формуємо екран відображення ВМП
+                make_ekran_vmp_value_records_digital_registrator();
               }
               else if (current_ekran.current_level == EKRAN_TITLES_PR_ERR_REGISTRATOR)
               {
@@ -5260,7 +5134,7 @@ void main_manu_function(void)
                     (
                      (  
                       (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                      (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                      )   
                     &&
                     ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -5335,13 +5209,13 @@ void main_manu_function(void)
               if(current_ekran.index_position >= MAX_ROW_FOR_CONTROL_UROV) current_ekran.index_position = 0;
               while(
                     (
-                     (
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                      (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
                      )   
-                     &&
-                     ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                    )  
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
                     ||
                     (
                      (
@@ -9110,8 +8984,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz2_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz2_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz2_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz2_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
 
                         fix_change_settings(0, 1);
                       }
@@ -9185,8 +9061,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz3_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz3_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz3_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz3_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
                         
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         fix_change_settings(0, 1);
@@ -9262,8 +9140,10 @@ void main_manu_function(void)
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         float angle_f = (float)angle;
-                        current_settings.pickup_dz4_angle_cos[group] = (int) (AMPLITUDA_FI*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
-                        current_settings.pickup_dz4_angle_sin[group] = (int) (AMPLITUDA_FI*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_cos1[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_sin1[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
+                        current_settings.pickup_dz4_angle_cos2[group] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
+                        current_settings.pickup_dz4_angle_sin2[group] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
                         fix_change_settings(0, 1);
@@ -10837,7 +10717,7 @@ void main_manu_function(void)
                 }
                 else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
                 {
-                  if ((edition_settings.control_urov  & ((unsigned int)(~CTR_UROV_MASKA))) == 0)
+                  if ((edition_settings.control_urov  & ((uint64_t)(~CTR_UROV_MASKA))) == 0)
                   {
                     if (edition_settings.control_urov != current_settings.control_urov)
                     {
@@ -12966,7 +12846,7 @@ void main_manu_function(void)
                       (
                        (  
                         (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                        )   
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -13093,15 +12973,15 @@ void main_manu_function(void)
                 
                 if(current_ekran.index_position < 0) current_ekran.index_position = MAX_ROW_FOR_CONTROL_UROV - 1;
                 while(
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
+                    (
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
+                     )   
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
+                    ||
                       (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
@@ -14490,7 +14370,7 @@ void main_manu_function(void)
                       (
                        (  
                         (current_ekran.index_position >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP4)
+                        (current_ekran.index_position <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
                        )   
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
@@ -14617,15 +14497,15 @@ void main_manu_function(void)
                 
                 if(current_ekran.index_position >= MAX_ROW_FOR_CONTROL_UROV) current_ekran.index_position = 0;
                 while(
-                      (
-                       (
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) ||
-                        (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2)
-                       )   
-                       &&
-                       ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
-                      )  
-                      ||
+                    (
+                     (  
+                      (current_ekran.index_position >= INDEX_ML_CTRUROV_STARTED_FROM_DZ1) &&
+                      (current_ekran.index_position <= INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4) 
+                     )   
+                    &&
+                    ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) == 0)
+                    ) 
+                    ||
                       (
                        (  
                         (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1) ||
@@ -16613,44 +16493,8 @@ void main_manu_function(void)
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
-                unsigned int maska = 0;
-          
-                //Виділяємо, який біт треба міняти
-                if (current_ekran.index_position == INDEX_ML_CTRUROV_STATE) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STATE);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZDZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZDZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3I0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3I0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3U0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3U0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_NZZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP3  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZOP1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZOP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR2);
-                else
-                {
-                  for (size_t n_UP = 0; n_UP < NUMBER_UP; n_UP++)
-                  {
-                    if (current_ekran.index_position == (INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP))
-                    {
-                      maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP);
-                      break;
-                    }
-                  }
-                }
-                
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= maska;
+                edition_settings.control_urov ^= MASKA64_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();
@@ -18543,44 +18387,8 @@ void main_manu_function(void)
               }
               else if(current_ekran.current_level == EKRAN_CONTROL_UROV)
               {
-                unsigned int maska = 0;
-          
-                //Виділяємо, який біт треба міняти
-                if (current_ekran.index_position == INDEX_ML_CTRUROV_STATE) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STATE);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ2   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ3   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ4   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ4);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZDZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZDZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3I0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3I0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_3U0    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_3U0);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_NZZ    ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_NZZ);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_TZNP3  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_TZNP3);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ZOP1   ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ZOP1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMIN2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMIN2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_UMAX2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UMAX2);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR1  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR1);
-                else if (current_ekran.index_position == INDEX_ML_CTRUROV_STARTED_FROM_ACHR2  ) maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_ACHR2);
-                else
-                {
-                  for (size_t n_UP = 0; n_UP < NUMBER_UP; n_UP++)
-                  {
-                    if (current_ekran.index_position == (INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP))
-                    {
-                      maska = MASKA_FOR_BIT(INDEX_ML_CTRUROV_STARTED_FROM_UP1 + n_UP);
-                      break;
-                    }
-                  }
-                }
-                
                 //Міняємо на протилежний відповідний біт для вибраної позиції
-                edition_settings.control_urov ^= maska;
+                edition_settings.control_urov ^= MASKA64_FOR_BIT(current_ekran.index_position);
 
                 //Формуємо екран управлінської інформації для УРОВ
                  make_ekran_control_urov();
@@ -18848,7 +18656,7 @@ void main_manu_function(void)
                   default:
                     {
                       //Теоретично цього ніколи не мало б бути
-                      total_error_sw_fixed(97);
+                      total_error_sw_fixed(73);
                     }
                   }
                     
