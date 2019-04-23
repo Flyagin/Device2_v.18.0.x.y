@@ -225,9 +225,9 @@ void make_ekran_control_zdz()
      (MODYFIKACIA_VERSII_PZ == 0) ||    \
      (MODYFIKACIA_VERSII_PZ == 3)       \
     )   
-    {information_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD1_STATE_BIT) & 0x1], cursor_x_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD1_STATE_BIT) & 0x1]},
-    {information_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD2_STATE_BIT) & 0x1], cursor_x_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD2_STATE_BIT) & 0x1]},
-    {information_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD3_STATE_BIT) & 0x1], cursor_x_1[index_language][(point->control_zdz >> CTR_ZDZ_OVD3_STATE_BIT) & 0x1]},
+    {information_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD1_STATE_BIT) & 0x1], cursor_x_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD1_STATE_BIT) & 0x1]},
+    {information_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD2_STATE_BIT) & 0x1], cursor_x_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD2_STATE_BIT) & 0x1]},
+    {information_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD3_STATE_BIT) & 0x1], cursor_x_off_on[index_language][(point->control_zdz >> CTR_ZDZ_OVD3_STATE_BIT) & 0x1]},
     {information_3[point->zdz_ovd_porig], cursor_x_3[point->zdz_ovd_porig]},
 #endif
     {information_2[index_language][point->ctrl_zdz_type], cursor_x_2[index_language][point->ctrl_zdz_type]},
