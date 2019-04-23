@@ -1,0 +1,36 @@
+<NotepadPlus>
+    <Session activeView="1">
+        <mainView activeIndex="2">
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="1210" startPos="0" endPos="0" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\main.c" />
+            <File firstVisibleLine="2905" xOffset="32" scrollWidth="2650" startPos="120782" endPos="120801" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\protections.c">
+                <Mark line="2911" />
+                <Fold line="1964" />
+                <Fold line="2227" />
+                <Fold line="2274" />
+                <Fold line="2321" />
+                <Fold line="2388" />
+                <Fold line="2435" />
+                <Fold line="2482" />
+                <Fold line="2957" />
+            </File>
+            <File firstVisibleLine="630" xOffset="0" scrollWidth="1060" startPos="21773" endPos="21773" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\dz.c">
+                <Fold line="39" />
+            </File>
+            <File firstVisibleLine="87" xOffset="0" scrollWidth="1590" startPos="1594" endPos="1594" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_global_timers.h" />
+            <File firstVisibleLine="267" xOffset="0" scrollWidth="1540" startPos="11393" endPos="11451" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_T\mrprT_a\working files\src\ozt.c" />
+            <File firstVisibleLine="263" xOffset="0" scrollWidth="810" startPos="9257" endPos="9294" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_menu_dz.h">
+                <Fold line="14" />
+                <Fold line="39" />
+            </File>
+        </mainView>
+        <subView activeIndex="0">
+            <File firstVisibleLine="460" xOffset="0" scrollWidth="1060" startPos="15595" endPos="15595" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\dz.c" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="1060" startPos="1230" endPos="1230" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\G3U0.c" />
+            <File firstVisibleLine="30" xOffset="0" scrollWidth="2370" startPos="240" endPos="240" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\tmp.c" />
+            <File firstVisibleLine="234" xOffset="0" scrollWidth="1590" startPos="9900" endPos="9905" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_measurement.h" />
+            <File firstVisibleLine="369" xOffset="0" scrollWidth="1340" startPos="24082" endPos="24082" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\macroses.h" />
+            <File firstVisibleLine="153" xOffset="0" scrollWidth="1740" startPos="13464" endPos="13474" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\type_definition.h" />
+            <File firstVisibleLine="225" xOffset="0" scrollWidth="1440" startPos="7756" endPos="7756" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\a.01.c.d\const_global.h" />
+        </subView>
+    </Session>
+</NotepadPlus>
