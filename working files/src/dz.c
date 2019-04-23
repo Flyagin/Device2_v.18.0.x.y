@@ -25,8 +25,12 @@ typedef union dstLp_stp_state_Unn{
       unsigned int po_IA_max : 1; //5
       unsigned int po_IB_max : 1; //6
       unsigned int po_IC_max : 1; //7
-//      unsigned int po_ : 1; //8
-//      unsigned int po_ : 1; //9
+      unsigned int IaM0p9:1;//8   //0
+      unsigned int IbM0p9:1;//9   //1
+      unsigned int IcM0p9:1;//10  //2
+      unsigned int IaL0p9:1;//11  //3
+      unsigned int IbL0p9:1;//12  //4
+      unsigned int IcL0p9:1;//13  //5
     } bool_val;
     long lVl;
 } Mphs_sphs_stp_state; //multi phase
@@ -43,7 +47,7 @@ register long rL,rU;
   UNUSED(number_group_stp);
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
-    m_s_phs_stp_state.lVl &= 0x0f;//Clr Phase selector
+    m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
     rU = IM_IA;
 //Select Imax
     if(rL < (long) measurement[IM_IB]){
@@ -119,7 +123,9 @@ lV  = m_s_phs_stp_state.bool_val.po_3phs;
     _SET_BIT(p_active_functions, RANG_3KZ);
   else
     _CLEAR_BIT(p_active_functions, RANG_3KZ);
-
+	lV  = wrp.lVl;//&0x1f8
+ m_s_phs_stp_state.lVl |= (lV)<<7;//Save Stp
+  
 }
 //
 //--------------------------------------------------------------------------------------------------------
@@ -454,26 +460,66 @@ register union {
     ;//pickup_dz1_amtz
     //Po Dz
 	rU = wrp_dz1.bool_vars.not10_1;
-	unsigned long pick_up_Resistance_dstLp1 = 0;
-	if(rU = 0)
-		pick_up_Resistance_dstLp1 = (sLV.p_current_settings_prt->pickup_dz1) * KOEF_POVERNENNJA_GENERAL_UP  / 100;
+	 long pick_up_Resistance_dstLp1 = 0;
+	if(rU == 0)
+		pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1 * KOEF_POVERNENNJA_GENERAL_UP  / 100;
 	else
-		pick_up_Resistance_dstLp1 = sLV.p_current_settings_prt->pickup_dz1;
-	if( (measurement[z] > pick_up_Resistance_dstLp1)
-     || (measurement[z] > pick_up_Resistance_dstLp1)
-     || (measurement[z] > pick_up_Resistance_dstLp1)
-    )
-        p2.bool_vars.and8_2 = 1;//rU = 1;
-    else
-        p2.bool_vars.and8_2 = 0;//rU = 0;	
-//  if(){//One
-//      current_settings_prt.pickup_dz1
-//  }else if(){ //2
-//      
-//  
-//  }else{//M
-//  
-//  }
+		pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1;
+
+	lV = m_s_phs_stp_state.lVl;
+	if(lV&(1<<0)){//One
+		if(wrp_sncn.bool_vars.or6_O1&&wrp_dz1.bool_vars.not3_1){//Check Fault and2
+			rU = Za_A;
+			if(lV&(1<<5))
+				rU = Za_B;
+			else if(lV&(1<<6))
+					rU = Za_C;
+			
+		}
+		else{
+			rU = Z_A;
+			if(lV&(1<<5))
+				rU = Z_B;
+			else if(lV&(1<<6))
+					rU = Z_C;		
+		}
+		//current_settings_prt.pickup_dz1
+	}else if(lV&(1<<1)){ //2
+	
+		if(wrp_sncn.bool_vars.or6_O1&&wrp_dz1.bool_vars.not3_1){//Check Fault
+			rU = Za_AB;//( (1<< IA_M0_P9) | (1<<IB_M0_P9) | (1<<IC_L0_P9 ))
+			if( lV == (lV&((1<<(IB_M0_P9+7)) | (1<<(IC_M0_P9+7)) | (1<<(IA_L0_P9+7)))) )
+				rU = Za_BC;
+			else if( lV == (lV&((1<<(IA_M0_P9+7)) | (1<<(IC_M0_P9+7)) | (1<<(IB_L0_P9+7)))) )
+					rU = Za_CA;	
+		}
+		else{
+			rU = Z_AB;
+			if( lV == (lV&((1<<(IB_M0_P9+7)) | (1<<(IC_M0_P9+7)) | (1<<(IA_L0_P9+7)))))
+				rU = Z_BC;
+			else if( lV == (lV&((1<<(IA_M0_P9+7)) | (1<<(IC_M0_P9+7)) | (1<<(IB_L0_P9+7)))) )
+					rU = Z_CA;	
+		}
+	}
+	else{//M
+		if(wrp_sncn.bool_vars.or6_O1&&wrp_dz1.bool_vars.not3_1){//Check Fault
+			rU = Za_3;//lV&(1<<2) Select Avar
+		}
+		else{
+			rU = Z_3;
+		}
+		
+
+	}
+		
+if( (resistance[rU] > pick_up_Resistance_dstLp1)
+		//|| (resistance[rU] > pick_up_Resistance_dstLp1)
+		//|| (resistance[rU] > pick_up_Resistance_dstLp1)
+		)
+			 wrp_dz1.bool_vars.and8_2 = 1;//rU = 1;
+		else
+			 wrp_dz1.bool_vars.and8_2 = 0;//rU = 0;
+
 //nor6  
     rU = wrp_dz1.lVl &( (1<<12)|(1<<13)| (1<<14)| (1<<15));
     if(rU ==  0)                        
@@ -746,6 +792,11 @@ typedef struct tag_BoolWord{
     //May be insert Aux Information about State of Using this Object
 }BoolWordsHldrDsc;
 BoolWordsHldrDsc bw_dstLp_dt;
+/*
+Stp Dz must 1)Select phase
+2)look Tz
+3)use Dz1
+*/
 
 void dz2_handler(unsigned int *p_active_functions, unsigned int number_group_stp );
 //=====================================================================================================
