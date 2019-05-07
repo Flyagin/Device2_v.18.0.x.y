@@ -7,9 +7,9 @@
 #define BEGIN_ADR_BIT 55000
 
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 10026
+#define END_ADR_REGISTER 10031
 //конечный bit в карте памяти
-#define END_ADR_BIT 55416
+#define END_ADR_BIT 55496
 
 #define CLRVALID_DATA  0
 
@@ -26,9 +26,9 @@ void preUPRBigReadAction(void);//action до чтения
 void preUPRBigWriteAction(void);//action до записи
 int  postUPRBigWriteAction(void);//action после записи
 
-int  uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editControl);
+int  uprFunc000(int action, int inOffset, uint32_t *uprMaska, int validData, uint32_t **editControl);
 void uprFuncRead000(int inOffset, uint32_t *uprMaska, uint32_t **editControl);
-int  uprFuncValidWrite000(int inOffset, uint32_t *uprMaska, uint32_t **editControl);
+int  uprFuncValidWrite000(int action, int inOffset, uint32_t *uprMaska, uint32_t **editControl);
 int  uprFuncValid000(int inOffset, int validData);
 int isValidCONFCondition(unsigned int confControl, unsigned int confMaska, uint32_t uprMaska, int validData);
 int isValidEXTRACondition(unsigned int extraControl, unsigned int extraMaska, uint32_t uprMaska, int validData);
@@ -40,28 +40,29 @@ COMPONENT_OBJ *uprbigcomponent;
 
 void uprFuncRead000(int inOffset, uint32_t *uprMaska, uint32_t **editControl)
 {
-  uprFunc000(inOffset, uprMaska, CLRVALID_DATA, editControl);
+  uprFunc000(0, inOffset, uprMaska, CLRVALID_DATA, editControl);
 }//uprFuncRead000(int inOffset, uint32_t *uprMaska)
-int uprFuncValidWrite000(int inOffset, uint32_t *uprMaska, uint32_t **editControl)
+int uprFuncValidWrite000(int action, int inOffset, uint32_t *uprMaska, uint32_t **editControl)
 {
-  return uprFunc000(inOffset, uprMaska, CLRVALID_DATA, editControl);
+  return uprFunc000(action, inOffset, uprMaska, CLRVALID_DATA, editControl);
 }//uprFuncRead000(int inOffset, uint32_t *uprMaska)
 int uprFuncValid000(int inOffset, int validData)
 {
   uint32_t uprMaska=0;
   uint32_t *editControl=NULL;
-  return uprFunc000(inOffset, &uprMaska, validData, &editControl);
+  return uprFunc000(0, inOffset, &uprMaska, validData, &editControl);
 }//uprFuncRead000(int inOffset, uint32_t *uprMaska)
 
-int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editControl)
+int uprFunc000(int actControl, int inOffset, uint32_t *uprMaska, int validData, uint32_t **editControl)
 {
   int isValid = 1;
-  int actControl = 0;
-  if(inOffset<0)
-    {
-      inOffset = -inOffset;
-      actControl = 1;
-    }//if(inOffset<0)
+//  int actControl = 0;
+//  if(inOffset<0)
+  //  {
+    //  inOffset = -inOffset;
+//      actControl = 1;
+  //  }//if(inOffset<0)
+
   (*uprMaska) = 0xFFFFFFFF;
   switch(inOffset)
     {
@@ -133,35 +134,6 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
     case MTZ_CONFIGURATION_END:
       (*uprMaska)   = N_BIT_CTRMTZ_NESPR_KIL_NAPR;
       break;
-
-//  count_bit = 3;
-//    case 32:
-//      (*uprMaska)   = MTZ04_BIT_CONFIGURATION;
-//      (*editControl) = &edition_settings.configuration;
-//      if(actControl)
-//        {
-//          if(!(edition_settings.control_extra_settings_1&(1<<INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_IB_I04))) isValid = 0;
-//          if(!(edition_settings.configuration&(1<<MTZ04_BIT_CONFIGURATION)))
-//            {
-//              //Функція обновлення змінних при зміні конфігурації
-//              if(action_after_changing_of_configuration(edition_settings.configuration, &edition_settings)) isValid = 0;
-//            }//if
-//        }//if(actControl)
-//      break;
-//#define MTZ04_CONFIGURATION_BEGIN 33
-//    case 33:
-//      (*uprMaska)   = N_BIT_CTRMTZ04_1;
-//      break;
-//    case 34:
-//      (*uprMaska)   = N_BIT_CTRMTZ04_2;
-//      break;
-//    case 35:
-//      (*uprMaska)   = N_BIT_CTRMTZ04_2_PRYSKORENNJA;
-//      break;
-//#define MTZ04_CONFIGURATION_END 36
-//    case 36:
-//      (*uprMaska)   = N_BIT_CTRMTZ04_2_PRYSKORENA;
-//      break;
 
 //  count_bit = 3;
     case 48:
@@ -452,27 +424,6 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
       (*uprMaska)   = INDEX_CTR_PO_UMAX2_OR_AND;
       break;
 
-//  count_bit = 3;
-//    case 225:
-//      (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_PHASE_LINE;
-//      (*editControl) = &edition_settings.control_extra_settings_1;
-//      if(actControl)
-//        {
-//          //Функція обновлення змінних
-//          if(action_after_changing_extra_settings(edition_settings.control_extra_settings_1, &edition_settings)) isValid = 0;
-//        }//if(actControl)
-//      break;
-//
-////  count_bit = 3;
-//    case 227:
-//      (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_IB_I04;
-//      (*editControl) = &edition_settings.control_extra_settings_1;
-//      if(actControl)
-//        {
-//          //Функція обновлення змінних
-//          if(action_after_changing_extra_settings(edition_settings.control_extra_settings_1, &edition_settings)) isValid = 0;
-//        }//if(actControl)
-//      break;
     case 228:
       (*uprMaska)   = INDEX_ML_CTR_TRANSFORMATOR_PHASE_LINE;
       (*editControl) = &edition_settings.control_transformator;
@@ -519,16 +470,73 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-#define APV_CONFIGURATION_END 296
-    case APV_CONFIGURATION_END:
+    case 296:
       (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_MTZ4;
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
 
+//  count_bit = 6;
+    case 300:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_DZ1;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 301:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ1;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 302:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_DZ2;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 303:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ2;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 304:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_DZ3;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 305:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ3;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 306:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_DZ4;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 307:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 308:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_TZNP1;
+      if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 309:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_TZNP2;
+      if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+#define APV_CONFIGURATION_END 310
+    case APV_CONFIGURATION_END:
+      (*uprMaska)   = INDEX_ML_CTRAPV_STARTED_FROM_TZNP3;
+      if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+
 
 //  count_bit = 6;
-    case 304:
+    case 320:
       (*uprMaska)   = UROV_BIT_CONFIGURATION;
       (*editControl) = &edition_settings.configuration;
       if(actControl)
@@ -540,154 +548,187 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
             }//if
         }//if(actControl)
       break;
-#define UROV_CONFIGURATION_BEGIN 305
+#define UROV_CONFIGURATION_BEGIN 321
     case UROV_CONFIGURATION_BEGIN:
       (*uprMaska)   = INDEX_ML_CTRUROV_STATE;
       break;
-    case 306:
+    case 322:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ1;
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 307:
+    case 323:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ2;
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 308:
+    case 324:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ3;
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 309:
+    case 325:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ4;
       if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-//    case 310:
-//      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_1;
-//      if(isValidCONFCondition(**editControl, MTZ04_BIT_CONFIGURATION,
-//                              *uprMaska, validData)) isValid = 0;
-//      break;
-//    case 311:
-//      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_MTZ04_2;
-//      if(isValidCONFCondition(**editControl, MTZ04_BIT_CONFIGURATION,
-//                              *uprMaska, validData)) isValid = 0;
-//      break;
-    case 312:
+
+//  count_bit = 6;
+    case 328:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UMAX1;
       if(isValidCONFCondition(**editControl, UMAX_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 313:
+    case 329:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UMAX2;
       if(isValidCONFCondition(**editControl, UMAX_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 314:
+    case 330:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UMIN1;
       if(isValidCONFCondition(**editControl, UMIN_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 315:
+    case 331:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UMIN2;
       if(isValidCONFCondition(**editControl, UMIN_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 316:
+    case 332:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_ZOP1;
       if(isValidCONFCondition(**editControl, ZOP_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
 
 //  count_bit = 2;
-    case 318:
+    case 334:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_NZZ;
       if(isValidCONFCondition(**editControl, ZZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       if(isValidZZTYPECondition(**editControl, INDEX_ML_CTR_ZZ1_TYPE_BIT,
                                 *uprMaska, validData)) isValid = 0;
       break;
-    case 319:
+    case 335:
       (*uprMaska)   =  INDEX_ML_CTRUROV_STARTED_FROM_3I0;
       if(isValidCONFCondition(**editControl, ZZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
 
 //  count_bit = 1;
-    case 321:
+    case 337:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_3U0;
       if(isValidCONFCondition(**editControl, ZZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 322:
+    case 338:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_TZNP1;
       if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 323:
+    case 339:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_TZNP2;
       if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 324:
+    case 340:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_TZNP3;
       if(isValidCONFCondition(**editControl, TZNP_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 325:
+    case 341:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_ZDZ;
       if(isValidCONFCondition(**editControl, ZDZ_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-    case 326:
+    case 342:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_ACHR1;
       if(isValidCONFCondition(**editControl, ACHR_CHAPV_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
-#define UROV_CONFIGURATION_END 327
-    case UROV_CONFIGURATION_END:
+    case 343:
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_ACHR2;
       if(isValidCONFCondition(**editControl, ACHR_CHAPV_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       break;
 
-//IF ВСТАВКА 329-336
+//IF ВСТАВКА 345-352
+
+    case 353:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_DZ1;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 354:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ1;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 355:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_DZ2;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 356:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ2;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 357:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_DZ3;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 358:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ3;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+    case 359:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_DZ4;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
+#define UROV_CONFIGURATION_END 360
+    case UROV_CONFIGURATION_END:
+      (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_AMTDZ4;
+      if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION,
+                              *uprMaska, validData)) isValid = 0;
+      break;
 
 //  count_bit = 1;
-    case 368:
+    case 384:
       (*uprMaska)   = INDEX_ML_CTRPRYVOD_VV;
       (*editControl) = &edition_settings.control_switch;
       break;
 
 //  count_bit = 1;
-    case 371://Блокировка Вкл. ВВ от ДВ
+    case 387://Блокировка Вкл. ВВ от ДВ
       (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_BLK_ON_CB_MISCEVE;
       (*editControl) = &edition_settings.control_extra_settings_1;
       break;
-    case 372://Блокировка Откл. ВВ от ДВ
+    case 388://Блокировка Откл. ВВ от ДВ
       (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_BLK_OFF_CB_MISCEVE;
       (*editControl) = &edition_settings.control_extra_settings_1;
       break;
-    case 373://Контроль ФК
+    case 389://Контроль ФК
       (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_FB_ACTIVATION;
       (*editControl) = &edition_settings.control_extra_settings_1;
       break;
-    case 374://Ресурс ВВ
+    case 390://Ресурс ВВ
       (*uprMaska)   = INDEX_ML_CTRRESURS_VV;
       (*editControl) = &edition_settings.control_switch;
       break;
-    case 375://Разрешение блокировки готовности к ТУ от защит
+    case 391://Разрешение блокировки готовности к ТУ от защит
       (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_READY_TU;
       (*editControl) = &edition_settings.control_extra_settings_1;
       break;
-    case 376://Окно информации об отключении ВВ
+    case 392://Окно информации об отключении ВВ
       (*uprMaska)   = INDEX_ML_CTREXTRA_SETTINGS_1_CTRL_WINDOW_OFF_CB;
       (*editControl) = &edition_settings.control_extra_settings_1;
       break;
 
 //  count_bit = 1;
-    case 384:
+    case 400:
       (*uprMaska)   = VMP_BIT_CONFIGURATION;
       (*editControl) = &edition_settings.configuration;
       if(actControl)
@@ -698,7 +739,7 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
             }//if
         }//if(actControl)
       break;
-    case 385:
+    case 401:
       (*uprMaska)   = INDEX_CTR_VMP_STATE;
       (*editControl) = &edition_settings.control_vmp;
       if(isValidCONFCondition(**editControl, VMP_BIT_CONFIGURATION,
@@ -706,7 +747,7 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
       break;
 
 //  count_bit = 1;
-    case 416:
+    case 432:
       (*uprMaska)   = EL_BIT_CONFIGURATION;
       (*editControl) = &edition_settings.configuration;
       if(actControl)
@@ -716,6 +757,89 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
               if(action_after_changing_of_configuration(edition_settings.configuration, &edition_settings)) isValid = 0;
             }//if
         }//if(actControl)
+      break;
+
+//  count_bit = 1;
+    case 464:
+      (*uprMaska)   = DZ_BIT_CONFIGURATION;
+      (*editControl) = &edition_settings.configuration;
+      if(actControl)
+        {
+          if(!(edition_settings.configuration&(1<<DZ_BIT_CONFIGURATION)))
+            {
+              if(action_after_changing_of_configuration(edition_settings.configuration, &edition_settings)) isValid = 0;
+            }//if
+        }//if(actControl)
+      break;
+#define DZ_CONFIGURATION_BEGIN 465
+    case DZ_CONFIGURATION_BEGIN:
+      (*uprMaska)   = INDEX_CTR_DZ1;
+      break;
+    case 466:
+      (*uprMaska)   = INDEX_CTR_DZ1_AMTZ;
+      break;
+    case 467:
+      (*uprMaska)   = INDEX_CTR_DZ2;
+      break;
+    case 468:
+      (*uprMaska)   = INDEX_CTR_DZ2_DIR;
+      break;
+    case 469:
+      (*uprMaska)   = INDEX_CTR_DZ2_INV;
+      break;
+    case 470:
+      (*uprMaska)   = INDEX_CTR_DZ2_PR_VID_DV;
+      break;
+    case 471:
+      (*uprMaska)   = INDEX_CTR_DZ2_CONST_PR;
+      break;
+    case 472:
+      (*uprMaska)   = INDEX_CTR_DZ2_AMTZ;
+      break;
+    case 473:
+      (*uprMaska)   = INDEX_CTR_DZ3;
+      break;
+    case 474:
+      (*uprMaska)   = INDEX_CTR_DZ3_DIR;
+      break;
+    case 475:
+      (*uprMaska)   = INDEX_CTR_DZ3_INV;
+      break;
+    case 476:
+      (*uprMaska)   = INDEX_CTR_DZ3_PR_VID_DV;
+      break;
+    case 477:
+      (*uprMaska)   = INDEX_CTR_DZ3_CONST_PR;
+      break;
+    case 478:
+      (*uprMaska)   = INDEX_CTR_DZ3_AMTZ;
+      break;
+    case 479:
+      (*uprMaska)   = INDEX_CTR_DZ4;
+      break;
+    case 480:
+      (*uprMaska)   = INDEX_CTR_DZ4_DIR;
+      break;
+    case 481:
+      (*uprMaska)   = INDEX_CTR_DZ4_INV;
+      break;
+    case 482:
+      (*uprMaska)   = INDEX_CTR_DZ4_PR_VID_DV;
+      break;
+    case 483:
+      (*uprMaska)   = INDEX_CTR_DZ4_CONST_PR;
+      break;
+    case 484:
+      (*uprMaska)   = INDEX_CTR_DZ4_AMTZ;
+      break;
+#define DZ_CONFIGURATION_END 485
+    case DZ_CONFIGURATION_END:
+      (*uprMaska)   = INDEX_CTR_NKN_DZ;
+      break;
+
+    case 496:
+      (*uprMaska)   = INDEX_ML_CTR_TRANSFORMATOR_3I0_3I0_1;
+      (*editControl) = &edition_settings.control_transformator;
       break;
 
     }//switch
@@ -728,11 +852,11 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
           if(isValidCONFCondition(**editControl, MTZ_BIT_CONFIGURATION, *uprMaska, validData)) isValid = 0;
         }//if
 
-//      if(inOffset>=MTZ04_CONFIGURATION_BEGIN && inOffset<=MTZ04_CONFIGURATION_END)
-//        {
-//          (*editControl) = &edition_settings.control_mtz04;
-//          if(isValidCONFCondition(**editControl, MTZ04_BIT_CONFIGURATION, *uprMaska, validData)) isValid = 0;
-//        }//if
+      if(inOffset>=DZ_CONFIGURATION_BEGIN && inOffset<=DZ_CONFIGURATION_END)
+        {
+          (*editControl) = &edition_settings.control_dz;
+          if(isValidCONFCondition(**editControl, DZ_BIT_CONFIGURATION, *uprMaska, validData)) isValid = 0;
+        }//if
 
       if(inOffset>=ZDZ_CONFIGURATION_BEGIN && inOffset<=ZDZ_CONFIGURATION_END)
         {
@@ -778,7 +902,8 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
 
       if(inOffset>=UROV_CONFIGURATION_BEGIN && inOffset<=UROV_CONFIGURATION_END)
         {
-       //   (*editControl) = &edition_settings.control_urov;
+          (*editControl) = (uint32_t*)&edition_settings.control_urov;
+          if((*uprMaska)>=32) (*editControl) = &((uint32_t*)&edition_settings.control_urov)[1];
           if(isValidCONFCondition(**editControl, UROV_BIT_CONFIGURATION, *uprMaska, validData)) isValid = 0;
         }//if
 
@@ -798,11 +923,12 @@ int uprFunc000(int inOffset, uint32_t *uprMaska, int validData, uint32_t **editC
         }//if(actControl)
     }//if
 
-  if(inOffset>=329 && inOffset<337)
+  if(inOffset>=345 && inOffset<353)
     {
-      int inupOffset = inOffset-329;
+      int inupOffset = inOffset-345;
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UP1+inupOffset;
-    //  (*editControl) = &edition_settings.control_urov;
+          (*editControl) = (uint32_t*)&edition_settings.control_urov;
+          if((*uprMaska)>=32) (*editControl) = &((uint32_t*)&edition_settings.control_urov)[1];
       if(isValidCONFCondition(**editControl, UROV_BIT_CONFIGURATION,
                               *uprMaska, validData)) isValid = 0;
       if(isValidCONFCondition(**editControl, UP_BIT_CONFIGURATION,
@@ -828,6 +954,7 @@ void loadUPRBigActualDataBit(int beginOffset, int endOffset)
           else
             {
               //читать значение
+              if(uprMaska>=32) uprMaska -= 32;//для УРОВ
               value = (*editControl)&(1<<uprMaska);
             }//else
         }//if(item>=beginOffset && item<endOffset)
@@ -980,26 +1107,27 @@ int postUPRBigWriteAction(void)
           uint32_t uprMaska=0;
           uint32_t *editControl=NULL;
           int offset = i+beginAdr-BEGIN_ADR_BIT;
-          uprFuncValidWrite000(offset, &uprMaska, &editControl);
+          uprFuncValidWrite000(0, offset, &uprMaska, &editControl);
           if(editControl==NULL) continue;
           flag=1;
           uint32_t value = tempWriteArray[offsetTempWriteArray+i];
-
           //actControl
           if(value)//валидация на включение
-            if(!uprFuncValidWrite000(-offset, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
+            if(!uprFuncValidWrite000(1, offset, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
           //ОСОБАЯ СБОРКА
           if((editControl == (uint32_t*)&edition_settings.control_extra_settings_1) ||
               (editControl == (uint32_t*)&edition_settings.configuration)
             )
             {
              if(!value)//валидация на отключение
-              if(!uprFuncValidWrite000(-offset, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
+              if(!uprFuncValidWrite000(1, offset, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
               upravlSchematic = 1;//флаг Rang
             }//if
           //установка изменений
-          (*editControl) &= ~(1<<uprMaska);
-          (*editControl) |= (value<<uprMaska);
+          if(uprMaska>=32) uprMaska -= 32;//для УРОВ
+          else
+           (*editControl) &= ~(1<<uprMaska);
+           (*editControl) |= (value<<uprMaska);
         }//for
     }//if(beginAdr>=BEGIN_ADR_BIT)
   else
@@ -1013,7 +1141,7 @@ int postUPRBigWriteAction(void)
             {
               uint32_t uprMaska=0;
               uint32_t *editControl=NULL;
-              uprFuncValidWrite000(offset*16+bit, &uprMaska, &editControl);
+              uprFuncValidWrite000(0, offset*16+bit, &uprMaska, &editControl);
               if(editControl==NULL) continue;
               flag=1;
               uint32_t value = tempWriteArray[offsetTempWriteArray+i];
@@ -1021,17 +1149,18 @@ int postUPRBigWriteAction(void)
               if(value&(1<<bit)) temp = 1;
 
               if(temp)//валидация на включение
-                if(!uprFuncValidWrite000(-offset*16-bit, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
+                if(!uprFuncValidWrite000(1, offset*16+bit, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
               //ОСОБАЯ СБОРКА
               if((editControl == (uint32_t*)&edition_settings.control_extra_settings_1) ||
                   (editControl == (uint32_t*)&edition_settings.configuration)
                 )
                 {
                  if(!temp)//валидация на отключение
-                  if(!uprFuncValidWrite000(-offset*16-bit, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
+                  if(!uprFuncValidWrite000(1, offset*16+bit, &uprMaska, &editControl)) return ERROR_VALID3;//ошибка валидации
                   upravlSchematic = 1;//флаг Rang
                 }//if
               //установка изменений
+              if(uprMaska>=32) uprMaska -= 32;//для УРОВ
               (*editControl) &= ~(1<<uprMaska);
               (*editControl) |= (temp<<uprMaska);
             }//for

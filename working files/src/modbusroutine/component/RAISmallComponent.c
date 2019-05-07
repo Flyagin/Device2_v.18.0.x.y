@@ -2,9 +2,9 @@
 #include "header.h"
 
 //начальный регистр в карте памяти
-#define BEGIN_ADR_REGISTER 409
+#define BEGIN_ADR_REGISTER 439
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 768
+#define END_ADR_REGISTER 800
 
 #define MMEASUREMENTS_DR_WIDTH                35
 #define MM_ADDRESS_FIRST_MEASUREMENTS_DR       BEGIN_ADR_REGISTER

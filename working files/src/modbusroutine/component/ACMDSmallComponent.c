@@ -7,9 +7,9 @@
 #define BEGIN_ADR_BIT 50000
 
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 293
+#define END_ADR_REGISTER 296
 //конечный bit в карте памяти
-#define END_ADR_BIT 50599
+#define END_ADR_BIT 50648
 
 int privateACMDSmallGetReg2(int adrReg);
 int privateACMDSmallGetBit2(int adrBit);
@@ -216,37 +216,6 @@ int cmdFunc000(int inOffset, int *outMaska, int *dvMaska, int actControl)
     break;
 
 //  count_bit = 3;
-//#define MTZ04_CONFIGURATION_BEGIN 80
-//  case MTZ04_CONFIGURATION_BEGIN:
-//    (*outMaska) = RANG_BLOCK_MTZ04_1;
-//    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_1;
-//    break;
-//  case 81:
-//    (*outMaska) = RANG_MTZ04_1;
-////        (*dvMaska) =
-//    break;
-//  case 82:
-//    (*outMaska) = RANG_PO_MTZ04_1;
-////        (*dvMaska) =
-//    break;
-//  case 83:
-//    (*outMaska) = RANG_BLOCK_MTZ04_2;
-//    (*dvMaska) = RANG_SMALL_BLOCK_MTZ04_2;
-//    break;
-//  case 84:
-//    (*outMaska) = RANG_MTZ04_2;
-////        (*dvMaska) =
-//    break;
-//  case 85:
-//    (*outMaska) = RANG_PO_MTZ04_2;
-////        (*dvMaska) =
-//    break;
-//#define MTZ04_CONFIGURATION_END 86
-//  case MTZ04_CONFIGURATION_END:
-//    (*outMaska) = RANG_BLOCK_USK_MTZ04_2;
-//    (*dvMaska) = RANG_SMALL_BLOCK_USK_MTZ04_2;
-//    break;
-
   case 88:
     (*outMaska) = RANG_NCN_MTZ;
 //        (*dvMaska) =
@@ -1082,6 +1051,20 @@ int cmdFunc000(int inOffset, int *outMaska, int *dvMaska, int actControl)
     break;
 
 //  count_bit = 5;
+  case 581:
+    (*outMaska) = RANG_1KZ;
+//        (*dvMaska) =
+    break;
+  case 582:
+    (*outMaska) = RANG_2KZ;
+//        (*dvMaska) =
+    break;
+  case 583:
+    (*outMaska) = RANG_3KZ;
+//        (*dvMaska) =
+    break;
+
+//  count_bit = 5;
   case 595:
     (*outMaska) = RANG_VIDKL_VID_ZAKHYSTIV;
 //        (*dvMaska) =
@@ -1104,14 +1087,185 @@ int cmdFunc000(int inOffset, int *outMaska, int *dvMaska, int actControl)
     (*outMaska) = RANG_RESET_BLOCK_READY_TU_VID_ZAHYSTIV;
     (*dvMaska) = RANG_SMALL_RESET_BLOCK_READY_TU_VID_ZAHYSTIV;
     break;
+
+//  count_bit = 5;
+#define DZ_CONFIGURATION_BEGIN 608
+  case DZ_CONFIGURATION_BEGIN:
+    (*outMaska) = RANG_BLOCK_DZ1;
+    (*dvMaska) = RANG_SMALL_BLOCK_DZ1;
+    break;
+  case 609:
+    (*outMaska) = RANG_PO_DZ1;
+//        (*dvMaska) =
+    break;
+  case 610:
+    (*outMaska) = RANG_DZ1;
+//        (*dvMaska) =
+    break;
+  case 611:
+    (*outMaska) = RANG_PO_AMTZ_DZ1;
+//        (*dvMaska) =
+    break;
+  case 612:
+    (*outMaska) = RANG_AMTZ_DZ1;
+//        (*dvMaska) =
+    break;
+  case 613:
+    (*outMaska) = RANG_BLOCK_DZ2;
+    (*dvMaska) = RANG_SMALL_BLOCK_DZ2;
+    break;
+  case 614:
+    (*outMaska) = RANG_BLOCK_PR_DZ2;
+    (*dvMaska) = RANG_SMALL_BLOCK_PR_DZ2;
+    break;
+  case 615:
+    (*outMaska) = RANG_OP_PR_DZ2;
+    (*dvMaska) = RANG_SMALL_OP_PR_DZ2;
+    break;
+  case 616:
+    (*outMaska) = RANG_SECTOR_DIR_DZ2;
+//        (*dvMaska) =
+    break;
+  case 617:
+    (*outMaska) = RANG_SECTOR_INV_DZ2;
+//        (*dvMaska) =
+    break;
+  case 618:
+    (*outMaska) = RANG_PO_DIR_DZ2;
+//        (*dvMaska) =
+    break;
+  case 619:
+    (*outMaska) = RANG_PO_INV_DZ2;
+//        (*dvMaska) =
+    break;
+  case 620:
+    (*outMaska) = RANG_DZ2;
+//        (*dvMaska) =
+    break;
+  case 621:
+    (*outMaska) = RANG_PO_AMTZ_DZ2;
+//        (*dvMaska) =
+    break;
+  case 622:
+    (*outMaska) = RANG_AMTZ_DZ2;
+//        (*dvMaska) =
+    break;
+  case 623:
+    (*outMaska) = RANG_BLOCK_DZ3;
+    (*dvMaska) = RANG_SMALL_BLOCK_DZ3;
+    break;
+  case 624:
+    (*outMaska) = RANG_BLOCK_PR_DZ3;
+    (*dvMaska) = RANG_SMALL_BLOCK_PR_DZ3;
+    break;
+  case 625:
+    (*outMaska) = RANG_OP_PR_DZ3;
+    (*dvMaska) = RANG_SMALL_OP_PR_DZ3;
+    break;
+  case 626:
+    (*outMaska) = RANG_SECTOR_DIR_DZ3;
+//        (*dvMaska) =
+    break;
+  case 627:
+    (*outMaska) = RANG_SECTOR_INV_DZ3;
+//        (*dvMaska) =
+    break;
+  case 628:
+    (*outMaska) = RANG_PO_DIR_DZ3;
+//        (*dvMaska) =
+    break;
+  case 629:
+    (*outMaska) = RANG_PO_INV_DZ3;
+//        (*dvMaska) =
+    break;
+  case 630:
+    (*outMaska) = RANG_DZ3;
+//        (*dvMaska) =
+    break;
+  case 631:
+    (*outMaska) = RANG_PO_AMTZ_DZ3;
+//        (*dvMaska) =
+    break;
+  case 632:
+    (*outMaska) = RANG_AMTZ_DZ3;
+//        (*dvMaska) =
+    break;
+  case 633:
+    (*outMaska) = RANG_BLOCK_DZ4;
+    (*dvMaska) = RANG_SMALL_BLOCK_DZ4;
+    break;
+  case 634:
+    (*outMaska) = RANG_BLOCK_PR_DZ4;
+    (*dvMaska) = RANG_SMALL_BLOCK_PR_DZ4;
+    break;
+  case 635:
+    (*outMaska) = RANG_OP_PR_DZ4;
+    (*dvMaska) = RANG_SMALL_OP_PR_DZ4;
+    break;
+  case 636:
+    (*outMaska) = RANG_SECTOR_DIR_DZ4;
+//        (*dvMaska) =
+    break;
+  case 637:
+    (*outMaska) = RANG_SECTOR_INV_DZ4;
+//        (*dvMaska) =
+    break;
+  case 638:
+    (*outMaska) = RANG_PO_DIR_DZ4;
+//        (*dvMaska) =
+    break;
+  case 639:
+    (*outMaska) = RANG_PO_INV_DZ4;
+//        (*dvMaska) =
+    break;
+  case 640:
+    (*outMaska) = RANG_DZ4;
+//        (*dvMaska) =
+    break;
+  case 641:
+    (*outMaska) = RANG_PO_AMTZ_DZ4;
+//        (*dvMaska) =
+    break;
+  case 642:
+    (*outMaska) = RANG_AMTZ_DZ4;
+//        (*dvMaska) =
+    break;
+  case 643:
+    (*outMaska) = RANG_EXT_NKN_DZ;
+    (*dvMaska) = RANG_SMALL_EXT_NKN_DZ;
+    break;
+  case 644:
+    (*outMaska) = RANG_NKN_DZ;
+//        (*dvMaska) =
+    break;
+  case 645:
+    (*outMaska) = RANG_PO_U_DZ;
+//        (*dvMaska) =
+    break;
+  case 646:
+    (*outMaska) = RANG_PO_I_BLK_DZ;
+//        (*dvMaska) =
+    break;
+
+  case 647:
+    (*outMaska) = RANG_SNKN_DZ;
+//        (*dvMaska) =
+    break;
+#define DZ_CONFIGURATION_END 648
+  case DZ_CONFIGURATION_END:
+    (*outMaska) = RANG_3F_DZ_DIR_INV;
+//        (*dvMaska) =
+    break;
+
   }//switch
+
   if((*outMaska)!=-1)
   {
     if(inOffset>=MTZ_CONFIGURATION_BEGIN && inOffset<=MTZ_CONFIGURATION_END)
       if(!(edition_settings.configuration&(1<<MTZ_BIT_CONFIGURATION))) isValid = 0;
 
-//    if(inOffset>=MTZ04_CONFIGURATION_BEGIN && inOffset<=MTZ04_CONFIGURATION_END)
-//      if(!(edition_settings.configuration&(1<<MTZ04_BIT_CONFIGURATION))) isValid = 0;
+    if(inOffset>=DZ_CONFIGURATION_BEGIN && inOffset<=DZ_CONFIGURATION_END)
+      if(!(edition_settings.configuration&(1<<DZ_BIT_CONFIGURATION))) isValid = 0;
 
     if(inOffset>=ZDZ_CONFIGURATION_BEGIN && inOffset<=ZDZ_CONFIGURATION_END)
       if(!(edition_settings.configuration&(1<<ZDZ_BIT_CONFIGURATION))) isValid = 0;

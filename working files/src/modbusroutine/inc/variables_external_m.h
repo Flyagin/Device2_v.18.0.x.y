@@ -12,6 +12,6 @@ extern  int   indexTW;//индекс буфера записи
 extern  int   pointInterface;//метка интерфейса 0-USB 1-RS485
 
 //закоментируйте для боевого применения
-//#define TESTZBIRKA_VERSII_PZ
+#define TESTZBIRKA_VERSII_PZ
 
 #endif

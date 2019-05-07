@@ -95,7 +95,7 @@ int getIUSmallModbusRegister(int adrReg)
         return ZBIRKA_VERSII_PZ;
   }//switch
 
-  return 0;//tempReadArray[adrReg-BEGIN_ADR_REGISTER];
+  return 0;
 }//getDVModbusRegister(int adrReg)
 int getIUSmallModbusBit(int x) {
   //получить содержимое bit
