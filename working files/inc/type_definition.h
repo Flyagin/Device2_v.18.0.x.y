@@ -177,7 +177,7 @@ typedef struct
   int32_t timeout_dz4_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ4 п.5.27.26.2 [0; 5] крок 0,01с
   int32_t timeout_dz4_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ4 для АМСЗ для АМСЗ п.5.27.27.2 [0; 5] крок 0,01с
   
-  int32_t timeout_nkn_dz[NUMBER_GROUP_USTAVOK];                 //Витримка ДЗ "Т НЦН ДЗ" п.5.27.19.5 [0; 1] крок 0,01с
+  int32_t timeout_nkn_dz[NUMBER_GROUP_USTAVOK];                 //Витримка ДЗ "Т НКН ДЗ" п.5.27.19.5 [0; 1] крок 0,01с
 
   uint32_t control_dz;                                          //Поле для управління ДЗ
   
