@@ -1304,20 +1304,20 @@ inline void calc_power(int ortogonal_local_calc[])
   S = UaIa* + UbIb* + UcIc*
   */
   
-#define IA_SIN          ortogonal_local_calc[2*IM_IA + 1]
-#define IA_COS          ortogonal_local_calc[2*IM_IA + 0]
-#define UA_SIN          ortogonal_local_calc[2*IM_UA + 1]
-#define UA_COS          ortogonal_local_calc[2*IM_UA + 0]
+#define IA_SIN          ortogonal_local_calc[2*FULL_ORT_Ia + 1]
+#define IA_COS          ortogonal_local_calc[2*FULL_ORT_Ia + 0]
+#define UA_SIN          ortogonal_local_calc[2*FULL_ORT_Ua + 1]
+#define UA_COS          ortogonal_local_calc[2*FULL_ORT_Ua + 0]
   
-#define IB_SIN          ortogonal_local_calc[2*IM_IB + 1]
-#define IB_COS          ortogonal_local_calc[2*IM_IB + 0]
-#define UB_SIN          ortogonal_local_calc[2*IM_UB + 1]
-#define UB_COS          ortogonal_local_calc[2*IM_UB + 0]
+#define IB_SIN          ortogonal_local_calc[2*FULL_ORT_Ib + 1]
+#define IB_COS          ortogonal_local_calc[2*FULL_ORT_Ib + 0]
+#define UB_SIN          ortogonal_local_calc[2*FULL_ORT_Ub + 1]
+#define UB_COS          ortogonal_local_calc[2*FULL_ORT_Ub + 0]
 
-#define IC_SIN          ortogonal_local_calc[2*IM_IC + 1]
-#define IC_COS          ortogonal_local_calc[2*IM_IC + 0]
-#define UC_SIN          ortogonal_local_calc[2*IM_UC + 1]
-#define UC_COS          ortogonal_local_calc[2*IM_UC + 0]
+#define IC_SIN          ortogonal_local_calc[2*FULL_ORT_Ic + 1]
+#define IC_COS          ortogonal_local_calc[2*FULL_ORT_Ic + 0]
+#define UC_SIN          ortogonal_local_calc[2*FULL_ORT_Uc + 1]
+#define UC_COS          ortogonal_local_calc[2*FULL_ORT_Uc + 0]
   
   long long Re_UaIa, Im_UaIa;
   if (measurement[IM_IA] >= PORIG_I_ENERGY)
