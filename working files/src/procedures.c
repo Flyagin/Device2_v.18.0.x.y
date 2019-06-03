@@ -864,6 +864,9 @@ unsigned int action_after_changing_of_configuration(unsigned int new_configurati
       //Виводим ступені ТЗНП
       target_label->control_tznp &= (unsigned int)(~(CTR_TZNP1 | CTR_TZNP2 | CTR_TZNP3));
    
+      //Виводим ступені МТЗ з АПВ
+      target_label->control_apv &= (unsigned int)(~(CTR_APV_STARTED_FROM_TZNP1 | CTR_APV_STARTED_FROM_TZNP2 | CTR_APV_STARTED_FROM_TZNP3));
+
       //Виводим ступені ТЗНП з УРОВ
       target_label->control_urov &= (uint64_t)(
                                                ~(

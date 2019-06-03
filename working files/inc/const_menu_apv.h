@@ -8,7 +8,7 @@
 #define EKRAN_CONTROL_APV           (EKRAN_CONTROL_TZNP  + 1)
 
 #define MAX_ROW_FOR_TIMEOUT_APV         9
-#define MAX_ROW_FOR_CONTROL_APV         (4 + 8 + 4 + 4 + 2)
+#define MAX_ROW_FOR_CONTROL_APV         (4 + 8 + 4 + 3 + 2)
 
 #define INDEX_ML_TMOAPV1                0
 #define INDEX_ML_TMOAPV2                1
