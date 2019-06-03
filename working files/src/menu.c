@@ -5139,6 +5139,12 @@ void main_manu_function(void)
                     &&
                     ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
                     ) 
+                    ||  
+                    (
+                     (current_ekran.index_position == INDEX_ML_CTRAPV_BLK_CTRL_PRVV2)
+                     &&
+                     ((current_settings.configuration & (1<<UROV_BIT_CONFIGURATION)) == 0)
+                    )
                   )
               {
                 current_ekran.index_position++;
@@ -12851,6 +12857,12 @@ void main_manu_function(void)
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
                       ) 
+                      ||  
+                      (
+                       (current_ekran.index_position == INDEX_ML_CTRAPV_BLK_CTRL_PRVV2)
+                       &&
+                       ((current_settings.configuration & (1<<UROV_BIT_CONFIGURATION)) == 0)
+                      )
                     )
                 {
                   current_ekran.index_position--;
@@ -14375,6 +14387,12 @@ void main_manu_function(void)
                       &&
                       ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
                       ) 
+                      ||  
+                      (
+                       (current_ekran.index_position == INDEX_ML_CTRAPV_BLK_CTRL_PRVV2)
+                       &&
+                       ((current_settings.configuration & (1<<UROV_BIT_CONFIGURATION)) == 0)
+                      )
                     )
                 {
                   current_ekran.index_position++;

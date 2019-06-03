@@ -347,7 +347,8 @@ void make_ekran_control_apv()
       " Пуск от ТЗНП1  ",
       " Пуск от ТЗНП2  ",
       " Пуск от ТЗНП3  ",
-      " Пуск от ТЗНП4  "
+      "К.пол.ВВ для АПВ",
+      " Бл.АПВ от УРОВ2"
     },
     {
       "      АПВ       ",
@@ -369,7 +370,8 @@ void make_ekran_control_apv()
       " Пуск від СЗНП1 ",
       " Пуск від СЗНП2 ",
       " Пуск від СЗНП3 ",
-      " Пуск від СЗНП4 "
+      " К.ст.ВВ для АПВ",
+      "Бл.АПВ від ПРВВ2"
     },
     {
       "       AR       ",
@@ -391,7 +393,8 @@ void make_ekran_control_apv()
       " Start frm ТЗНП1",
       " Start frm ТЗНП2",
       " Start frm ТЗНП3",
-      " Start frm ТЗНП4"
+      "К.пол.ВВ для АПВ",
+      " Бл.АПВ от УРОВ2"
     },
     {
       "      АПВ       ",
@@ -413,7 +416,8 @@ void make_ekran_control_apv()
       " Пуск от ТЗНП1  ",
       " Пуск от ТЗНП2  ",
       " Пуск от ТЗНП3  ",
-      " Пуск от ТЗНП4  "
+      "К.пол.ВВ для АПВ",
+      " Бл.АПВ от УРОВ2"
     }
   };
   unsigned char name_string_tmp[MAX_ROW_FOR_CONTROL_APV][MAX_COL_LCD];
@@ -424,19 +428,19 @@ void make_ekran_control_apv()
     for(int index_2 = 0; index_2 < MAX_COL_LCD; index_2++)
       name_string_tmp[index_1][index_2] = name_string[index_language][index_1][index_2];
   }
-
+  
   unsigned int temp_data;
+          
   if(current_ekran.edition == 0) temp_data = current_settings.control_apv;
   else temp_data = edition_settings.control_apv;
-  
+          
   /******************************************/
   //Виключаємо поля, які не треба відображати
   /******************************************/
-  int additional_current_dz = 0, additional_current_mtz = 0, additional_current_tznp = 0;
   int position_temp = current_ekran.index_position;
   int index_of_ekran;
 
-  int additional_current = additional_current_dz + additional_current_mtz + additional_current_tznp;
+  int additional_current = 0;
   for (int current_index = 0; current_index < MAX_ROW_FOR_CONTROL_APV; current_index++ )
   {
 
@@ -467,6 +471,12 @@ void make_ekran_control_apv()
          &&
          ((current_settings.configuration & (1<<TZNP_BIT_CONFIGURATION)) == 0)
         )  
+        ||
+        (
+         (current_index == INDEX_ML_CTRAPV_BLK_CTRL_PRVV2)
+         &&
+         ((current_settings.configuration & (1<<UROV_BIT_CONFIGURATION)) == 0)
+        )  
        )   
     {
       int i = current_index - additional_current;
@@ -489,25 +499,7 @@ void make_ekran_control_apv()
       unsigned int temp_data_1 = (temp_data >> 1) & maska_2;
       temp_data = (temp_data & maska_1) | temp_data_1;
 
-      if (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_DZ1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_AMTDZ4)
-         )   
-        additional_current_dz++;
-
-      if (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_MTZ1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_MTZ4)
-         )   
-        additional_current_mtz++;
-
-      if (
-          (current_index >= INDEX_ML_CTRAPV_STARTED_FROM_TZNP1) &&
-          (current_index <= INDEX_ML_CTRAPV_STARTED_FROM_TZNP3)
-         )   
-        additional_current_tznp++;
-
-      additional_current = additional_current_dz + additional_current_mtz + additional_current_tznp;
+      additional_current++;
     }
   }
   /******************************************/
