@@ -766,6 +766,7 @@ unsigned int vymknennja_vid_KZ_prt;
 unsigned int MF_KZ;
 unsigned int X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
 int R_KZ_prt;
+unsigned int corupted_phases;
 
 unsigned int number_of_phases_last_KZ;
 int VMP_last_KZ = UNDEF_VMP;

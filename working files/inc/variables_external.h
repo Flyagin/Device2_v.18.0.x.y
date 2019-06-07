@@ -429,6 +429,7 @@ extern unsigned int vymknennja_vid_KZ_prt;
 extern unsigned int MF_KZ;
 extern unsigned int X_min_KZ_prt;
 extern int R_KZ_prt;
+extern unsigned int corupted_phases;
 
 extern unsigned int number_of_phases_last_KZ;
 extern int VMP_last_KZ;
