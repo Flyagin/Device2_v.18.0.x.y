@@ -873,7 +873,7 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
       arm_status res = arm_sqrt_f32((R*R + X*X), &Z);
       resistance_output[R_A + 3*i + 2] = (res == ARM_MATH_SUCCESS) ? (int)Z : UNDEF_RESISTANCE;
 
-      resistance_output[Za_A + i] = U_PHASE_NOM/Ix;
+      resistance_output[Za_A + i] = 1000*U_PHASE_NOM/Ix; /*Ixy_max треба проініціалізувати нулем. бо може бути випадок, що три лінійні струми менші за поріг чутливості і це треба якось зафіксуватим*/
     }
     else
     {
@@ -936,7 +936,7 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
       arm_status res = arm_sqrt_f32((R*R + X*X), &Z);
       resistance_output[R_AB + 3*i + 2] = (res == ARM_MATH_SUCCESS) ? (int)Z : UNDEF_RESISTANCE;
 
-      resistance_output[Za_AB + i] = U_LINEAR_NOM/Ixy;
+      resistance_output[Za_AB + i] = 1000*U_LINEAR_NOM/Ixy; /*Ixy_max треба проініціалізувати нулем. бо може бути випадок, що три лінійні струми менші за поріг чутливості і це треба якось зафіксуватим*/
       
       if (Ixy_max < Ixy) Ixy_max =Ixy;
     }
@@ -966,8 +966,8 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
   if (Ixy_max > 0)
   {
     //Є можливість розрахувати трифазний опір
-    resistance_output[Z_3] = Uxy_min/Ixy_max;
-    resistance_output[Za_3] = U_LINEAR_NOM/Ixy_max;
+    resistance_output[Z_3] = 1000*Uxy_min/Ixy_max; /*1000 множио щоб обтимати мОм, бо мВ/мА дає Ом*/
+    resistance_output[Za_3] = 1000*U_LINEAR_NOM/Ixy_max; /*1000 множио щоб обтимати мОм, бо мВ/мА дає Ом*/
   }
   else
   {
