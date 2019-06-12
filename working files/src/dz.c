@@ -1,3 +1,4 @@
+#include <string.h> 
 #include "const_global.h"
 void dz_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
 void fault_U_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
@@ -18,24 +19,46 @@ TOTAL_WRP_PHS
 };
 typedef union dstLp_stp_state_Unn{ 
    struct {
-      unsigned int po_1phs : 1; //1
-      unsigned int po_2phs : 1; //2
-      unsigned int po_3phs : 1; //3
-      unsigned int po_Mphs : 1; //4
-      unsigned int po_IA_max : 1; //5
-      unsigned int po_IB_max : 1; //6
-      unsigned int po_IC_max : 1; //7
-      unsigned int IaM0p9:1;//8   //0
-      unsigned int IbM0p9:1;//9   //1
-      unsigned int IcM0p9:1;//10  //2
-      unsigned int IaL0p9:1;//11  //3
-      unsigned int IbL0p9:1;//12  //4
-      unsigned int IcL0p9:1;//13  //5
+      unsigned int po_1phs : 1;   //
+      unsigned int po_2phs : 1;   //1
+      unsigned int po_3phs : 1;   //2
+      unsigned int po_Mphs : 1;   //3
+      unsigned int po_IA_max : 1; //4 
+      unsigned int po_IB_max : 1; //5 
+      unsigned int po_IC_max : 1; //6 
+      unsigned int IaM0p9:1;      //7    
+      unsigned int IbM0p9:1;      //8 
+      unsigned int IcM0p9:1;      //9 
+      unsigned int IaL0p9:1;      //10
+      unsigned int IbL0p9:1;      //11
+      unsigned int IcL0p9:1;      //12
+	                              //13
     } bool_val;
     long lVl;
 } Mphs_sphs_stp_state; //multi phase
 Mphs_sphs_stp_state m_s_phs_stp_state;//multi single
 long dstLImax = 0;char ch_IdxMaxphs = 0;
+
+const long Meast_TST[] = {
+  10    ,// - IM_3I0_i = 0,
+  20    ,// - IM_3I0,
+  11    ,// - IM_3I0_other_g,
+  12    ,// - IM_3I0_r,
+  1400  ,// - IM_IA,
+  1548  ,// - IM_IB,
+  1775  ,// - IM_IC,
+  700   ,// - IM_I2,
+  800   ,// - IM_I1,
+  101000,// - IM_UA,
+  101000,// - IM_UB,
+  101000,// - IM_UC,
+  90000 ,// - IM_3U0,
+  118000,// - IM_UAB,
+  119000,// - IM_UBC,
+  116000,// - IM_UCA,
+  101,// - IM_U2, 101000
+  102 // - IM_U1, 102000
+};
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
@@ -45,9 +68,12 @@ void mf_of_handler(unsigned int *p_active_functions, unsigned int number_group_s
 // ----------------  inner_outer_short_circuit It`s my name -------------------------
 register long rL,rU;
   UNUSED(number_group_stp);
+  //void *memcpy (void *destination, const void *source, size_t n);
+//  memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
-    m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
+    //m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
+    m_s_phs_stp_state.lVl = 0;//0x1f8f;//Clr Phase selector
     rU = IM_IA;
 //Select Imax
     if(rL < (long) measurement[IM_IB]){
@@ -56,10 +82,10 @@ register long rL,rU;
     }   
     if(rL < (long) measurement[IM_IC]){
         rL = measurement[IM_IC];
-        rU = IM_IB;
+        rU = IM_IC;
     }   
     //Now Have Max
-     dstLImax = rL = measurement[rU];//measurement[rU]
+     dstLImax = rL ;//measurement[rU]
     ch_IdxMaxphs = rU; 
     if(rU == IM_IA){
         m_s_phs_stp_state.bool_val.po_IA_max = 1;
@@ -83,10 +109,10 @@ register union {
     wrp.lVl = 0;
     wrp.bool_vars.IaM0p9 = (long)(measurement[IM_IA]> (unsigned long)rL);
     wrp.bool_vars.IbM0p9 = (long)(measurement[IM_IB]> (unsigned long)rL);
-    wrp.bool_vars.IbM0p9 = (long)(measurement[IM_IC]> (unsigned long)rL);
+    wrp.bool_vars.IcM0p9 = (long)(measurement[IM_IC]> (unsigned long)rL);
     wrp.bool_vars.IaL0p9 = (long)(measurement[IM_IA]< (unsigned long)rL);
     wrp.bool_vars.IbL0p9 = (long)(measurement[IM_IB]< (unsigned long)rL);
-    wrp.bool_vars.IbL0p9 = (long)(measurement[IM_IC]< (unsigned long)rL);
+    wrp.bool_vars.IcL0p9 = (long)(measurement[IM_IC]< (unsigned long)rL);
 register long lV;
     
     lV  = wrp.lVl&7;
@@ -124,6 +150,7 @@ lV  = m_s_phs_stp_state.bool_val.po_3phs;
   else
     _CLEAR_BIT(p_active_functions, RANG_3KZ);
     lV  = wrp.lVl;//&0x1f8
+// m_s_phs_stp_state.lVl &= ~	
  m_s_phs_stp_state.lVl |= (lV)<<7;//Save Stp
   
 }
@@ -191,7 +218,7 @@ register union {
     wrp.bool_vars.AND3_1 = 1;
     
    }
-   if(wrp.lVl & ( (1<<4)| (1<<5)| (1<<6) ))
+   if( (wrp.lVl & ( (1<<4)| (1<<5)| (1<<6) ))  == ( (1<<4)| (1<<5)| (1<<6) ) )
     wrp.bool_vars.OR_1 = 1;
     
    if (10*measurement[IM_U2] > (2*UN_PHS)){
@@ -206,7 +233,7 @@ register union {
         wrp.bool_vars.AND3_2 = 1;
         wrp.bool_vars.AND2_3 = 1;
     }
-    if(wrp.lVl & ( (1<<10)| (1<<11)| (1<<12) ))
+    if( (wrp.lVl & ( (1<<10)| (1<<11)| (1<<12) )) == ( (1<<10)| (1<<11)| (1<<12) ) )
         wrp.bool_vars.OR_3 = 1;
     
     i =_CHECK_SET_BIT(p_active_functions, RANG_PO_DZ1);
@@ -219,7 +246,7 @@ register union {
    if (i > 0){
     wrp.bool_vars.AND2_2 = 1;
     }
-    if(wrp.lVl & ( (1<<7)| (1<<8)| (1<<9) ))
+    if( (wrp.lVl & ( (1<<7)| (1<<8)| (1<<9) )) == ( (1<<7)| (1<<8)| (1<<9) ) )
         wrp.bool_vars.OR_2 = 1;
   
   i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);
@@ -281,10 +308,16 @@ register union {
   long lVl;
 }wrp_sncn;
     wrp_sncn.lVl = 0;
-
+	
+//Meast_TST
+	if(_CHECK_SET_BIT(p_active_functions, RANG_PO_I_BLK_DZ) != 0){
+		lV = 550;
+	}else{
+		lV = 500;
+	}
     //Po Iblk
-    rU = UN_PHS*25/10000;//142,5
-    lV = 500;
+    //rU = UN_PHS*25/10000;//142,5
+    //lV = 500;
     if(   (measurement[IM_IA]< (unsigned long)lV) 
         &&(measurement[IM_IB]< (unsigned long)lV)
         &&(measurement[IM_IC]< (unsigned long)lV)){
@@ -297,21 +330,24 @@ register union {
         wrp_sncn.bool_vars.and5_3 = 1;
         _CLEAR_BIT(p_active_functions, RANG_PO_I_BLK_DZ);
     }
-    
-    
+    if(_CHECK_SET_BIT(p_active_functions, RANG_PO_U_DZ) != 0)
+		rU = (KOEF_POVERNENNJA_GENERAL_DOWN*UN_PHS*25)/(10000*100);//142,5 
+	else 
+		rU = UN_PHS*25/10000;//142,5 
+	
     if(   (measurement[IM_UA]< rU) 
         &&(measurement[IM_UB]< rU)
         &&(measurement[IM_UC]< rU)){
         _SET_BIT(p_active_functions, RANG_PO_U_DZ);
-        //wrp_sncn.bool_vars.and4_2 = 0;
-        //wrp_sncn.bool_vars.and5_1 = 0;
+        wrp_sncn.bool_vars.and4_2 = 0;
+        wrp_sncn.bool_vars.and5_1 = 0;
     }   
     else{
-        wrp_sncn.bool_vars.and4_2 = 1;
-        wrp_sncn.bool_vars.and5_1 = 1;
+        //wrp_sncn.bool_vars.and4_2 = 1;
+        //wrp_sncn.bool_vars.and5_1 = 1;
     _CLEAR_BIT(p_active_functions, RANG_PO_U_DZ);
     }
-    wrp_sncn.bool_vars.not7_1 = !wrp_sncn.bool_vars.and5_1;//Inv 3phs
+//    wrp_sncn.bool_vars.not7_1 = !wrp_sncn.bool_vars.and5_1;//Inv 3phs
     
     if(m_s_phs_stp_state.bool_val.po_3phs)
         wrp_sncn.bool_vars.and5_2 = 1;
@@ -326,7 +362,11 @@ register union {
     rU = wrp_sncn.lVl &( (1<<3)| (1<<4)| (1<<5));
     if(rU == ( (1<<3)| (1<<4)| (1<<5))){
         wrp_sncn.bool_vars.and5__ = 1;
+		_SET_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
     }
+	else
+		_CLEAR_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
+	wrp_sncn.bool_vars.not7_1 = !wrp_sncn.bool_vars.and5__;
     chGbl_3Phs_Dz = wrp_sncn.bool_vars.and5__;
     if( _CHECK_SET_BIT(p_active_functions, RANG_NKN_DZ)
         && (wrp_sncn.bool_vars.not7_1))
@@ -379,15 +419,22 @@ register union {
   long lVl;
 }wrp_dz1;
 //Calc  for 1 stages 7-9 elem
-    wrp_dz1.lVl = 0;
+    wrp_dz1.lVl = 0;wrp_dz1.bool_vars.and8_3 = 1;
     if(current_settings_prt.control_dz&MASKA_FOR_BIT(INDEX_CTR_DZ1))
     {
         wrp_dz1.bool_vars.and8_1 = 1;
         wrp_dz1.bool_vars.and9_1 = 1;
     }
     
-    if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DZ1) != 0)
+    if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DZ1) != 0){
         wrp_dz1.bool_vars.not10_1 = 1;
+        
+	}else{
+	    wrp_dz1.bool_vars.and9_2  = 1;
+        wrp_dz1.bool_vars.and4_2  = 1;
+	
+	}
+		
     if(_CHECK_SET_BIT(p_active_functions, RANG_PO_AMTZ_DZ1) != 0){
         wrp_dz1.bool_vars.nor6_4 = 1;
         wrp_dz1.bool_vars.nor5_2 = 1;
@@ -429,8 +476,25 @@ register union {
         lV = 1;//wrp_dz1.bool_vars.nor7_3 = 0;     
     else
         lV = 0;
+	wrp_dz1.bool_vars.and9_3 = lV;	
+	// long pick_up_AMcp_dstLp1 = 0;
+	if(_CHECK_SET_BIT(p_active_functions, RANG_PO_AMTZ_DZ1) != 0)
+		rU = (current_settings_prt.pickup_dz1_amtz[number_group_stp]* KOEF_POVERNENNJA_MTZ_I_UP)/100 ;
+	else 
+		rU = current_settings_prt.pickup_dz1_amtz[number_group_stp];
+		
+	// pick_up_AMcp_dstLp1 = (long)current_settings_prt.pickup_dz1_amtz[number_group_stp];
+	//and9_4
+	if(    (measurement[IM_IA] > (unsigned long)rU)
+        || (measurement[IM_IB] > (unsigned long)rU)
+        || (measurement[IM_IC] > (unsigned long)rU)
+        )
+             wrp_dz1.bool_vars.and9_4 = 1;//rU = 1;
+        else
+             wrp_dz1.bool_vars.and9_4 = 0;//rU = 0;
+	
     //and9
-    rU = wrp_sncn.lVl &( (1<<4)| (1<<5)|| (1<<6)| (1<<7)| (1<<8));
+    rU = wrp_dz1.lVl &( (1<<4)| (1<<5)|| (1<<6)| (1<<7)| (1<<8));
     if(rU == ( (1<<4 )| (1<<5 )| (1<<6 )| (1<<7 )| (1<< 8))){
         wrp_dz1.bool_vars.nor5_2 = 1;//?
         wrp_dz1.bool_vars.nor6_4 = 1;
@@ -461,10 +525,10 @@ register union {
     //Po Dz
     rU = wrp_dz1.bool_vars.not10_1;
      long pick_up_Resistance_dstLp1 = 0;
-    if(rU == 0)
-        pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1 * KOEF_POVERNENNJA_GENERAL_DOWN  / 100;
+    if(rU == 1)
+        pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1[number_group_stp] * KOEF_POVERNENNJA_GENERAL_DOWN  / 100;
     else
-        pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1;
+        pick_up_Resistance_dstLp1 = (long)current_settings_prt.pickup_dz1[number_group_stp];
 
     lV = m_s_phs_stp_state.lVl;
     if(lV&(1<<0)){//One
@@ -526,8 +590,9 @@ if( (resistance[rU] < pick_up_Resistance_dstLp1)
         lV = 1;//wrp_dz1.bool_vars.nor7_3 = 0;     
     else
         lV = 0;
+	wrp_dz1.bool_vars.and8_4 = lV;	
     //and8
-    rU = wrp_dz1.lVl &(  (1<<0)|| (1<<1)| (1<<2)| (1<<3));
+    rU = wrp_dz1.lVl &(  (1<<0)| (1<<1)| (1<<2)| (1<<3));
     if(rU == (  (1<<0 )| (1<<1 )| (1<<2 )| (1<< 3))){
         //wrp_sncn.bool_vars.nor5_2 = 1;
         //wrp_dz1.bool_vars.nor6_4 = 1;
