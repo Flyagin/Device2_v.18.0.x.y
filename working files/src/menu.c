@@ -8985,7 +8985,7 @@ void main_manu_function(void)
                         //Помічаємо, що поле структури зараз буде змінене
                         changed_settings = CHANGED_ETAP_EXECUTION;
                         
-                        unsigned int angle = edition_settings.pickup_dz2_angle[group];
+                        int angle = edition_settings.pickup_dz2_angle[group];
                         current_settings.pickup_dz2_angle[group] = angle;
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
@@ -9062,7 +9062,7 @@ void main_manu_function(void)
                         //Помічаємо, що поле структури зараз буде змінене
                         changed_settings = CHANGED_ETAP_EXECUTION;
 
-                        unsigned int angle = edition_settings.pickup_dz3_angle[group];
+                        int angle = edition_settings.pickup_dz3_angle[group];
                         current_settings.pickup_dz3_angle[group] = angle;
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок
@@ -9141,7 +9141,7 @@ void main_manu_function(void)
                         //Помічаємо, що поле структури зараз буде змінене
                         changed_settings = CHANGED_ETAP_EXECUTION;
                         
-                        unsigned int angle = edition_settings.pickup_dz4_angle[group];
+                        int angle = edition_settings.pickup_dz4_angle[group];
                         current_settings.pickup_dz4_angle[group] = angle;
 
                         //Формуємо запис у таблиці настройок про зміну конфігурації і ініціюємо запис у EEPROM нових настройок

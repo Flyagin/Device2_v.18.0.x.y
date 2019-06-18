@@ -1116,9 +1116,9 @@ inline void directional_dz(int ortogonal_local_calc[], unsigned int number_group
 #define SIN_U   ortogonal_local_calc[2*index_U_ort    ]
 #define COS_U   ortogonal_local_calc[2*index_U_ort + 1]
 
-        //Робимо доповорот на 90°
-        int32_t amp_cos_U_90 = -SIN_U;
-        int32_t amp_sin_U_90 =  COS_U;
+        //Робимо доповорот  проти годинникової стрілки на 90°
+        int32_t amp_cos_U_90 =  SIN_U;//З розділу: "Неймовірно, але факт", тобто що я не можу пояснити
+        int32_t amp_sin_U_90 = -COS_U;//З розділу: "Неймовірно, але факт", тобто що я не можу пояснити
 
         //Вираховуємо COS і SIN кута різниці між (U[i]+90°) і I[i]
         int32_t cos_fi, sin_fi;
@@ -1128,7 +1128,7 @@ inline void directional_dz(int ortogonal_local_calc[], unsigned int number_group
         0x120FC, то добуток їх має дати 0x7C87B7BC  - 31 бітне число (плюс знак біту)
         Тобто ми вкладаємося у тип int.
         */
-        sin_fi = SIN_I*amp_cos_U_90 - COS_I*amp_sin_U_90;
+        sin_fi = -(SIN_I*amp_cos_U_90 - COS_I*amp_sin_U_90);//З розділу: "Неймовірно, але факт", тобто що я не можу пояснити
         cos_fi = COS_I*amp_cos_U_90 + SIN_I*amp_sin_U_90;
 
 #undef SIN_I
@@ -1761,7 +1761,16 @@ inline void calc_measurement(unsigned int number_group_stp)
     ortogonal_calc_low[2*FULL_ORT_Uab + 1] = _y;
   }
   measurement[IM_UAB] = ( MNOGNYK_U_DIJUCHE*(sqrt_64((unsigned long long)((long long)_x*(long long)_x) + (unsigned long long)((long long)_y*(long long)_y))) ) >> (VAGA_DILENNJA_U_DIJUCHE + 4);
-
+  
+//  if (measurement[IM_UAB] < test_array[0][0]) test_array[0][0] = measurement[IM_UAB];
+//  if (measurement[IM_UAB] > test_array[1][0]) test_array[1][0] = measurement[IM_UAB];
+//
+//  if (measurement[IM_UBC] < test_array[0][1]) test_array[0][1] = measurement[IM_UBC];
+//  if (measurement[IM_UBC] > test_array[1][1]) test_array[1][1] = measurement[IM_UBC];
+//
+//  if (measurement[IM_UCA] < test_array[0][2]) test_array[0][2] = measurement[IM_UCA];
+//  if (measurement[IM_UCA] > test_array[1][2]) test_array[1][2] = measurement[IM_UCA];
+  
   /***/
   //Розраховуємо напругу прямої і зворотньої послідовності
   /***/

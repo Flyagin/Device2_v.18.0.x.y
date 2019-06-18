@@ -525,5 +525,6 @@ extern unsigned int __checksum_end;
 
 
 #endif
+//extern unsigned int test_array[2][3];
 
 #endif
