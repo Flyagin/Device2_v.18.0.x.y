@@ -167,6 +167,7 @@ FAULT_U_DSTL_TMR_STATE_BIT,
 TOTAL_FAULT_U_BITS
 };
 #define UN_PHS   57000
+static char chStpfault_U = 0;
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
@@ -193,24 +194,43 @@ register union {
       unsigned int AND3_1:1;//10
       unsigned int AND3_2:1;//11
       unsigned int AND3_3:1;//12
+
    } bool_vars;
   long lVl;
 }wrp;  
    wrp.lVl = 0;
    if((_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ) != 0))
     wrp.bool_vars.OR_4 = 1;
-   i = (12*I_NOM)/10;
+   if(chStpfault_U&1)
+        i = (12*I_NOM*KOEF_POVERNENNJA_MTZ_I_DOWN)/1000;
+	else
+        i = (12*I_NOM)/10;	
+   
    if( (measurement[IM_IA] < (unsigned long) i)
        &&  (measurement[IM_IB] < (unsigned long)i)
        &&  (measurement[IM_IC] < (unsigned long)i)
-      )
-      wrp.bool_vars.AND1_2 = 1; 
-    i = (U_LINEAR_NOM*2)/10;  
+      ){
+      wrp.bool_vars.AND1_2 = 1; chStpfault_U |= 1;
+	 }
+	 else{
+	 chStpfault_U &= 0xfe;
+	 
+	 }
+	 
+    
+	if(chStpfault_U&2)
+        i = (U_LINEAR_NOM*2*U_DOWN)/1000;
+	else
+        i = (U_LINEAR_NOM*2)/10;	
+	
   if( (measurement[IM_UAB] < (unsigned long)i)
        &&  (measurement[IM_UBC] < (unsigned long)i)
        &&  (measurement[IM_UCA] < (unsigned long)i)
-      )
-      wrp.bool_vars.AND1_3 = 1; 
+      ){
+      wrp.bool_vars.AND1_3 = 1; chStpfault_U |= 2;
+	}else
+		chStpfault_U &= 0xfd;
+	
    i = current_settings_prt.control_dz&MASKA_FOR_BIT(INDEX_CTR_NKN_DZ);
    if (i > 0){
     wrp.bool_vars.AND1_1 = 1;
@@ -221,18 +241,33 @@ register union {
    if( (wrp.lVl & ( (1<<4)| (1<<5)| (1<<6) ))  == ( (1<<4)| (1<<5)| (1<<6) ) )
     wrp.bool_vars.OR_1 = 1;
     
-   if (10*measurement[IM_U2] > (2*UN_PHS)){
+	if(chStpfault_U&4)
+        i = (2*UN_PHS*U_UP)/100;
+	else
+        i = (2*UN_PHS);
+		
+   if (10*measurement[IM_U2] > (unsigned)i){
         u32_bit_holder |= 1<<FAULT_U_U2_STP_STATE_BIT;
-    }
+		chStpfault_U |= 4;
+    }else{
+		chStpfault_U &= 0xfb;
+	}
+	
      _TIMER_0_T(INDEX_TIMER_0DOT5_DZ, 500,
   u32_bit_holder, FAULT_U_U2_STP_STATE_BIT, u32_bit_holder, FAULT_U_0DOT5_T_STATE_BIT);
   if( u32_bit_holder & (1<<FAULT_U_0DOT5_T_STATE_BIT) )
     wrp.bool_vars.AND3_3 = 1;
   i = (10*measurement[IM_U2]*I_NOM)/(measurement[IM_I2]*UN_PHS);
-   if (i > (2)){
+  long j = 2;
+  if (chStpfault_U & 8){
+	j = 2*95/100;i*=100;
+	}
+   if (i > (j)){
         wrp.bool_vars.AND3_2 = 1;
-        wrp.bool_vars.AND2_3 = 1;
+        wrp.bool_vars.AND2_3 = 1;chStpfault_U |= 8;
     }
+	else
+		chStpfault_U &= 0xf7;
     if( (wrp.lVl & ( (1<<10)| (1<<11)| (1<<12) )) == ( (1<<10)| (1<<11)| (1<<12) ) )
         wrp.bool_vars.OR_3 = 1;
     
@@ -339,8 +374,8 @@ register union {
         &&(measurement[IM_UB]< rU)
         &&(measurement[IM_UC]< rU)){
         _SET_BIT(p_active_functions, RANG_PO_U_DZ);
-        wrp_sncn.bool_vars.and4_2 = 0;
-        wrp_sncn.bool_vars.and5_1 = 0;
+        wrp_sncn.bool_vars.and4_2 = 1;
+        wrp_sncn.bool_vars.and5_1 = 1;
     }   
     else{
         //wrp_sncn.bool_vars.and4_2 = 1;
@@ -513,7 +548,12 @@ register union {
   u32_bit_holder, AMTZ1_PICKUP_STATE_BIT, u32_bit_holder, AMTZ1_TMR_STATE_BIT);
   
     }   
-    
+     //Сраб. 
+     if ( u32_bit_holder&(1<<AMTZ1_TMR_STATE_BIT ) )
+       _SET_BIT(p_active_functions, RANG_AMTZ_DZ1);
+     else
+       _CLEAR_BIT(p_active_functions, RANG_AMTZ_DZ1);
+	
     rU = wrp_dz1.bool_vars.and4_1;
     rU &= (~wrp_dz1.bool_vars.not10_1)&1;
     if(rU==1)
@@ -598,17 +638,21 @@ if( (resistance[rU] < pick_up_Resistance_dstLp1)
         //wrp_dz1.bool_vars.nor6_4 = 1;
         u32_bit_holder |= 1<< DZ1_PICKUP_STATE_BIT;
         _SET_BIT(p_active_functions, RANG_PO_DZ1);
-        _TIMER_T_0(INDEX_TIMER_DZ2_DIR, current_settings_prt.timeout_dz1[number_group_stp],
+        _TIMER_T_0(INDEX_TIMER_DZ1, current_settings_prt.timeout_dz1[number_group_stp],
   u32_bit_holder, DZ1_PICKUP_STATE_BIT, u32_bit_holder, DZ1_TMR_STATE_BIT);
 
     }
     else{
         _CLEAR_BIT(p_active_functions, RANG_PO_DZ1);
-        _TIMER_T_0(INDEX_TIMER_DZ2_DIR, current_settings_prt.timeout_dz1[number_group_stp],
+        _TIMER_T_0(INDEX_TIMER_DZ1, current_settings_prt.timeout_dz1[number_group_stp],
   u32_bit_holder, DZ1_PICKUP_STATE_BIT, u32_bit_holder, DZ1_TMR_STATE_BIT);
 
     }   
-    
+      //Сраб. 
+  if ( u32_bit_holder&(1<<DZ1_TMR_STATE_BIT ) )
+    _SET_BIT(p_active_functions, RANG_DZ1);
+  else
+    _CLEAR_BIT(p_active_functions, RANG_DZ1);
     
     
 }   
