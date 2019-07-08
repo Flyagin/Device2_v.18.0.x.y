@@ -808,7 +808,7 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
   
   //Однофазний опір
   int I0_x, I0_y;
-  if (current_settings.control_transformator & INDEX_ML_CTR_TRANSFORMATOR_3I0_3I0_1)
+  if (current_settings.control_transformator & MASKA_FOR_BIT(INDEX_ML_CTR_TRANSFORMATOR_3I0_3I0_1))
   {
     //3I0-1
     I0_x = (ortogonal_local_calc[2*FULL_ORT_Ia + 0] + ortogonal_local_calc[2*FULL_ORT_Ib + 0] + ortogonal_local_calc[2*FULL_ORT_Ic + 0])/3;
@@ -825,7 +825,7 @@ inline void calc_resistance(int ortogonal_local_calc[], unsigned int number_grou
     I0_y = ((MNOGNYK_3I0_DIJUCHE_D_mA*ortogonal_calc[2*FULL_ORT_3I0 + 1]) << (VAGA_DILENNJA_I_DIJUCHE - (VAGA_DILENNJA_3I0_DIJUCHE_D_mA + 4)))/(MNOGNYK_I_DIJUCHE*3);
 #endif
   }
-  uint32_t k = current_settings_prt.pickup_dz_k[number_group_stp];
+  int32_t k = (int32_t)current_settings_prt.pickup_dz_k[number_group_stp];
   for (size_t i = 0; i < 3; i++)
   {
     //Розраховуємо координати струму Ix + k*I0
