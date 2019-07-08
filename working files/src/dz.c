@@ -32,7 +32,7 @@ typedef union dstLp_stp_state_Unn{
       unsigned int IaL0p9:1;      //10
       unsigned int IbL0p9:1;      //11
       unsigned int IcL0p9:1;      //12
-	                              //13
+                                  //13
     } bool_val;
     long lVl;
 } Mphs_sphs_stp_state; //multi phase
@@ -44,9 +44,9 @@ const long Meast_TST[] = {
   20    ,// - IM_3I0,
   11    ,// - IM_3I0_other_g,
   12    ,// - IM_3I0_r,
-  1400  ,// - IM_IA,
-  1548  ,// - IM_IB,
-  1775  ,// - IM_IC,
+  7400  ,// - IM_IA,
+  7548  ,// - IM_IB,
+  7775  ,// - IM_IC,
   700   ,// - IM_I2,
   800   ,// - IM_I1,
   101000,// - IM_UA,
@@ -69,7 +69,7 @@ void mf_of_handler(unsigned int *p_active_functions, unsigned int number_group_s
 register long rL,rU;
   UNUSED(number_group_stp);
   //void *memcpy (void *destination, const void *source, size_t n);
-//  memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
+  memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
     //m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
@@ -150,7 +150,7 @@ lV  = m_s_phs_stp_state.bool_val.po_3phs;
   else
     _CLEAR_BIT(p_active_functions, RANG_3KZ);
     lV  = wrp.lVl;//&0x1f8
-// m_s_phs_stp_state.lVl &= ~	
+// m_s_phs_stp_state.lVl &= ~   
  m_s_phs_stp_state.lVl |= (lV)<<7;//Save Stp
   
 }
@@ -167,7 +167,7 @@ FAULT_U_DSTL_TMR_STATE_BIT,
 TOTAL_FAULT_U_BITS
 };
 #define UN_PHS   57000
-static char chStpfault_U = 0;
+static char chStpfault_U = 0; 
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
@@ -203,34 +203,34 @@ register union {
     wrp.bool_vars.OR_4 = 1;
    if(chStpfault_U&1)
         i = (12*I_NOM*KOEF_POVERNENNJA_MTZ_I_DOWN)/1000;
-	else
-        i = (12*I_NOM)/10;	
+    else
+        i = (12*I_NOM)/10;  
    
    if( (measurement[IM_IA] < (unsigned long) i)
        &&  (measurement[IM_IB] < (unsigned long)i)
        &&  (measurement[IM_IC] < (unsigned long)i)
       ){
       wrp.bool_vars.AND1_2 = 1; chStpfault_U |= 1;
-	 }
-	 else{
-	 chStpfault_U &= 0xfe;
-	 
-	 }
-	 
+     }
+     else{
+     chStpfault_U &= 0xfe;
+     
+     }
+     
     
-	if(chStpfault_U&2)
+    if(chStpfault_U&2)
         i = (U_LINEAR_NOM*2*U_DOWN)/1000;
-	else
-        i = (U_LINEAR_NOM*2)/10;	
-	
+    else
+        i = (U_LINEAR_NOM*2)/10;    
+    
   if( (measurement[IM_UAB] < (unsigned long)i)
        &&  (measurement[IM_UBC] < (unsigned long)i)
        &&  (measurement[IM_UCA] < (unsigned long)i)
       ){
       wrp.bool_vars.AND1_3 = 1; chStpfault_U |= 2;
-	}else
-		chStpfault_U &= 0xfd;
-	
+    }else
+        chStpfault_U &= 0xfd;
+    
    i = current_settings_prt.control_dz&MASKA_FOR_BIT(INDEX_CTR_NKN_DZ);
    if (i > 0){
     wrp.bool_vars.AND1_1 = 1;
@@ -241,18 +241,18 @@ register union {
    if( (wrp.lVl & ( (1<<4)| (1<<5)| (1<<6) ))  == ( (1<<4)| (1<<5)| (1<<6) ) )
     wrp.bool_vars.OR_1 = 1;
     
-	if(chStpfault_U&4)
+    if(chStpfault_U&4)
         i = (2*UN_PHS*U_UP)/100;
-	else
+    else
         i = (2*UN_PHS);
-		
+        
    if (10*measurement[IM_U2] > (unsigned)i){
         u32_bit_holder |= 1<<FAULT_U_U2_STP_STATE_BIT;
-		chStpfault_U |= 4;
+        chStpfault_U |= 4;
     }else{
-		chStpfault_U &= 0xfb;
-	}
-	
+        chStpfault_U &= 0xfb;
+    }
+    
      _TIMER_0_T(INDEX_TIMER_0DOT5_DZ, 500,
   u32_bit_holder, FAULT_U_U2_STP_STATE_BIT, u32_bit_holder, FAULT_U_0DOT5_T_STATE_BIT);
   if( u32_bit_holder & (1<<FAULT_U_0DOT5_T_STATE_BIT) )
@@ -260,14 +260,14 @@ register union {
   i = (10*measurement[IM_U2]*I_NOM)/(measurement[IM_I2]*UN_PHS);
   long j = 2;
   if (chStpfault_U & 8){
-	j = 2*95/100;i*=100;
-	}
+    j = 2*95/100;i*=100;
+    }
    if (i > (j)){
         wrp.bool_vars.AND3_2 = 1;
         wrp.bool_vars.AND2_3 = 1;chStpfault_U |= 8;
     }
-	else
-		chStpfault_U &= 0xf7;
+    else
+        chStpfault_U &= 0xf7;
     if( (wrp.lVl & ( (1<<10)| (1<<11)| (1<<12) )) == ( (1<<10)| (1<<11)| (1<<12) ) )
         wrp.bool_vars.OR_3 = 1;
     
@@ -343,13 +343,13 @@ register union {
   long lVl;
 }wrp_sncn;
     wrp_sncn.lVl = 0;
-	
+    
 //Meast_TST
-	if(_CHECK_SET_BIT(p_active_functions, RANG_PO_I_BLK_DZ) != 0){
-		lV = 550;
-	}else{
-		lV = 500;
-	}
+    if(_CHECK_SET_BIT(p_active_functions, RANG_PO_I_BLK_DZ) != 0){
+        lV = 550;
+    }else{
+        lV = 500;
+    }
     //Po Iblk
     //rU = UN_PHS*25/10000;//142,5
     //lV = 500;
@@ -366,10 +366,10 @@ register union {
         _CLEAR_BIT(p_active_functions, RANG_PO_I_BLK_DZ);
     }
     if(_CHECK_SET_BIT(p_active_functions, RANG_PO_U_DZ) != 0)
-		rU = (KOEF_POVERNENNJA_GENERAL_DOWN*UN_PHS*25)/(10000*100);//142,5 
-	else 
-		rU = UN_PHS*25/10000;//142,5 
-	
+        rU = (KOEF_POVERNENNJA_GENERAL_DOWN*UN_PHS*25)/(10000*100);//142,5 
+    else 
+        rU = UN_PHS*25/10000;//142,5 
+    
     if(   (measurement[IM_UA]< rU) 
         &&(measurement[IM_UB]< rU)
         &&(measurement[IM_UC]< rU)){
@@ -397,11 +397,11 @@ register union {
     rU = wrp_sncn.lVl &( (1<<3)| (1<<4)| (1<<5));
     if(rU == ( (1<<3)| (1<<4)| (1<<5))){
         wrp_sncn.bool_vars.and5__ = 1;
-		_SET_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
+        _SET_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
     }
-	else
-		_CLEAR_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
-	wrp_sncn.bool_vars.not7_1 = !wrp_sncn.bool_vars.and5__;
+    else
+        _CLEAR_BIT(p_active_functions, RANG_3F_DZ_DIR_INV);
+    wrp_sncn.bool_vars.not7_1 = !wrp_sncn.bool_vars.and5__;
     chGbl_3Phs_Dz = wrp_sncn.bool_vars.and5__;
     if( _CHECK_SET_BIT(p_active_functions, RANG_NKN_DZ)
         && (wrp_sncn.bool_vars.not7_1))
@@ -464,12 +464,12 @@ register union {
     if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DZ1) != 0){
         wrp_dz1.bool_vars.not10_1 = 1;
         
-	}else{
-	    wrp_dz1.bool_vars.and9_2  = 1;
+    }else{
+        wrp_dz1.bool_vars.and9_2  = 1;
         wrp_dz1.bool_vars.and4_2  = 1;
-	
-	}
-		
+    
+    }
+        
     if(_CHECK_SET_BIT(p_active_functions, RANG_PO_AMTZ_DZ1) != 0){
         wrp_dz1.bool_vars.nor6_4 = 1;
         wrp_dz1.bool_vars.nor5_2 = 1;
@@ -511,23 +511,23 @@ register union {
         lV = 1;//wrp_dz1.bool_vars.nor7_3 = 0;     
     else
         lV = 0;
-	wrp_dz1.bool_vars.and9_3 = lV;	
-	// long pick_up_AMcp_dstLp1 = 0;
-	if(_CHECK_SET_BIT(p_active_functions, RANG_PO_AMTZ_DZ1) != 0)
-		rU = (current_settings_prt.pickup_dz1_amtz[number_group_stp]* KOEF_POVERNENNJA_MTZ_I_UP)/100 ;
-	else 
-		rU = current_settings_prt.pickup_dz1_amtz[number_group_stp];
-		
-	// pick_up_AMcp_dstLp1 = (long)current_settings_prt.pickup_dz1_amtz[number_group_stp];
-	//and9_4
-	if(    (measurement[IM_IA] > (unsigned long)rU)
+    wrp_dz1.bool_vars.and9_3 = lV;  
+    // long pick_up_AMcp_dstLp1 = 0;
+    if(_CHECK_SET_BIT(p_active_functions, RANG_PO_AMTZ_DZ1) != 0)
+        rU = (current_settings_prt.pickup_dz1_amtz[number_group_stp]* KOEF_POVERNENNJA_MTZ_I_UP)/100 ;
+    else 
+        rU = current_settings_prt.pickup_dz1_amtz[number_group_stp];
+        
+    // pick_up_AMcp_dstLp1 = (long)current_settings_prt.pickup_dz1_amtz[number_group_stp];
+    //and9_4
+    if(    (measurement[IM_IA] > (unsigned long)rU)
         || (measurement[IM_IB] > (unsigned long)rU)
         || (measurement[IM_IC] > (unsigned long)rU)
         )
              wrp_dz1.bool_vars.and9_4 = 1;//rU = 1;
         else
              wrp_dz1.bool_vars.and9_4 = 0;//rU = 0;
-	
+    
     //and9
     rU = wrp_dz1.lVl &( (1<<4)| (1<<5)|| (1<<6)| (1<<7)| (1<<8));
     if(rU == ( (1<<4 )| (1<<5 )| (1<<6 )| (1<<7 )| (1<< 8))){
@@ -553,7 +553,7 @@ register union {
        _SET_BIT(p_active_functions, RANG_AMTZ_DZ1);
      else
        _CLEAR_BIT(p_active_functions, RANG_AMTZ_DZ1);
-	
+    
     rU = wrp_dz1.bool_vars.and4_1;
     rU &= (~wrp_dz1.bool_vars.not10_1)&1;
     if(rU==1)
@@ -630,7 +630,7 @@ if( (resistance[rU] < pick_up_Resistance_dstLp1)
         lV = 1;//wrp_dz1.bool_vars.nor7_3 = 0;     
     else
         lV = 0;
-	wrp_dz1.bool_vars.and8_4 = lV;	
+    wrp_dz1.bool_vars.and8_4 = lV;  
     //and8
     rU = wrp_dz1.lVl &(  (1<<0)| (1<<1)| (1<<2)| (1<<3));
     if(rU == (  (1<<0 )| (1<<1 )| (1<<2 )| (1<< 3))){
@@ -1479,7 +1479,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
     do{
         //register void* pv;
         register Dz2_stp_p4_state p4;
-		register Dz2_stp_p3_state p3; 
+        register Dz2_stp_p3_state p3; 
         long lV,rU,rU1;
 //        if(bw_dstLp_dt.hdrBW.ch_p1234_modified & (1<<P4_MODIFIED_BIT))
 //            p4.lVl = sLV.p_p4->lVl;//Mask?
