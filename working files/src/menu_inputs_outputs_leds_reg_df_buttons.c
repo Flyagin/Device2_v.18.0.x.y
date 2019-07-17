@@ -1932,7 +1932,7 @@ void check_current_index_is_presented_in_configuration(
     if (current_ekran.index_position < number_general_function) *found_new_index_tmp = 1;
     else
     {
-      if (current_ekran.index_position < (number_general_function + number_mtz_function))
+      if (current_ekran.index_position < (number_general_function + number_dz_function))
       {
         if ((current_settings.configuration & (1<<DZ_BIT_CONFIGURATION)) != 0) *found_new_index_tmp = 1;
         else current_ekran.index_position = number_general_function + number_dz_function;
