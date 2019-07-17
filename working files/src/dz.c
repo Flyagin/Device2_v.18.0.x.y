@@ -69,7 +69,7 @@ void mf_of_handler(unsigned int *p_active_functions, unsigned int number_group_s
 register long rL,rU;
   UNUSED(number_group_stp);
   //void *memcpy (void *destination, const void *source, size_t n);
-//  memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
+  memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
     //m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
@@ -284,7 +284,7 @@ register union {
     if( (wrp.lVl & ( (1<<7)| (1<<8)| (1<<9) )) == ( (1<<7)| (1<<8)| (1<<9) ) )
         wrp.bool_vars.OR_2 = 1;
   
-  i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);//i|=1;
+  i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);i|=1;
    if (i > 0){
     wrp.bool_vars.OR_4 = 1;
     }
@@ -1374,7 +1374,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             //sLV.p_p4->lVl |= (1<<23);//and14_i_1 :1;//23  
             rU = (sLV.p_p4->lVl)&((1<<22)|(1<<23)); //and14
             if(rU == ((1<<22)|(1<<23))){
-                sLV.p_p1->bool_vars.and4_o_0 = 1;
+                //-sLV.p_p1->bool_vars.and4_o_0 = 1;
                 //and16
                 sLV.p_p1->bool_vars.and16_i_0 = 1;
                 //and17
@@ -1663,7 +1663,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             //sLV.p_p4->lVl |= (1<<23);//and14_i_1 :1;//23  
             rU = (sLV.p_p4->lVl)&((1<<22)|(1<<23)); //and14
             if(rU == ((1<<22)|(1<<23))){
-                sLV.p_p1->bool_vars.and4_o_0 = 1;
+                //sLV.p_p1->bool_vars.and4_o_0 = 1;
                 //and16
                 sLV.p_p1->bool_vars.and16_i_0 = 1;
                 //and17
