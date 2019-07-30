@@ -1806,7 +1806,7 @@ int privateUSTBigGetReg2(int adrReg)
 
 int grupa_ustavok_control(int  offset, int *grupa_ustavok, int *adresGruppa)
 {
-  int  grupa_offset=285;
+  int  grupa_offset=243;
   int  ust_offset=15;
   if(offset>=(ust_offset+grupa_offset*0) && offset<=(ust_offset-1+grupa_offset*1))
   {
