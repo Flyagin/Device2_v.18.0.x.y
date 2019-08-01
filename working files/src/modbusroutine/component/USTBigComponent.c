@@ -3,17 +3,8 @@
 //начальный регистр в карте памяти
 #define BEGIN_ADR_REGISTER 10300
 
-//#if (                                   \
-//     (MODYFIKACIA_VERSII_PZ == 0) ||    \
-//     (MODYFIKACIA_VERSII_PZ == 3)       \
-//    )   
 //конечный регистр в карте памяти
 #define END_ADR_REGISTER 11900
-
-//#else
-//конечный регистр в карте памяти
-//#define END_ADR_REGISTER 11395
-//#endif
 
 int privateUSTBigGetReg2(int adrReg);
 
@@ -727,151 +718,151 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     break;
 
 //  count_bit = 9;
-  case 1029:
+  case 1155:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.lines[0];
     if(regUst<NUMBER_LINES_FORWARD_MIN || regUst>NUMBER_LINES_MAX) diapazon=0;
     break;
 
-//IF ВСТАВКА 1030-1045
+//IF ВСТАВКА 1156-1171
 
-  case 1046:
+  case 1172:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.lines[1];
     if(regUst<NUMBER_LINES_BACKWARD_MIN || regUst>NUMBER_LINES_MAX) diapazon=0;
     break;
 
-//IF ВСТАВКА 1047-1062
+//IF ВСТАВКА 1173-1188
 
 //  count_bit = 9;
-  case 1063:
+  case 1189:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.TVoltage;
     if(regUst<KOEF_TN_MIN || regUst>KOEF_TN_MAX) diapazon=0;
     break;
 
 //  count_bit = 9;
-  case 1065:
+  case 1191:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.TCurrent;
     if(regUst<KOEF_TT_MIN || regUst>KOEF_TT_MAX) diapazon=0;
     break;
-  case 1066:
+  case 1192:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.T0;
     if(regUst<KOEF_TO_MIN || regUst>KOEF_TO_MAX) diapazon=0;
     break;
 
 //  count_bit = 9;
-  case 1068:
+  case 1194:
     (*editValue) = (uint32_t*)&edition_settings.timeout_swch_udl_blk_on;
     if(regUst<TIMEOUT_SWCH_UDL_BLK_ON_MIN/10 || regUst>TIMEOUT_SWCH_UDL_BLK_ON_MAX/10) diapazon=0;
     break;
-  case 1069:
+  case 1195:
     (*editValue) = (uint32_t*)&edition_settings.timeout_swch_on;
     if(regUst<TIMEOUT_SWCH_ON_MIN/10 || regUst>TIMEOUT_SWCH_ON_MAX/10) diapazon=0;
     break;
-  case 1070:
+  case 1196:
     (*editValue) = (uint32_t*)&edition_settings.timeout_swch_off;
     if(regUst<TIMEOUT_SWCH_OFF_MIN/10 || regUst>TIMEOUT_SWCH_OFF_MAX/10) diapazon=0;
     break;
-  case 1071:
+  case 1197:
     (*editValue) = (uint32_t*)&edition_settings.timeout_pryvoda_VV;
     if(regUst<TIMEOUT_PRYVODA_VV_MIN/10 || regUst>TIMEOUT_PRYVODA_VV_MAX/10) diapazon=0;
     break;
 
 //  count_bit = 9;
-  case 1075:
+  case 1201:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_Inom;
     if(regUst<SETPOINT_Inom_MIN || regUst>SETPOINT_Inom_MAX) diapazon=0;
     break;
-  case 1076:
+  case 1202:
     (*editValue) = (uint32_t*)&edition_settings.setpoint_r_kom_st_Inom;
     if(regUst<SETPOINT_RKS_Inom_MIN/10 || regUst>SETPOINT_RKS_Inom_MAX/10) diapazon=0;
     break;
-  case 1077:
+  case 1203:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_Inom_vymk;
     if(regUst<SETPOINT_Inom_vymk_MIN || regUst>SETPOINT_Inom_vymk_MAX) diapazon=0;
     break;
-  case 1078:
+  case 1204:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_r_kom_st_Inom_vymk;
     if(regUst<SETPOINT_RKS_Inom_vymk_MIN || regUst>SETPOINT_RKS_Inom_vymk_MAX) diapazon=0;
     break;
-#define MARKER1079  1079
-  case MARKER1079:
+#define MARKER1205  1205
+  case MARKER1205:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs;
     break;
-#define MARKER1080  1080
-  case MARKER1080:
+#define MARKER1206  1206
+  case MARKER1206:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs;
     break;
-#define MARKER1081  1081
-  case MARKER1081:
+#define MARKER1207  1207
+  case MARKER1207:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_krytychnyj_resurs;
     break;
-#define MARKER1082  1082
-  case MARKER1082:
+#define MARKER1208  1208
+  case MARKER1208:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_pochatkova_k_vymk;
     break;
-#define MARKER1083  1083
-  case MARKER1083:
+#define MARKER1209  1209
+  case MARKER1209:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.setpoint_pochatkova_k_vymk;
     break;
 
 //  count_bit = 9;
-#define MARKER1088  1088
-  case MARKER1088:
+#define MARKER1214  1214
+  case MARKER1214:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_input_signal;
 //      if(regUst&(~(0xFFFF))) diapazon=0;
     break;
-  case 1089:
+  case 1215:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_input_signal;
     if(regUst&(~(0xF))) diapazon=0;
     break;
-#define MARKER1090  1090
-  case MARKER1090:
+#define MARKER1216  1216
+  case MARKER1216:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_input;
     break;
-  case 1091:
+  case 1217:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_input;
     if(regUst&(~(0xF))) diapazon=0;
     break;
-  case 1092:
+  case 1218:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_output;
     break;
-  case 1093:
+  case 1219:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_output_modif;
     break;
-  case 1094:
+  case 1220:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_df;
     if(regUst&(~(0xFF))) diapazon=0;
     break;
-#define MARKER1095  1095
-  case MARKER1095:
+#define MARKER1221  1221
+  case MARKER1221:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_led;
     break;
-  case 1096:
+  case 1222:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_led;
     if(regUst&(~(0x1))) diapazon=0;
     break;
-  case 1097:
+  case 1223:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.buttons_mode;
     if(regUst&(~(0xFFF))) diapazon=0;
@@ -896,9 +887,9 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     }//if
     break;
 
-//IF ВСТАВКА 1098-1117
-//IF ВСТАВКА 1118-1125
-//IF ВСТАВКА 1128-1135
+//IF ВСТАВКА 1224-1243
+//IF ВСТАВКА 1244-1251
+//IF ВСТАВКА 1254-1261
 
 #if (                                   \
      (MODYFIKACIA_VERSII_PZ == 0) ||    \
@@ -1008,20 +999,20 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     }//if((item%4)==3)
   }//if(inOffset>=213 && inOffset<245)
 
-//IF ВСТАВКА 1030-1063
-  if(inOffset>=1030 && inOffset<1063 && inOffset!=1046)
+//IF ВСТАВКА 1156-1189
+  if(inOffset>=1156 && inOffset<1063 && inOffset!=1172)
   {
   int item = 0;
   int direct = 0;
-  if(inOffset>=1030 && inOffset<1046)
+  if(inOffset>=1156 && inOffset<1172)
   {
     (*multer) = 1;
-    item = inOffset-1030;
+    item = inOffset-1156;
   }//if(inOffset>=988 && inOffset<1004)
-  if(inOffset>=1047 && inOffset<1063)
+  if(inOffset>=1173 && inOffset<1189)
   {
     (*multer) = 1;
-    item = inOffset-1047;
+    item = inOffset-1173;
     direct = 1;
   }//if(inOffset>=1005 && inOffset<1021)
   //unsigned int uRegUst = regUst&0xFFFF;
@@ -1039,34 +1030,34 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
   }//if(inOffset>=988 && inOffset<1021 && inOffset!=1004)
 
 #if (MODYFIKACIA_VERSII_PZ == 0)
-  if(inOffset>=1098 && inOffset<1117)
+  if(inOffset>=1224 && inOffset<1244)
 #endif
 #if (                                   \
      (MODYFIKACIA_VERSII_PZ == 1) ||    \
      (MODYFIKACIA_VERSII_PZ == 3)       \
     )   
-    if(inOffset>=1098 && inOffset<1113)
+    if(inOffset>=1224 && inOffset<1240)
 #endif
 #if (MODYFIKACIA_VERSII_PZ == 2)
-      if(inOffset>=1098 && inOffset<1105)
+      if(inOffset>=1224 && inOffset<1232)
 #endif
       {
-        int item = inOffset-1098;
+        int item = inOffset-1224;
         (*editValue) = (uint32_t*)&edition_settings.dopusk_dv[item];
         (*multer) = 1;
         if(regUst<0 || regUst>60) diapazon=0;
       }//if
 
-  if(inOffset>=1118 && inOffset<1126)
+  if(inOffset>=1244 && inOffset<1252)
   {
-    int item = inOffset-1118;
+    int item = inOffset-1244;
     (*editValue) = (uint32_t*)&edition_settings.timeout_pause_df[item];
     if(regUst<TIMEOUT_DF_PAUSE_MIN/10 || regUst>TIMEOUT_DF_PAUSE_MAX/10) diapazon=0;
   }//if(inOffset>=1076 && inOffset<1084)
 
-  if(inOffset>=1128 && inOffset<1136)
+  if(inOffset>=1254 && inOffset<1262)
   {
-    int item = inOffset-1128;
+    int item = inOffset-1254;
     (*editValue) = (uint32_t*)&edition_settings.timeout_work_df[item];
     if(regUst<TIMEOUT_DF_WORK_MIN/10 || regUst>TIMEOUT_DF_WORK_MAX/10) diapazon=0;
   }//if(inOffset>=1076 && inOffset<1084)
@@ -1243,7 +1234,7 @@ int getUSTBigModbusRegister(int adrReg)
   }//if(editValue == (uint32_t*)&edition_settings.buttons_mode)
   if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs)
   {
-    if(offset==MARKER1079)
+    if(offset==MARKER1205)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1254,7 +1245,7 @@ int getUSTBigModbusRegister(int adrReg)
   }//if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs)
   if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkova_k_vymk)
   {
-    if(offset==1040)
+    if(offset==MARKER1208)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1266,7 +1257,7 @@ int getUSTBigModbusRegister(int adrReg)
   if(editValue == (uint32_t*)&edition_settings.type_of_input_signal)
   {
 #if MODYFIKACIA_VERSII_PZ == 0
-    if(offset==MARKER1088)
+    if(offset==MARKER1214)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1275,7 +1266,7 @@ int getUSTBigModbusRegister(int adrReg)
       return ((*editValue)>>16)  & (uint32_t)0xffff;
     }//else
 #else
-    if(offset==MARKER1088)
+    if(offset==MARKER1214)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1289,7 +1280,7 @@ int getUSTBigModbusRegister(int adrReg)
   if(editValue == (uint32_t*)&edition_settings.type_of_input)
   {
 #if MODYFIKACIA_VERSII_PZ == 0
-    if(offset==MARKER1090)
+    if(offset==MARKER1216)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1298,7 +1289,7 @@ int getUSTBigModbusRegister(int adrReg)
       return ((*editValue)>>16)  & (uint32_t)0xffff;
     }//else
 #else
-    if(offset==MARKER1090)
+    if(offset==MARKER1216)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1311,7 +1302,7 @@ int getUSTBigModbusRegister(int adrReg)
   }//if(editValue == (uint32_t*)&edition_settings.type_of_input)
   if(editValue == (uint32_t*)&edition_settings.type_of_led)
   {
-    if(offset==MARKER1095)
+    if(offset==MARKER1221)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1517,7 +1508,7 @@ int postUSTBigWriteAction(void)
     }//for(int item=0; item<NUMBER_UP; item++)
     if(editValue == (uint32_t*)&edition_settings.type_of_input_signal)
     {
-      if(offset==MARKER1088)
+      if(offset==MARKER1214)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);
@@ -1532,7 +1523,7 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.type_of_input_signal)
     if(editValue == (uint32_t*)&edition_settings.type_of_input)
     {
-      if(offset==MARKER1090)
+      if(offset==MARKER1216)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);
@@ -1547,7 +1538,7 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.type_of_input)
     if(editValue == (uint32_t*)&edition_settings.type_of_led)
     {
-      if(offset==MARKER1095)
+      if(offset==MARKER1221)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);
@@ -1582,7 +1573,7 @@ int postUSTBigWriteAction(void)
 
     if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs)
     {
-      if(offset==MARKER1079)
+      if(offset==MARKER1205)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);
@@ -1597,7 +1588,7 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkovyj_resurs)
     if(editValue == (uint32_t*)&edition_settings.setpoint_pochatkova_k_vymk)
     {
-      if(offset==MARKER1082)
+      if(offset==MARKER1208)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);
@@ -1744,7 +1735,7 @@ m1:
   for(int i=0; i<countAdr; i++)
   {
     int offset = i+beginAdr-BEGIN_ADR_REGISTER;
-    if(offset==MARKER1079 || offset==MARKER1080 || offset==MARKER1081 || offset==MARKER1082 || offset==MARKER1083)
+    if(offset==MARKER1205 || offset==MARKER1206 || offset==MARKER1207 || offset==MARKER1208 || offset==MARKER1209)
     {
       temp1=edition_settings.setpoint_pochatkovyj_resurs;
       unsigned int chastka = edition_settings.setpoint_r_kom_st_Inom/edition_settings.setpoint_r_kom_st_Inom_vymk;
@@ -1806,7 +1797,7 @@ int privateUSTBigGetReg2(int adrReg)
 
 int grupa_ustavok_control(int  offset, int *grupa_ustavok, int *adresGruppa)
 {
-  int  grupa_offset=243;
+  int  grupa_offset=285;
   int  ust_offset=15;
   if(offset>=(ust_offset+grupa_offset*0) && offset<=(ust_offset-1+grupa_offset*1))
   {
