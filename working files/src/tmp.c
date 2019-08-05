@@ -1,5 +1,261 @@
+        if (sLV.ch_stage_selector == DZ2_STAGE_BIT){
+                        //AMtz block calc Fierst
+            if( u32_bit_holder& (1<<STP_I_AMCP_DST_LP_STAGE_BIT)){
+                //Eval Pr Cmd
+                 p3.bool_vars.and31_i_2 = 1;
+                 p3.bool_vars.and32_i_0 = 1;
+                lV = sLV.p_p1->bool_vars.not10_o_0;
+                rU = p3.bool_vars.or27_i_0;
+                if(lV == rU)
+                    lV++;//unstable state;bkpt;!
+                else{
+                //Select Tmr
+                    //if(lV != 0){//No Acc
+                        //p3.bool_vars.or27_i_0 = rU;//Must be already setup
+                        p3.bool_vars.or29_i_0 = lV;
+                        lV = p3.bool_vars.and32_o_0;//Loop link
+                        rU = p3.bool_vars.and31_o_0;//Loop link
+                        p3.bool_vars.or29_i_1 = lV;
+                        p3.bool_vars.or27_i_1 = rU;
+                        p3.bool_vars.not30_o_0 = !lV;
+                        p3.bool_vars.not28_o_0 = !rU;
+                        p3.bool_vars.and31_i_1 = !lV;
+                        p3.bool_vars.and32_i_1 = !rU;
+                        if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
+                            p3.bool_vars.and31_i_0 = 1; 
+                        else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
+                            p3.bool_vars.and31_i_0 = 0; 
+                
+                         if( (p3.lVl&((1<<2)|(1<<3))) != 0 )//or29 customer
+                            p3.bool_vars.and32_i_2 = 1;
+                        else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
+                            p3.bool_vars.and32_i_2 = 0;
+                            
+                        rU = p3.lVl&((1<<5)|(1<<6)|(1<<7));
+                        if(rU == ((1<<5)|(1<<6)|(1<<7))){   
+                            p3.bool_vars.and31_o_0 = 1;
+                            u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
+                        }else{
+                            p3.bool_vars.and31_o_0 = 1;
+                
+                        }                       
+                        rU = p3.lVl&((1<<8)|(1<<9)|(1<<10));
+                        if(rU == ((1<<8)|(1<<9)|(1<<10))){  
+                            p3.bool_vars.and32_o_0 = 1;
+                            u32_bit_holder |= 1<<T_AMCP_IN_BIT;
+                            }
+                        else{
+                            p3.bool_vars.and32_o_0 = 0;
+                        }
+                         _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ,  sLV.p_current_settings_prt->timeout_dz2_amtz[number_group_stp],
+                        u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
+                        _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz2_amtz_pr[number_group_stp],
+                        u32_bit_holder, T_ACC_AMCP_IN_BIT, u32_bit_holder, T_ACC_AMCP_OUT_BIT);
 
-			
+                    //}
+
+                };
+            }
+            else{
+                lV = 0;
+                //Reset and31 and32
+                 p3.bool_vars.and31_i_2 = lV;
+                 p3.bool_vars.and32_i_0 = lV;
+                //set or
+                p3.bool_vars.or27_i_1 = lV;
+                p3.bool_vars.or29_i_1 = lV;
+                //set not
+                p3.bool_vars.not28_o_0 = 1;
+                p3.bool_vars.not30_o_0 = 1;
+                
+                //reset timers
+                p3.bool_vars.and31_o_0 = lV;
+                p3.bool_vars.and32_o_0 = lV;
+
+                
+            }
+
+
+
+
+
+
+                        //Dz block
+//            lV = sLV.p_p1->bool_vars.not9_o_0;
+//            rU = p3.bool_vars.or34_i_1;//rU = sLV.p_p3->bool_vars.or34_i_1;//
+//            if(lV == rU)
+//                lV++;//unstable state;bkpt;!
+//            else{
+                //register Dz2_stp_p3_state p3; 
+                //p3.lVl = sLV.p_p3->lVl;
+                //Dir
+                
+                
+                //sLV.p_p3->lVl |= p3.lVl;
+            ;
+            }    
+/*
+                    //Eval Pr Cmd
+                    p4.bool_vars.and45_i_0 = 1;
+                    p4.bool_vars.and44_i_2 = 1;
+                    lV = sLV.p_p1->bool_vars.not9_o_0;
+                    rU = p3.bool_vars.or38_i_0;
+                    if(lV == rU)
+                    lV++;//unstable state;bkpt;!
+                    else{
+                        p3.bool_vars.or40_i_0 = lV;
+                        lV = p4.bool_vars.and44_o_0;//Loop link
+                        rU = p4.bool_vars.and45_o_0;//Loop link
+                        p3.bool_vars.or38_i_1 = lV;
+                        p3.bool_vars.or40_i_1 = rU;
+                        p3.bool_vars.not39_o_0 = !lV;
+                        p3.bool_vars.not41_o_0 = !rU;
+                        p4.bool_vars.and45_i_1 = !lV;
+                        p4.bool_vars.and44_i_1 = !rU;
+                        if( (p3.lVl&((1<<21)|(1<<22))) != 0 )//or38 customer
+                            p4.bool_vars.and44_i_0 = 1; 
+                        else 
+                            p4.bool_vars.and44_i_0 = 0; 
+                
+                        if( (p3.lVl&((1<<24)|(1<<25))) != 0 )//or40 customer
+                            p4.bool_vars.and45_i_2 = 1;
+                        else 
+                            p4.bool_vars.and45_i_2 = 0;
+                            
+                        rU = p3.lVl&((1<<6)|(1<<7)|(1<<8));
+                        if(rU == ((1<<6)|(1<<7)|(1<<8))){   
+                            p3.bool_vars.and31_o_0 = 1;
+                            u32_bit_holder |= 1<<T_ACC_INV_IN_BIT;
+                        }else{
+                            p3.bool_vars.and31_o_0 = 0;
+                
+                        }   
+                        rU = p3.lVl&((1<<9)|(1<<10)|(1<<11));
+                        if(rU == ((1<<9)|(1<<10)|(1<<11))){  
+                            p3.bool_vars.and32_o_0 = 1;
+                            u32_bit_holder |= 1<<T_INV_IN_BIT;
+                            }
+                        else{
+                            p3.bool_vars.and32_o_0 = 0;
+                        }
+                        _TIMER_T_0(INDEX_TIMER_DZ2_INV_PR,  sLV.p_current_settings_prt->timeout_dz2_inv_pr[number_group_stp],
+                u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
+                        _TIMER_T_0(INDEX_TIMER_DZ2_INV,  sLV.p_current_settings_prt->timeout_dz2_inv[number_group_stp],
+                u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
+                    
+                    }
+                    ;
+                */	
+ //Dz block
+            lV = sLV.p_p1->bool_vars.not9_o_0;
+            rU = p3.bool_vars.or34_i_1;//rU = sLV.p_p3->bool_vars.or34_i_1;//
+            if(lV == rU)
+                lV++;//unstable state;bkpt;!
+            else{
+                //register Dz2_stp_p3_state p3; 
+                //p3.lVl = sLV.p_p3->lVl;
+                //Dir
+                if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
+                    //Eval Pr Cmd
+                    p4.bool_vars.and43_i_0 = 1;
+                    p4.bool_vars.and42_i_2 = 1;
+                    lV = sLV.p_p1->bool_vars.not9_o_0;
+                    rU = p3.bool_vars.or34_i_0;
+                    if(lV == rU)
+                    lV++;//unstable state;bkpt;!
+                    else{
+                        rU1 |= lV<< 18;p3.bool_vars.or36_i_0 = lV;
+                        lV = p4.bool_vars.and42_o_0;//Loop link
+                        rU = p4.bool_vars.and43_o_0;//Loop link
+                        p3.bool_vars.or34_i_1 = lV;
+                        p3.bool_vars.or36_i_1 = rU;
+                        p3.bool_vars.not35_o_0 = !lV;
+                        p3.bool_vars.not37_o_0 = !rU;
+                        p4.bool_vars.and43_i_1 = !lV;
+                        p4.bool_vars.and42_i_1 = !rU;
+                        if( (p3.lVl&((1<<15)|(1<<16))) != 0 )//or34 customer
+                            p4.bool_vars.and42_i_0 = 1; 
+                        else 
+                            p4.bool_vars.and42_i_0 = 0; 
+                
+                        if( (p3.lVl&((1<<18)|(1<<19))) != 0 )//or36 customer
+                            p4.bool_vars.and43_i_2 = 1;
+                        else 
+                            p4.bool_vars.and43_i_2 = 0;
+                            
+                        rU = p3.lVl&((1<<0)|(1<<1)|(1<<2));
+                        if(rU == ((1<<0)|(1<<1)|(1<<2))){   
+                            p3.bool_vars.and31_o_0 = 1;
+                            u32_bit_holder |= 1<<T_ACC_DIR_IN_BIT;
+                        }else{
+                            p3.bool_vars.and31_o_0 = 0;
+                
+                        }   
+                        rU = p3.lVl&((1<<3)|(1<<4)|(1<<5));
+                        if(rU == ((1<<3)|(1<<4)|(1<<5))){  
+                            p3.bool_vars.and32_o_0 = 1;
+                            u32_bit_holder |= 1<<T_DIR_IN_BIT;
+                            }
+                        else{
+                            p3.bool_vars.and32_o_0 = 0;
+                        }
+                        _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_dir_pr[number_group_stp],
+                u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
+                        _TIMER_T_0(INDEX_TIMER_DZ3_DIR,  sLV.p_current_settings_prt->timeout_dz3_dir[number_group_stp],
+                u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
+                    }
+                }
+                else{
+                    lV = 0; 
+                    //Reset and42 and43
+                    p4.bool_vars.and43_i_0 = lV;
+                    p4.bool_vars.and42_i_2 = lV;
+                    //set or
+                    p3.bool_vars.or36_i_1 = lV;
+                    p3.bool_vars.or34_i_1 = lV;
+                    //set not
+                    p3.bool_vars.not35_o_0 = 1;
+                    p3.bool_vars.not37_o_0 = 1;
+                    //reset timers
+                    p4.bool_vars.and43_o_0 = lV;
+                    p4.bool_vars.and42_o_0 = lV;
+                 _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_dir_pr[number_group_stp],
+                u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ3_DIR,  sLV.p_current_settings_prt->timeout_dz3_dir[number_group_stp],
+                u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
+                
+                }
+                 p3.lVl |=  rU1  ;
+                //Inv
+                if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){/*
+                    //Eval Pr Cmd
+                    
+                */}
+                else{
+                    lV = 0;
+                    //Reset and44 and45
+                    p4.bool_vars.and45_i_0 = lV;
+                    p4.bool_vars.and44_i_2 = lV;
+                    //set or
+                    p3.bool_vars.or38_i_1 = lV;
+                    p3.bool_vars.or40_i_1 = lV;
+                    //set not
+                    p3.bool_vars.not39_o_0 = 1;
+                    p3.bool_vars.not41_o_0 = 1;
+                    //reset timers
+                    p4.bool_vars.and44_o_0 = lV;
+                    p4.bool_vars.and45_o_0 = lV;
+                 _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_inv_pr[number_group_stp],
+                u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ3_INV,  sLV.p_current_settings_prt->timeout_dz3_inv[number_group_stp],
+                u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
+                
+                }
+                //sLV.p_p3->lVl |= p3.lVl;
+            ;
+            }       
+  
+            ;				
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //  Modules which I plan use in my std_periph Lib                

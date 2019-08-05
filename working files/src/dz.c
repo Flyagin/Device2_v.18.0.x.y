@@ -1,5 +1,13 @@
 #include <string.h> 
 #include "const_global.h"
+//#define CHANGE_MEAS 1
+//#define DEBUG_CONFIGURATION 1
+#ifdef DEBUG_CONFIGURATION
+    #ifndef DEBUG_MODE_23_07_19 
+        #error "VALUES DZ HAVE UNREAL NUMBER"
+    #endif
+#endif
+ 
 void dz_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
 void fault_U_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
 void dz1_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
@@ -59,6 +67,7 @@ const long Meast_TST[] = {
   101,// - IM_U2, 101000
   102 // - IM_U1, 102000
 };
+
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
@@ -69,7 +78,12 @@ void mf_of_handler(unsigned int *p_active_functions, unsigned int number_group_s
 register long rL,rU;
   UNUSED(number_group_stp);
   //void *memcpy (void *destination, const void *source, size_t n);
+#ifdef DEBUG_CONFIGURATION 
+
   memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
+  #warning The variable measurement HAVE DEBUG UNREAL VALUES
+  
+#endif    
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
     //m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector
@@ -283,8 +297,12 @@ register union {
     }
     if( (wrp.lVl & ( (1<<7)| (1<<8)| (1<<9) )) == ( (1<<7)| (1<<8)| (1<<9) ) )
         wrp.bool_vars.OR_2 = 1;
-  
+#ifdef DEBUG_CONFIGURATION
   i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);i|=1;
+#else
+  i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);
+#endif
+
    if (i > 0){
     wrp.bool_vars.OR_4 = 1;
     }
@@ -801,8 +819,8 @@ typedef union mcp_stp_state_Unn1{
       unsigned int or12__i_0 :1;//22 external sig
       unsigned int or13__i_1 :1;//23 external sig
       unsigned int or13__i_0 :1;//24
-      unsigned int or18__i_1 :1;//25
-      unsigned int or18__i_0 :1;//26
+      unsigned int nor18__i_1 :1;//25
+      unsigned int nor18__i_0 :1;//26
       unsigned int not15_o_0 :1;//27
       unsigned int and16_i_0 :1;//28
       unsigned int and16_i_1 :1;//29
@@ -856,32 +874,32 @@ typedef union mcp_stp_state_Unn3{
    struct {
       unsigned int or27_i_0 :1; //0
       unsigned int or27_i_1 :1; //1
-      unsigned int not28_o_0:1; //2
-      unsigned int or29_i_0 :1; //2
-      unsigned int or29_i_1 :1; //3
-      unsigned int not30_o_0:1; //4
-      unsigned int and31_i_0:1; //5
-      unsigned int and31_i_1:1; //6
-      unsigned int and31_i_2:1; //7
-      unsigned int and32_i_0:1; //8
-      unsigned int and32_i_1:1; //9
-      unsigned int and32_i_2:1; //10
-      unsigned int and31_o_0:1; //11
-      unsigned int and32_o_0:1; //12
-      unsigned int or33_i_0 :1; //13
-      unsigned int or33_i_1 :1; //14
-      unsigned int or34_i_0 :1; //15
-      unsigned int or34_i_1 :1; //16
-      unsigned int not35_o_0:1; //17
-      unsigned int or36_i_0 :1; //18
-      unsigned int or36_i_1 :1; //19
-      unsigned int not37_o_0:1; //20
-      unsigned int or38_i_0 :1; //21
-      unsigned int or38_i_1 :1; //22
-      unsigned int not39_o_0:1; //23
-      unsigned int or40_i_0 :1; //24
-      unsigned int or40_i_1 :1; //25
-      unsigned int not41_o_0:1; //26
+      unsigned int not28_o_0:1; //2			2
+      unsigned int or29_i_0 :1; //3
+      unsigned int or29_i_1 :1; //4
+      unsigned int not30_o_0:1; //5
+      unsigned int and31_i_0:1; //6
+      unsigned int and31_i_1:1; //7
+      unsigned int and31_i_2:1; //8
+      unsigned int and32_i_0:1; //9
+      unsigned int and32_i_1:1; //10
+      unsigned int and32_i_2:1; //11
+      unsigned int and31_o_0:1; //12
+      unsigned int and32_o_0:1; //13
+      unsigned int or33_i_0 :1; //14
+      unsigned int or33_i_1 :1; //15
+      unsigned int or34_i_0 :1; //16
+      unsigned int or34_i_1 :1; //17
+      unsigned int not35_o_0:1; //18
+      unsigned int or36_i_0 :1; //19
+      unsigned int or36_i_1 :1; //20
+      unsigned int not37_o_0:1; //21
+      unsigned int or38_i_0 :1; //22
+      unsigned int or38_i_1 :1; //23
+      unsigned int not39_o_0:1; //24
+      unsigned int or40_i_0 :1; //25
+      unsigned int or40_i_1 :1; //26
+      unsigned int not41_o_0:1; //
       unsigned int b27 :1;//27
       unsigned int b28 :1;//28
       unsigned int b29 :1;//29
@@ -964,6 +982,7 @@ struct{
     Dz2_stp_p2_state *p_p2;
     Dz2_stp_p3_state *p_p3;
     Dz2_stp_p4_state *p_p4;
+    Dz2_stp_p2_state p2;
     
 }sLV;
 
@@ -979,9 +998,9 @@ sLV.p_p4 = & bw_dstLp_dt.ar_bw[i].p4;
 //Clr untriggered command
 sLV.p_p1->lVl &= 0x0;
 sLV.p_p2->lVl &= 0x0;
-sLV.p_p3->lVl &= (1<<11) | (1<<12);//and31_o_0 and32_o_0
+sLV.p_p3->lVl &= (1<<12) | (1<<13);//and31_o_0 and32_o_0
 sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0 and45_o_0 
-                                      
+sLV.p2.lVl = 0;                                      
                                      
                                      
 }
@@ -1011,14 +1030,17 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p1.bool_vars.and5_i_0 = lV;
                 p1.bool_vars.and6_i_0 = lV;
             }
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2_CONST_PR);
+            rU = (long)(sLV.p_current_settings_prt->control_dz);
+            lV = (MASKA_FOR_BIT(INDEX_CTR_DZ2_CONST_PR));
+            lV &= rU;
             if(lV != 0)
                 p1.bool_vars.or2__i_0 = 1;
                 
             if(_CHECK_SET_BIT(p_active_functions, RANG_OP_PR_DZ2) != 0)
                 p1.bool_vars.or2__i_1 = 1;
 
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2_PR_VID_DV);
+            //rU = (unsigned long)(sLV.p_current_settings_prt->control_dz);
+            lV =(MASKA_FOR_BIT(INDEX_CTR_DZ2_PR_VID_DV));lV &= rU;
             if(lV != 0)
                 p1.bool_vars.and3_i_0 = 1;  
             if(_CHECK_SET_BIT(p_active_functions, RANG_STATE_VV) != 0)
@@ -1051,13 +1073,16 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p1.bool_vars.and5_i_0 = lV;
                 p1.bool_vars.and6_i_0 = lV;
             }
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3_CONST_PR);
+            lV = (sLV.p_current_settings_prt->control_dz);
+            rU = (MASKA_FOR_BIT(INDEX_CTR_DZ3_CONST_PR));
+            lV &= rU;
             if(lV != 0)
                 p1.bool_vars.or2__i_0 = 1;
             if(_CHECK_SET_BIT(p_active_functions, RANG_OP_PR_DZ3) != 0)
                 p1.bool_vars.or2__i_1 = 1;
       
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3_PR_VID_DV);
+            //rU  = (sLV.p_current_settings_prt->control_dz);
+            lV =(MASKA_FOR_BIT(INDEX_CTR_DZ3_PR_VID_DV));lV &= rU;
             if(lV != 0)
                 p1.bool_vars.and3_i_0 = 1;  
             if(_CHECK_SET_BIT(p_active_functions, RANG_STATE_VV) != 0)
@@ -1091,13 +1116,15 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p1.bool_vars.and5_i_0 = lV;
                 p1.bool_vars.and6_i_0 = lV;
             }
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ4_CONST_PR);
+            lV = (sLV.p_current_settings_prt->control_dz);
+            lV &=(MASKA_FOR_BIT(INDEX_CTR_DZ4_CONST_PR));
             if(lV != 0)
                 p1.bool_vars.or2__i_0 = 1;
             if(_CHECK_SET_BIT(p_active_functions, RANG_OP_PR_DZ4) != 0)
                 p1.bool_vars.or2__i_1 = 1;
       
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ4_PR_VID_DV);
+            rU = (sLV.p_current_settings_prt->control_dz);
+            rU &= (MASKA_FOR_BIT(INDEX_CTR_DZ4_PR_VID_DV));
             if(lV != 0)
                 p1.bool_vars.and3_i_0 = 1;  
             if(_CHECK_SET_BIT(p_active_functions, RANG_STATE_VV) != 0)
@@ -1123,25 +1150,29 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
         }
     
         rU = p1.lVl&((1<<4)|(1<<5)); //and4
-        if(rU == ((1<<4)|(1<<5)))    
-        p1.bool_vars.and4_o_0 = 1;
+        if(rU == ((1<<4)|(1<<5))){    
+        p1.bool_vars.and4_o_0 = 1;//p1.bool_vars.or7__i_0 = 1;
+        }
         rU = p1.lVl&((1<<6)|(1<<7)); 
-        if(rU == ((1<<6)|(1<<7)))    
-        p1.bool_vars.and5_o_0 = 1;
+        if(rU == ((1<<6)|(1<<7))){    
+        p1.bool_vars.and5_o_0 = 1;  //p1.bool_vars.or8__i_0 = 1;
+        }
         rU = p1.lVl&((1<<8)|(1<<9)); 
         if(rU == ((1<<8)|(1<<9)))    
         p1.bool_vars.and6_o_0 = 1;
         
         
         
-         if( (p1.lVl&((1<<13)|(1<<14))) != 0 ){//or7 2 customer
-                sLV.p_p3->lVl |= (1<<21) | (1<<15) ;//Avt pry vkl VV uskorenye DZ
+        // if( (p1.lVl&((1<<13)|(1<<14))) != 0 ){//or7 2 customer
+         if( (p1.lVl&((1<<10)|(1<<11))) != 0 ){//or7 2 customer
+                sLV.p_p3->lVl |= ((1<<22) | (1<<16)) ;//Avt pry vkl VV uskorenye DZ
                 //or38_i_0 :1; //21 or34_i_0 :1; //15
                 bw_dstLp_dt.hdrBW.ch_p1234_modified |= (1<<P3_MODIFIED_BIT);
         }else{
             p1.bool_vars.not9_o_0 = 1;//Net uskoreniya
         }   
-         if( (p1.lVl&((1<<15)|(1<<16))) != 0 ){//or8 2 customer DZ
+        // if( (p1.lVl&((1<<15)|(1<<16))) != 0 ){//or8 2 customer DZ
+         if( (p1.lVl&((1<<10)|(1<<12))) != 0 ){//or8 2 customer DZ
                //or27_i_0 :1; //0
                sLV.p_p3->lVl |= (1<<0);//Avt pry vkl VV uskorenye AMTZ
                 bw_dstLp_dt.hdrBW.ch_p1234_modified |= (1<<P3_MODIFIED_BIT);
@@ -1157,9 +1188,14 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
         long lV,rU;
         
         //rU = chGbl_3Phs_Dz;//?
-        //sLV.p_p1->bool_vars.or12__i_0 = rU;
-        //sLV.p_p1->bool_vars.or13__i_1 = rU;
-		
+//      if(_CHECK_SET_BIT(p_active_functions, RANG_3F_DZ_DIR_INV) != 0){
+//          sLV.p_p1->bool_vars.or12__i_0 = 1;
+//          sLV.p_p1->bool_vars.or13__i_1 = 1;
+//        }
+//      else{
+//            sLV.p_p1->bool_vars.or12__i_0 = 0;
+//            sLV.p_p1->bool_vars.or13__i_1 = 0;
+//        }  
         if(_CHECK_SET_BIT(p_active_functions, RANG_SNKN_DZ) != 0){
             sLV.p_p4->bool_vars.and14_i_0 = 1;
             sLV.p_p4->bool_vars.and11_i_1 = 1;
@@ -1232,10 +1268,19 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 _SET_BIT(p_active_functions, RANG_SECTOR_INV_DZ2);
                  sLV.p_p1->bool_vars.or13__i_0 = 1;
             }
+                        #ifdef DEBUG_CONFIGURATION11
+sLV.p_p1->bool_vars.or13__i_0 = 1; sLV.p_p1->bool_vars.or12__i_1 = 1;
+#else
+  
+#endif
             //else if(lV == (-1)){
             //  ;
             //}
-            
+            if( (sLV.p_p1->lVl&((1<<22)|(1<<21))) > 0 )
+                p2.bool_vars.and22_i_3 = 1;
+            if( (sLV.p_p1->lVl&((1<<23)|(1<<24))) > 0 )
+                p2.bool_vars.and24_i_3 = 1;
+                
             if(_CHECK_SET_BIT(p_active_functions, RANG_BLOCK_DZ2) != 0){
                 lV = 1;
                 p2.bool_vars.nor19_i_0 = lV;
@@ -1249,9 +1294,10 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.nor20_i_1 = lV;
                 p2.bool_vars.nor21_i_1 = lV;
             }   
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2_AMTZ);
+            lV = (sLV.p_current_settings_prt->control_dz);
+            rU =(MASKA_FOR_BIT(INDEX_CTR_DZ2_AMTZ)); rU &= lV;
             //not15
-            if(lV == 0){
+            if(rU == 0){
                 sLV.p_p1->bool_vars.not15_o_0 = 1;
                 sLV.p_p4->bool_vars.and14_i_1 = 0;//lVl |= (1<<23);//and14_i_1 :1;//23
                 sLV.p_p4->bool_vars.and11_i_0 = 1;//and11
@@ -1263,18 +1309,21 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.and26_i_5 = 1;
             }
             
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2);
-            if(lV != 0){
-                lV = 1;
-                p2.bool_vars.and22_i_0 = lV;
-                p2.bool_vars.and24_i_0 = lV;
-                p2.bool_vars.and26_i_0 = lV;
+            //lV = (sLV.p_current_settings_prt->control_dz); This Line for reading
+            rU =(MASKA_FOR_BIT(INDEX_CTR_DZ2)); rU &= lV;
+            if(rU != 0){
+                rU = 1;
+                p2.bool_vars.and22_i_0 = rU;
+                p2.bool_vars.and24_i_0 = rU;
+                p2.bool_vars.and26_i_0 = rU;
             }   
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2_DIR);
-            if(lV != 0)
+            //lV = (sLV.p_current_settings_prt->control_dz); This Line for reading
+            rU = (MASKA_FOR_BIT(INDEX_CTR_DZ2_DIR)); rU &= lV;
+            if(rU != 0)
                 p2.bool_vars.and22_i_1 = 1;
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ2_INV);
-            if(lV != 0)
+            //lV = (sLV.p_current_settings_prt->control_dz); This Line for reading
+            rU = (MASKA_FOR_BIT(INDEX_CTR_DZ2_INV)); rU &= lV;
+            if(rU != 0)
                 p2.bool_vars.and24_i_1 = 1;
 
                 
@@ -1356,7 +1405,12 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.and22_i_2 = 1;
             else
                 p2.bool_vars.and22_i_2 = 0;
-                
+            #ifdef DEBUG_CONFIGURATION11
+p2.bool_vars.and22_i_2 = 1;  //? p2.bool_vars.and24_i_2 = 1; 
+#else
+  
+#endif
+    
             lV = p2.bool_vars.not25_o_0;
             //long pick_up_Resistance_dstLp2 = 0;
             if(lV == 0)
@@ -1368,7 +1422,11 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.and24_i_2 = 1;
             else
                 p2.bool_vars.and24_i_2 = 0;
-            
+            #ifdef DEBUG_CONFIGURATION11
+p2.bool_vars.and24_i_2 = 1;  
+#else
+  
+#endif            
             //and14
             //sLV.p_p4->lVl |= (1<<22);//and14_i_0 :1;//22
             //sLV.p_p4->lVl |= (1<<23);//and14_i_1 :1;//23  
@@ -1380,7 +1438,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 //and17
                 sLV.p_p1->bool_vars.and17_i_0 = 1;
                 //or18
-                sLV.p_p1->bool_vars.or18__i_0 = 1;
+                sLV.p_p1->bool_vars.nor18__i_0 = 1;
             }
             sLV.p_p1->bool_vars.and16_i_1 = p2.bool_vars.not23_o_0;  
             sLV.p_p1->bool_vars.and17_i_1 = p2.bool_vars.not25_o_0;
@@ -1394,13 +1452,13 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             if(lV == ((1<<20)|(1<<19)))//and17 
                 p2.bool_vars.nor20_i_3 = 1;
                 
-            if( (sLV.p_p1->lVl&((1<<25)|(1<<24))) != 0 ){//or18
+            if( (sLV.p_p1->lVl&((1<<25)|(1<<26))) != 0 ){//or18
                 p2.bool_vars.nor21_i_2 = 0;
             }
             else{
                 p2.bool_vars.nor21_i_2 = 1;
             }
-            
+            sLV.p2 = p2;
             //PO Calc
             lV = p2.bool_vars.nor20_i_3;//STP_I_A_MCP_DST_LP_STAGE2_BIT
             unsigned long pick_up_I_Amcp_dstLp2 = 0;
@@ -1524,7 +1582,11 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             //else if(lV == (-1)){
             //  ;
             //}
-            
+            if( (sLV.p_p1->lVl&((1<<22)|(1<<21))) > 0 )
+                p2.bool_vars.and22_i_3 = 1;
+            if( (sLV.p_p1->lVl&((1<<23)|(1<<24))) > 0 )
+                p2.bool_vars.and24_i_3 = 1;
+              
             if(_CHECK_SET_BIT(p_active_functions, RANG_BLOCK_DZ3) != 0){
                 lV = 1;
                 p2.bool_vars.nor19_i_0 = lV;
@@ -1538,9 +1600,10 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.nor20_i_1 = lV;
                 p2.bool_vars.nor21_i_1 = lV;
             }   
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3_AMTZ);
+            lV = (sLV.p_current_settings_prt->control_dz);
+            rU = (MASKA_FOR_BIT(INDEX_CTR_DZ3_AMTZ)); rU &= lV;
             //not15
-            if(lV == 0){
+            if(rU == 0){
                 sLV.p_p1->bool_vars.not15_o_0 = 1;
                 sLV.p_p4->bool_vars.and14_i_1 = 0;//lVl |= (1<<23);//and14_i_1 :1;//23
                 sLV.p_p4->bool_vars.and11_i_0 = 1;//and11
@@ -1552,18 +1615,22 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 p2.bool_vars.and26_i_5 = 1;
             }
             
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3);
-            if(lV != 0){
-                lV = 1;
-                p2.bool_vars.and22_i_0 = lV;
-                p2.bool_vars.and24_i_0 = lV;
-                p2.bool_vars.and26_i_0 = lV;
+            //lV = (sLV.p_current_settings_prt->control_dz);
+            rU =(MASKA_FOR_BIT(INDEX_CTR_DZ3)); rU &= lV;
+            if(rU != 0){
+                rU = 1;
+                p2.bool_vars.and22_i_0 = rU;
+                p2.bool_vars.and24_i_0 = rU;
+                p2.bool_vars.and26_i_0 = rU;
             }   
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3_DIR);
-            if(lV != 0)
+            //lV = (sLV.p_current_settings_prt->control_dz);
+            rU = (MASKA_FOR_BIT(INDEX_CTR_DZ3_DIR));
+            rU &= lV;
+            if(rU != 0)
                 p2.bool_vars.and22_i_1 = 1;
-            lV = (sLV.p_current_settings_prt->control_dz)&MASKA_FOR_BIT(INDEX_CTR_DZ3_INV);
-            if(lV != 0)
+            //lV = (sLV.p_current_settings_prt->control_dz)
+            rU =(MASKA_FOR_BIT(INDEX_CTR_DZ3_INV));rU &= lV;
+            if(rU != 0)
                 p2.bool_vars.and24_i_1 = 1;
 
                 
@@ -1669,7 +1736,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 //and17
                 sLV.p_p1->bool_vars.and17_i_0 = 1;
                 //or18
-                sLV.p_p1->bool_vars.or18__i_0 = 1;
+                sLV.p_p1->bool_vars.nor18__i_0 = 1;
             }
             sLV.p_p1->bool_vars.and16_i_1 = p2.bool_vars.not23_o_0;  
             sLV.p_p1->bool_vars.and17_i_1 = p2.bool_vars.not25_o_0;
@@ -1683,7 +1750,7 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             if(lV == ((1<<20)|(1<<19)))//and17 
                 p2.bool_vars.nor20_i_3 = 1;
                 
-            if( (sLV.p_p1->lVl&((1<<25)|(1<<24))) != 0 ){//or18
+            if( (sLV.p_p1->lVl&((1<<25)|(1<<26))) != 0 ){//or18
                 p2.bool_vars.nor21_i_2 = 0;
             }
             else{
@@ -1771,65 +1838,55 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
             p3.lVl = sLV.p_p3->lVl;//Mask?
         else
             p3.lVl = 0;
-        if (sLV.ch_stage_selector == DZ2_STAGE_BIT){
-                        //AMtz block calc Fierst
+            
             if( u32_bit_holder& (1<<STP_I_AMCP_DST_LP_STAGE_BIT)){
                 //Eval Pr Cmd
                  p3.bool_vars.and31_i_2 = 1;
                  p3.bool_vars.and32_i_0 = 1;
                 lV = sLV.p_p1->bool_vars.not10_o_0;
                 rU = p3.bool_vars.or27_i_0;
-                if(lV == rU)
-                    lV++;//unstable state;bkpt;!
-                else{
                 //Select Tmr
                     //if(lV != 0){//No Acc
-                        //p3.bool_vars.or27_i_0 = rU;//Must be already setup
-                        p3.bool_vars.or29_i_0 = lV;
-                        lV = p3.bool_vars.and32_o_0;//Loop link
-                        rU = p3.bool_vars.and31_o_0;//Loop link
-                        p3.bool_vars.or29_i_1 = lV;
-                        p3.bool_vars.or27_i_1 = rU;
-                        p3.bool_vars.not30_o_0 = !lV;
-                        p3.bool_vars.not28_o_0 = !rU;
-                        p3.bool_vars.and31_i_1 = !lV;
-                        p3.bool_vars.and32_i_1 = !rU;
-                        if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
-                            p3.bool_vars.and31_i_0 = 1; 
-                        else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
-                            p3.bool_vars.and31_i_0 = 0; 
+                //p3.bool_vars.or27_i_0 = rU;//Must be already setup
+                p3.bool_vars.or29_i_0 = lV;
+                lV = p3.bool_vars.and32_o_0;//Loop link
+                rU = p3.bool_vars.and31_o_0;//Loop link
+                p3.bool_vars.or29_i_1 = lV;
+                p3.bool_vars.or27_i_1 = rU;
+                p3.bool_vars.not30_o_0 = !lV;
+                p3.bool_vars.not28_o_0 = !rU;
+                p3.bool_vars.and31_i_1 = !lV;
+                p3.bool_vars.and32_i_1 = !rU;
+                if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
+                    p3.bool_vars.and31_i_0 = 1; 
+                else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
+                    p3.bool_vars.and31_i_0 = 0; 
                 
-                         if( (p3.lVl&((1<<2)|(1<<3))) != 0 )//or29 customer
-                            p3.bool_vars.and32_i_2 = 1;
-                        else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
-                            p3.bool_vars.and32_i_2 = 0;
-                            
-                        rU = p3.lVl&((1<<5)|(1<<6)|(1<<7));
-                        if(rU == ((1<<5)|(1<<6)|(1<<7))){   
-                            p3.bool_vars.and31_o_0 = 1;
-                            u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
-                        }else{
-                            p3.bool_vars.and31_o_0 = 1;
+                 if( (p3.lVl&((1<<3)|(1<<4))) != 0 )//or29 customer
+                    p3.bool_vars.and32_i_2 = 1;
+                else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
+                    p3.bool_vars.and32_i_2 = 0;
+                    
+                rU = p3.lVl&((1<<8)|(1<<6)|(1<<7));
+                if(rU == ((1<<8)|(1<<6)|(1<<7))){   
+                    p3.bool_vars.and31_o_0 = 1;
+                    u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
+                }else{
+                    p3.bool_vars.and31_o_0 = 0;
                 
-                        }                       
-                        rU = p3.lVl&((1<<8)|(1<<9)|(1<<10));
-                        if(rU == ((1<<8)|(1<<9)|(1<<10))){  
-                            p3.bool_vars.and32_o_0 = 1;
-                            u32_bit_holder |= 1<<T_AMCP_IN_BIT;
-                            }
-                        else{
-                            p3.bool_vars.and32_o_0 = 0;
-                        }
-                         _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ,  sLV.p_current_settings_prt->timeout_dz2_amtz[number_group_stp],
-                        u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
-                        _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz2_amtz_pr[number_group_stp],
-                        u32_bit_holder, T_ACC_AMCP_IN_BIT, u32_bit_holder, T_ACC_AMCP_OUT_BIT);
+                }                       
+                rU = p3.lVl&((1<<11)|(1<<9)|(1<<10));
+                if(rU == ((1<<11)|(1<<9)|(1<<10))){  
+                    p3.bool_vars.and32_o_0 = 1;
+                    u32_bit_holder |= 1<<T_AMCP_IN_BIT;
+                    }
+                else{
+                    p3.bool_vars.and32_o_0 = 0;
+                }
 
-                    //}
 
-                };
-            }
-            else{
+               
+            }else{
                 lV = 0;
                 //Reset and31 and32
                  p3.bool_vars.and31_i_2 = lV;
@@ -1844,12 +1901,25 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                 //reset timers
                 p3.bool_vars.and31_o_0 = lV;
                 p3.bool_vars.and32_o_0 = lV;
+
+                
+        }   
+        if (sLV.ch_stage_selector == DZ2_STAGE_BIT){
+                        //AMtz block calc Fierst
+            if( u32_bit_holder& (1<<STP_I_AMCP_DST_LP_STAGE_BIT)){
+                //Eval Pr Cmd
+                 _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ,  sLV.p_current_settings_prt->timeout_dz2_amtz[number_group_stp],
+                u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz2_amtz_pr[number_group_stp],
+                u32_bit_holder, T_ACC_AMCP_IN_BIT, u32_bit_holder, T_ACC_AMCP_OUT_BIT);
+
+            }else{
+
                  _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ,  sLV.p_current_settings_prt->timeout_dz2_amtz[number_group_stp],
                 u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
                  _TIMER_T_0(INDEX_TIMER_DZ2_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz2_amtz_pr[number_group_stp],
                 u32_bit_holder, T_ACC_AMCP_IN_BIT, u32_bit_holder, T_ACC_AMCP_OUT_BIT);
   
-                
             }
             //Сраб.
             if ( u32_bit_holder&( (1<<T_ACC_AMCP_OUT_BIT)|(1<<T_AMCP_OUT_BIT) ) )
@@ -1861,51 +1931,51 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
                                    //AMtz block calc Fierst
             if( u32_bit_holder& (1<<STP_I_AMCP_DST_LP_STAGE_BIT)){
                 //Eval Pr Cmd
-                 p3.bool_vars.and31_i_2 = 1;
-                 p3.bool_vars.and32_i_0 = 1;
-                lV = sLV.p_p1->bool_vars.not10_o_0;
-                rU = p3.bool_vars.or27_i_0;
-                if(lV == rU)
-                    lV++;//unstable state;bkpt;!
-                else{
-                //Select Tmr
-                    //if(lV != 0){//No Acc
-                        //p3.bool_vars.or27_i_0 = rU;//Must be already setup
-                        p3.bool_vars.or29_i_0 = lV;
-                        lV = p3.bool_vars.and32_o_0;//Loop link
-                        rU = p3.bool_vars.and31_o_0;//Loop link
-                        p3.bool_vars.or29_i_1 = lV;
-                        p3.bool_vars.or27_i_1 = rU;
-                        p3.bool_vars.not30_o_0 = !lV;
-                        p3.bool_vars.not28_o_0 = !rU;
-                        p3.bool_vars.and31_i_1 = !lV;
-                        p3.bool_vars.and32_i_1 = !rU;
-                        if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
-                            p3.bool_vars.and31_i_0 = 1; 
-                        else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
-                            p3.bool_vars.and31_i_0 = 0; 
-                
-                         if( (p3.lVl&((1<<2)|(1<<3))) != 0 )//or29 customer
-                            p3.bool_vars.and32_i_2 = 1;
-                        else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
-                            p3.bool_vars.and32_i_2 = 0;
-                            
-                        rU = p3.lVl&((1<<5)|(1<<6)|(1<<7));
-                        if(rU == ((1<<5)|(1<<6)|(1<<7))){   
-                            p3.bool_vars.and31_o_0 = 1;
-                            u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
-                        }else{
-                            p3.bool_vars.and31_o_0 = 1;
-                
-                        }                       
-                        rU = p3.lVl&((1<<8)|(1<<9)|(1<<10));
-                        if(rU == ((1<<8)|(1<<9)|(1<<10))){  
-                            p3.bool_vars.and32_o_0 = 1;
-                            u32_bit_holder |= 1<<T_AMCP_IN_BIT;
-                            }
-                        else{
-                            p3.bool_vars.and32_o_0 = 0;
-                        }
+//                 p3.bool_vars.and31_i_2 = 1;
+//                 p3.bool_vars.and32_i_0 = 1;
+//                lV = sLV.p_p1->bool_vars.not10_o_0;
+//                rU = p3.bool_vars.or27_i_0;
+//                if(lV == rU)
+//                    lV++;//unstable state;bkpt;!
+//                else{
+//                //Select Tmr
+//                    //if(lV != 0){//No Acc
+//                        //p3.bool_vars.or27_i_0 = rU;//Must be already setup
+//                        p3.bool_vars.or29_i_0 = lV;
+//                        lV = p3.bool_vars.and32_o_0;//Loop link
+//                        rU = p3.bool_vars.and31_o_0;//Loop link
+//                        p3.bool_vars.or29_i_1 = lV;
+//                        p3.bool_vars.or27_i_1 = rU;
+//                        p3.bool_vars.not30_o_0 = !lV;
+//                        p3.bool_vars.not28_o_0 = !rU;
+//                        p3.bool_vars.and31_i_1 = !lV;
+//                        p3.bool_vars.and32_i_1 = !rU;
+//                        if( (p3.lVl&((1<<0)|(1<<1))) != 0 )//or27 customer
+//                            p3.bool_vars.and31_i_0 = 1; 
+//                        else //-if(p3.lVl&((1<<0)|(1<<1))) == 0)
+//                            p3.bool_vars.and31_i_0 = 0; 
+//                
+//                         if( (p3.lVl&((1<<2)|(1<<3))) != 0 )//or29 customer
+//                            p3.bool_vars.and32_i_2 = 1;
+//                        else //-if( (p3.lVl&((1<<2)|(1<<3))) == 0 )
+//                            p3.bool_vars.and32_i_2 = 0;
+//                            
+//                        rU = p3.lVl&((1<<5)|(1<<6)|(1<<7));
+//                        if(rU == ((1<<5)|(1<<6)|(1<<7))){   
+//                            p3.bool_vars.and31_o_0 = 1;
+//                            u32_bit_holder |= 1<<T_ACC_AMCP_IN_BIT;
+//                        }else{
+//                            p3.bool_vars.and31_o_0 = 1;
+//                
+//                        }                       
+//                        rU = p3.lVl&((1<<8)|(1<<9)|(1<<10));
+//                        if(rU == ((1<<8)|(1<<9)|(1<<10))){  
+//                            p3.bool_vars.and32_o_0 = 1;
+//                            u32_bit_holder |= 1<<T_AMCP_IN_BIT;
+//                            }
+//                        else{
+//                            p3.bool_vars.and32_o_0 = 0;
+//                        }
                          _TIMER_T_0(INDEX_TIMER_DZ3_AMTZ,  sLV.p_current_settings_prt->timeout_dz3_amtz[number_group_stp],
                         u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
                         _TIMER_T_0(INDEX_TIMER_DZ3_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz3_amtz_pr[number_group_stp],
@@ -1913,23 +1983,23 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
 
                     //}
 
-                };
+                
             }
             else{
-                lV = 0;
-                //Reset and31 and32
-                 p3.bool_vars.and31_i_2 = lV;
-                 p3.bool_vars.and32_i_0 = lV;
-                //set or
-                p3.bool_vars.or27_i_1 = lV;
-                p3.bool_vars.or29_i_1 = lV;
-                //set not
-                p3.bool_vars.not28_o_0 = 1;
-                p3.bool_vars.not30_o_0 = 1;
-                
-                //reset timers
-                p3.bool_vars.and31_o_0 = lV;
-                p3.bool_vars.and32_o_0 = lV;
+//-                lV = 0;
+//-                //Reset and31 and32
+//-                 p3.bool_vars.and31_i_2 = lV;
+//-                 p3.bool_vars.and32_i_0 = lV;
+//-                //set or
+//-                p3.bool_vars.or27_i_1 = lV;
+//-                p3.bool_vars.or29_i_1 = lV;
+//-                //set not
+//-                p3.bool_vars.not28_o_0 = 1;
+//-                p3.bool_vars.not30_o_0 = 1;
+//-                
+//-                //reset timers
+//-                p3.bool_vars.and31_o_0 = lV;
+//-                p3.bool_vars.and32_o_0 = lV;
                  _TIMER_T_0(INDEX_TIMER_DZ3_AMTZ,  sLV.p_current_settings_prt->timeout_dz3_amtz[number_group_stp],
                 u32_bit_holder, T_AMCP_IN_BIT, u32_bit_holder, T_AMCP_OUT_BIT);
                  _TIMER_T_0(INDEX_TIMER_DZ3_AMTZ_PR,  sLV.p_current_settings_prt->timeout_dz3_amtz_pr[number_group_stp],
@@ -1955,291 +2025,254 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
         //register void* pv;
         register Dz2_stp_p4_state p4;
         register Dz2_stp_p3_state p3; 
-        long lV,rU,rU1;
+        long lV,rU;
 //        if(bw_dstLp_dt.hdrBW.ch_p1234_modified & (1<<P4_MODIFIED_BIT))
 //            p4.lVl = sLV.p_p4->lVl;//Mask?
 //        else
 //            p4.lVl = 0;
         p4.lVl = sLV.p_p4->lVl;    
-        rU1 = p3.lVl = sLV.p_p3->lVl;    
+        p3.lVl = sLV.p_p3->lVl;    
+        if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
+            p4.bool_vars.and43_i_0 = 1;
+            p4.bool_vars.and42_i_2 = 1;
+            lV = sLV.p_p1->bool_vars.not9_o_0;//No Accl
+			p3.bool_vars.or36_i_0 = lV;
+			
+            //rU = ~lV;
+            //rU &= 1;//Accl Dz;
+            //p3.bool_vars.or34_i_0 = rU;	//rU1 |= lV<< 18;rU1 = ,rU1
+            lV = p4.bool_vars.and42_o_0;//Loop link
+            rU = p4.bool_vars.and43_o_0;//Loop link
+            p3.bool_vars.or34_i_1 = lV;
+            p3.bool_vars.or36_i_1 = rU;
+            p3.bool_vars.not35_o_0 = !lV;
+            p3.bool_vars.not37_o_0 = !rU;
+            p4.bool_vars.and43_i_1 = !lV;
+            p4.bool_vars.and42_i_1 = !rU;
+            if( (p3.lVl&((1<<15)|(1<<16))) != 0 )//or34 customer
+                p4.bool_vars.and42_i_0 = 1; 
+            else 
+                p4.bool_vars.and42_i_0 = 0; 
             
-        if (sLV.ch_stage_selector == DZ2_STAGE_BIT){
-                        //Dz block
-            lV = sLV.p_p1->bool_vars.not9_o_0;
-            rU = p3.bool_vars.or34_i_1;//rU = sLV.p_p3->bool_vars.or34_i_1;//
-            if(lV == rU)
-                lV++;//unstable state;bkpt;!
+            if( (p3.lVl&((1<<20)|(1<<19))) != 0 )//or36 customer
+                p4.bool_vars.and43_i_2 = 1;
+            else 
+                p4.bool_vars.and43_i_2 = 0;
+                
+            rU = p4.lVl&((1<<0)|(1<<1)|(1<<2));
+            if(rU == ((1<<0)|(1<<1)|(1<<2))){   
+                p4.bool_vars.and42_o_0 = 1;//p3.bool_vars.and31_o_0 = 1;
+                u32_bit_holder |= 1<<T_ACC_DIR_IN_BIT;
+            }else{
+                //p3.bool_vars.and31_o_0 = 0;
+            
+            }   
+            rU = p4.lVl&((1<<3)|(1<<4)|(1<<5));
+            if(rU == ((1<<3)|(1<<4)|(1<<5))){  
+                p4.bool_vars.and43_o_0 = 1;//p3.bool_vars.and32_o_0 = 1;
+                u32_bit_holder |= 1<<T_DIR_IN_BIT;
+                }
             else{
-                //register Dz2_stp_p3_state p3; 
-                //p3.lVl = sLV.p_p3->lVl;
-                //Dir
-                if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
-                    //Eval Pr Cmd
-                    p4.bool_vars.and43_i_0 = 1;
-                    p4.bool_vars.and42_i_2 = 1;
-                    lV = sLV.p_p1->bool_vars.not9_o_0;
-                    rU = p3.bool_vars.or34_i_0;
-                    if(lV == rU)
-                    lV++;//unstable state;bkpt;!
-                    else{
-                        rU1 |= lV<< 18;p3.bool_vars.or36_i_0 = lV;
-                        lV = p4.bool_vars.and42_o_0;//Loop link
-                        rU = p4.bool_vars.and43_o_0;//Loop link
-                        p3.bool_vars.or34_i_1 = lV;
-                        p3.bool_vars.or36_i_1 = rU;
-                        p3.bool_vars.not35_o_0 = !lV;
-                        p3.bool_vars.not37_o_0 = !rU;
-                        p4.bool_vars.and43_i_1 = !lV;
-                        p4.bool_vars.and42_i_1 = !rU;
-                        if( (p3.lVl&((1<<15)|(1<<16))) != 0 )//or34 customer
-                            p4.bool_vars.and42_i_0 = 1; 
-                        else 
-                            p4.bool_vars.and42_i_0 = 0; 
+                //p3.bool_vars.and32_o_0 = 0;
+            }
+     
+        
+        }else{
+            lV = 0; 
+            //Reset and42 and43
+            p4.bool_vars.and43_i_0 = lV;
+            p4.bool_vars.and42_i_2 = lV;
+            //set or
+            p3.bool_vars.or36_i_1 = lV;
+            p3.bool_vars.or34_i_1 = lV;
+            //set not
+            p3.bool_vars.not35_o_0 = 1;
+            p3.bool_vars.not37_o_0 = 1;
+            //reset timers
+            p4.bool_vars.and43_o_0 = lV;
+            p4.bool_vars.and42_o_0 = lV;
+            //
+        }       
+//Inv
+        if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){
+            p4.bool_vars.and45_i_0 = 1;
+            p4.bool_vars.and44_i_2 = 1;
+			lV = sLV.p_p1->bool_vars.not9_o_0;//No Accl
+			p3.bool_vars.or40_i_0 = lV;
+            lV = p4.bool_vars.and44_o_0;//Loop link
+            rU = p4.bool_vars.and45_o_0;//Loop link
+            p3.bool_vars.or38_i_1 = lV;
+            p3.bool_vars.or40_i_1 = rU;
+            p3.bool_vars.not39_o_0 = !lV;
+            p3.bool_vars.not41_o_0 = !rU;
+            p4.bool_vars.and45_i_1 = !lV;
+            p4.bool_vars.and44_i_1 = !rU;
+            if( (p3.lVl&((1<<23)|(1<<22))) != 0 )//or38 customer
+                p4.bool_vars.and44_i_0 = 1; 
+            else 
+                p4.bool_vars.and44_i_0 = 0; 
+            
+            if( (p3.lVl&((1<<26)|(1<<25))) != 0 )//or40 customer
+                p4.bool_vars.and45_i_2 = 1;
+            else 
+                p4.bool_vars.and45_i_2 = 0;
                 
-                        if( (p3.lVl&((1<<18)|(1<<19))) != 0 )//or36 customer
-                            p4.bool_vars.and43_i_2 = 1;
-                        else 
-                            p4.bool_vars.and43_i_2 = 0;
-                            
-                        rU = p3.lVl&((1<<0)|(1<<1)|(1<<2));
-                        if(rU == ((1<<0)|(1<<1)|(1<<2))){   
-                            p3.bool_vars.and31_o_0 = 1;
-                            u32_bit_holder |= 1<<T_ACC_DIR_IN_BIT;
-                        }else{
-                            p3.bool_vars.and31_o_0 = 0;
-                
-                        }   
-                        rU = p3.lVl&((1<<3)|(1<<4)|(1<<5));
-                        if(rU == ((1<<3)|(1<<4)|(1<<5))){  
-                            p3.bool_vars.and32_o_0 = 1;
-                            u32_bit_holder |= 1<<T_DIR_IN_BIT;
-                            }
-                        else{
-                            p3.bool_vars.and32_o_0 = 0;
-                        }
-                        _TIMER_T_0(INDEX_TIMER_DZ2_DIR_PR,  sLV.p_current_settings_prt->timeout_dz2_dir_pr[number_group_stp],
+            rU = p4.lVl&((1<<6)|(1<<7)|(1<<8));
+            if(rU == ((1<<6)|(1<<7)|(1<<8))){   
+                p4.bool_vars.and44_o_0 = 1;
+                u32_bit_holder |= 1<<T_ACC_INV_IN_BIT;
+            }else{
+                p4.bool_vars.and44_o_0 = 0;
+            
+            }   
+            rU = p4.lVl&((1<<9)|(1<<10)|(1<<11));
+            if(rU == ((1<<9)|(1<<10)|(1<<11))){  
+                p4.bool_vars.and45_o_0 = 1;
+                u32_bit_holder |= 1<<T_INV_IN_BIT;
+                }
+            else{
+                p4.bool_vars.and45_o_0 = 0;
+            }       
+        }
+        else{
+            lV = 0;
+            //Reset and44 and45
+            p4.bool_vars.and45_i_0 = lV;
+            p4.bool_vars.and44_i_2 = lV;
+            //set or
+            p3.bool_vars.or38_i_1 = lV;
+            p3.bool_vars.or40_i_1 = lV;
+            //set not
+            p3.bool_vars.not39_o_0 = 1;
+            p3.bool_vars.not41_o_0 = 1;
+            //reset timers
+            p4.bool_vars.and44_o_0 = lV;
+            p4.bool_vars.and45_o_0 = lV;
+            
+        }
+        
+        if (sLV.ch_stage_selector == DZ2_STAGE_BIT){
+            ;
+            //Dir
+            if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
+                //Eval Pr Cmd
+                _TIMER_T_0(INDEX_TIMER_DZ2_DIR_PR,  sLV.p_current_settings_prt->timeout_dz2_dir_pr[number_group_stp],
                 u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
                         _TIMER_T_0(INDEX_TIMER_DZ2_DIR,  sLV.p_current_settings_prt->timeout_dz2_dir[number_group_stp],
                 u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
-                    }
-                }
-                else{
-                    lV = 0; 
-                    //Reset and42 and43
-                    p4.bool_vars.and43_i_0 = lV;
-                    p4.bool_vars.and42_i_2 = lV;
-                    //set or
-                    p3.bool_vars.or36_i_1 = lV;
-                    p3.bool_vars.or34_i_1 = lV;
-                    //set not
-                    p3.bool_vars.not35_o_0 = 1;
-                    p3.bool_vars.not37_o_0 = 1;
-                    //reset timers
-                    p4.bool_vars.and43_o_0 = lV;
-                    p4.bool_vars.and42_o_0 = lV;
+                    
+            
+            }else{
+
                  _TIMER_T_0(INDEX_TIMER_DZ2_DIR_PR,  sLV.p_current_settings_prt->timeout_dz2_dir_pr[number_group_stp],
                 u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
                 _TIMER_T_0(INDEX_TIMER_DZ2_DIR,  sLV.p_current_settings_prt->timeout_dz2_dir[number_group_stp],
                 u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
                 
-                }
-                 p3.lVl |=  rU1  ;
-                //Inv
-                if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){/*
-                    //Eval Pr Cmd
-                    p4.bool_vars.and45_i_0 = 1;
-                    p4.bool_vars.and44_i_2 = 1;
-                    lV = sLV.p_p1->bool_vars.not9_o_0;
-                    rU = p3.bool_vars.or38_i_0;
-                    if(lV == rU)
-                    lV++;//unstable state;bkpt;!
-                    else{
-                        p3.bool_vars.or40_i_0 = lV;
-                        lV = p4.bool_vars.and44_o_0;//Loop link
-                        rU = p4.bool_vars.and45_o_0;//Loop link
-                        p3.bool_vars.or38_i_1 = lV;
-                        p3.bool_vars.or40_i_1 = rU;
-                        p3.bool_vars.not39_o_0 = !lV;
-                        p3.bool_vars.not41_o_0 = !rU;
-                        p4.bool_vars.and45_i_1 = !lV;
-                        p4.bool_vars.and44_i_1 = !rU;
-                        if( (p3.lVl&((1<<21)|(1<<22))) != 0 )//or38 customer
-                            p4.bool_vars.and44_i_0 = 1; 
-                        else 
-                            p4.bool_vars.and44_i_0 = 0; 
-                
-                        if( (p3.lVl&((1<<24)|(1<<25))) != 0 )//or40 customer
-                            p4.bool_vars.and45_i_2 = 1;
-                        else 
-                            p4.bool_vars.and45_i_2 = 0;
-                            
-                        rU = p3.lVl&((1<<6)|(1<<7)|(1<<8));
-                        if(rU == ((1<<6)|(1<<7)|(1<<8))){   
-                            p3.bool_vars.and31_o_0 = 1;
-                            u32_bit_holder |= 1<<T_ACC_INV_IN_BIT;
-                        }else{
-                            p3.bool_vars.and31_o_0 = 0;
-                
-                        }   
-                        rU = p3.lVl&((1<<9)|(1<<10)|(1<<11));
-                        if(rU == ((1<<9)|(1<<10)|(1<<11))){  
-                            p3.bool_vars.and32_o_0 = 1;
-                            u32_bit_holder |= 1<<T_INV_IN_BIT;
-                            }
-                        else{
-                            p3.bool_vars.and32_o_0 = 0;
-                        }
-                        _TIMER_T_0(INDEX_TIMER_DZ2_INV_PR,  sLV.p_current_settings_prt->timeout_dz2_inv_pr[number_group_stp],
+            }
+            //Inv
+            if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){
+                 _TIMER_T_0(INDEX_TIMER_DZ2_INV_PR,  sLV.p_current_settings_prt->timeout_dz2_inv_pr[number_group_stp],
                 u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
-                        _TIMER_T_0(INDEX_TIMER_DZ2_INV,  sLV.p_current_settings_prt->timeout_dz2_inv[number_group_stp],
+                _TIMER_T_0(INDEX_TIMER_DZ2_INV,  sLV.p_current_settings_prt->timeout_dz2_inv[number_group_stp],
                 u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
                     
-                    }
-                    ;
-                */}
-                else{
-                    lV = 0;
-                    //Reset and44 and45
-                    p4.bool_vars.and45_i_0 = lV;
-                    p4.bool_vars.and44_i_2 = lV;
-                    //set or
-                    p3.bool_vars.or38_i_1 = lV;
-                    p3.bool_vars.or40_i_1 = lV;
-                    //set not
-                    p3.bool_vars.not39_o_0 = 1;
-                    p3.bool_vars.not41_o_0 = 1;
-                    //reset timers
-                    p4.bool_vars.and44_o_0 = lV;
-                    p4.bool_vars.and45_o_0 = lV;
-                 _TIMER_T_0(INDEX_TIMER_DZ4_DIR_PR,  sLV.p_current_settings_prt->timeout_dz4_inv_pr[number_group_stp],
+            }
+            else{
+
+                _TIMER_T_0(INDEX_TIMER_DZ2_INV_PR,  sLV.p_current_settings_prt->timeout_dz2_inv_pr[number_group_stp],
                 u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
-                _TIMER_T_0(INDEX_TIMER_DZ4_INV,  sLV.p_current_settings_prt->timeout_dz4_inv[number_group_stp],
+                _TIMER_T_0(INDEX_TIMER_DZ2_INV,  sLV.p_current_settings_prt->timeout_dz2_inv[number_group_stp],
                 u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
-                
-                }
-                //sLV.p_p3->lVl |= p3.lVl;
-            ;
-            }       
-  
-            
+                    
+            }
+            if(u32_bit_holder&( (1<<T_ACC_DIR_OUT_BIT)|(1<<T_DIR_OUT_BIT)|(1<<T_ACC_INV_OUT_BIT)|(1<<T_INV_OUT_BIT) ))
+                _SET_BIT(p_active_functions,RANG_DZ2 );
+            else
+                _CLEAR_BIT(p_active_functions,RANG_DZ2 );
         }
         else if(sLV.ch_stage_selector == DZ3_STAGE_BIT){
-                         //Dz block
-            lV = sLV.p_p1->bool_vars.not9_o_0;
-            rU = p3.bool_vars.or34_i_1;//rU = sLV.p_p3->bool_vars.or34_i_1;//
-            if(lV == rU)
-                lV++;//unstable state;bkpt;!
-            else{
-                //register Dz2_stp_p3_state p3; 
-                //p3.lVl = sLV.p_p3->lVl;
-                //Dir
-                if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
-                    //Eval Pr Cmd
-                    p4.bool_vars.and43_i_0 = 1;
-                    p4.bool_vars.and42_i_2 = 1;
-                    lV = sLV.p_p1->bool_vars.not9_o_0;
-                    rU = p3.bool_vars.or34_i_0;
-                    if(lV == rU)
-                    lV++;//unstable state;bkpt;!
-                    else{
-                        rU1 |= lV<< 18;p3.bool_vars.or36_i_0 = lV;
-                        lV = p4.bool_vars.and42_o_0;//Loop link
-                        rU = p4.bool_vars.and43_o_0;//Loop link
-                        p3.bool_vars.or34_i_1 = lV;
-                        p3.bool_vars.or36_i_1 = rU;
-                        p3.bool_vars.not35_o_0 = !lV;
-                        p3.bool_vars.not37_o_0 = !rU;
-                        p4.bool_vars.and43_i_1 = !lV;
-                        p4.bool_vars.and42_i_1 = !rU;
-                        if( (p3.lVl&((1<<15)|(1<<16))) != 0 )//or34 customer
-                            p4.bool_vars.and42_i_0 = 1; 
-                        else 
-                            p4.bool_vars.and42_i_0 = 0; 
-                
-                        if( (p3.lVl&((1<<18)|(1<<19))) != 0 )//or36 customer
-                            p4.bool_vars.and43_i_2 = 1;
-                        else 
-                            p4.bool_vars.and43_i_2 = 0;
-                            
-                        rU = p3.lVl&((1<<0)|(1<<1)|(1<<2));
-                        if(rU == ((1<<0)|(1<<1)|(1<<2))){   
-                            p3.bool_vars.and31_o_0 = 1;
-                            u32_bit_holder |= 1<<T_ACC_DIR_IN_BIT;
-                        }else{
-                            p3.bool_vars.and31_o_0 = 0;
-                
-                        }   
-                        rU = p3.lVl&((1<<3)|(1<<4)|(1<<5));
-                        if(rU == ((1<<3)|(1<<4)|(1<<5))){  
-                            p3.bool_vars.and32_o_0 = 1;
-                            u32_bit_holder |= 1<<T_DIR_IN_BIT;
-                            }
-                        else{
-                            p3.bool_vars.and32_o_0 = 0;
-                        }
-                        _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_dir_pr[number_group_stp],
+            //Dir
+            if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
+                //Eval Pr Cmd
+                _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_dir_pr[number_group_stp],
                 u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
                         _TIMER_T_0(INDEX_TIMER_DZ3_DIR,  sLV.p_current_settings_prt->timeout_dz3_dir[number_group_stp],
                 u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
-                    }
-                }
-                else{
-                    lV = 0; 
-                    //Reset and42 and43
-                    p4.bool_vars.and43_i_0 = lV;
-                    p4.bool_vars.and42_i_2 = lV;
-                    //set or
-                    p3.bool_vars.or36_i_1 = lV;
-                    p3.bool_vars.or34_i_1 = lV;
-                    //set not
-                    p3.bool_vars.not35_o_0 = 1;
-                    p3.bool_vars.not37_o_0 = 1;
-                    //reset timers
-                    p4.bool_vars.and43_o_0 = lV;
-                    p4.bool_vars.and42_o_0 = lV;
+                    
+                
+            }else{
+
                  _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_dir_pr[number_group_stp],
                 u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
                 _TIMER_T_0(INDEX_TIMER_DZ3_DIR,  sLV.p_current_settings_prt->timeout_dz3_dir[number_group_stp],
                 u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
                 
-                }
-                 p3.lVl |=  rU1  ;
-                //Inv
-                if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){/*
-                    //Eval Pr Cmd
-                    
-                */}
-                else{
-                    lV = 0;
-                    //Reset and44 and45
-                    p4.bool_vars.and45_i_0 = lV;
-                    p4.bool_vars.and44_i_2 = lV;
-                    //set or
-                    p3.bool_vars.or38_i_1 = lV;
-                    p3.bool_vars.or40_i_1 = lV;
-                    //set not
-                    p3.bool_vars.not39_o_0 = 1;
-                    p3.bool_vars.not41_o_0 = 1;
-                    //reset timers
-                    p4.bool_vars.and44_o_0 = lV;
-                    p4.bool_vars.and45_o_0 = lV;
-                 _TIMER_T_0(INDEX_TIMER_DZ3_DIR_PR,  sLV.p_current_settings_prt->timeout_dz3_inv_pr[number_group_stp],
+            }
+            //Inv
+            if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){
+                 _TIMER_T_0(INDEX_TIMER_DZ3_INV_PR,  sLV.p_current_settings_prt->timeout_dz3_inv_pr[number_group_stp],
                 u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
                 _TIMER_T_0(INDEX_TIMER_DZ3_INV,  sLV.p_current_settings_prt->timeout_dz3_inv[number_group_stp],
                 u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
-                
-                }
-                //sLV.p_p3->lVl |= p3.lVl;
-            ;
-            }       
-  
-            ;
+                    
+            }
+            else{
+
+                _TIMER_T_0(INDEX_TIMER_DZ3_INV_PR,  sLV.p_current_settings_prt->timeout_dz3_inv_pr[number_group_stp],
+                u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ3_INV,  sLV.p_current_settings_prt->timeout_dz3_inv[number_group_stp],
+                u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
+                    
+            }   
+            if(u32_bit_holder&( (1<<T_ACC_DIR_OUT_BIT)|(1<<T_DIR_OUT_BIT)|(1<<T_ACC_INV_OUT_BIT)|(1<<T_INV_OUT_BIT) ))
+                _SET_BIT(p_active_functions, RANG_DZ3);
+            else
+                _CLEAR_BIT(p_active_functions,RANG_DZ3 );
         }
         else if(sLV.ch_stage_selector == DZ4_STAGE_BIT){
                     ;
+                //Dir
+            if(u32_bit_holder&(1<<STP_DIR_DST_LP_STAGE_BIT)){
+                //Eval Pr Cmd
+                _TIMER_T_0(INDEX_TIMER_DZ4_DIR_PR,  sLV.p_current_settings_prt->timeout_dz4_dir_pr[number_group_stp],
+                u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
+                        _TIMER_T_0(INDEX_TIMER_DZ4_DIR,  sLV.p_current_settings_prt->timeout_dz4_dir[number_group_stp],
+                u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
+                    
                 
+            }else{
+
+                 _TIMER_T_0(INDEX_TIMER_DZ4_DIR_PR,  sLV.p_current_settings_prt->timeout_dz4_dir_pr[number_group_stp],
+                u32_bit_holder, T_ACC_DIR_IN_BIT, u32_bit_holder, T_ACC_DIR_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ4_DIR,  sLV.p_current_settings_prt->timeout_dz4_dir[number_group_stp],
+                u32_bit_holder, T_DIR_IN_BIT, u32_bit_holder, T_DIR_OUT_BIT);
+                
+            }
+            //Inv
+            if(u32_bit_holder&(1<<STP_INV_DST_LP_STAGE_BIT)){
+                 _TIMER_T_0(INDEX_TIMER_DZ4_INV_PR,  sLV.p_current_settings_prt->timeout_dz4_inv_pr[number_group_stp],
+                u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ4_INV,  sLV.p_current_settings_prt->timeout_dz4_inv[number_group_stp],
+                u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
+                    
+            }
+            else{
+
+                _TIMER_T_0(INDEX_TIMER_DZ4_INV_PR,  sLV.p_current_settings_prt->timeout_dz4_inv_pr[number_group_stp],
+                u32_bit_holder, T_ACC_INV_IN_BIT, u32_bit_holder, T_ACC_INV_OUT_BIT);
+                _TIMER_T_0(INDEX_TIMER_DZ4_INV,  sLV.p_current_settings_prt->timeout_dz4_inv[number_group_stp],
+                u32_bit_holder, T_INV_IN_BIT, u32_bit_holder, T_INV_OUT_BIT);
+                    
+            }
+            if(u32_bit_holder&( (1<<T_ACC_DIR_OUT_BIT)|(1<<T_DIR_OUT_BIT)|(1<<T_ACC_INV_OUT_BIT)|(1<<T_INV_OUT_BIT) ))
+                _SET_BIT(p_active_functions, RANG_DZ4);
+            else
+                _CLEAR_BIT(p_active_functions, RANG_DZ4);
         }
-        ;sLV.p_p3->lVl |= p3.lVl;
+        ;
+
+    sLV.p_p3->lVl |= p3.lVl;
     sLV.p_p4->lVl |= p4.lVl;    
     }while(sLV.ch_stage_selector > TOTAL_DZ_STAGES_BITS);
     
@@ -2248,22 +2281,48 @@ sLV.p_p4->lVl &= (1<<12)|(1<<13)|(1<<14)|(1<<15);//and42_o_0 and43_o_0 and44_o_0
 //
 //--------------------------------------------------------------------------------------------------------
 
-void dz34_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
+void dz3_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
 //````````````````````````````````````````````````````````````````````````````````````````````````````````
 //=====================================================================================================
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //                  
 //....................................................................................................
 //=====================================================================================================
-void dz34_handler(unsigned int *p_active_functions, unsigned int number_group_stp){
+void dz3_handler(unsigned int *p_active_functions, unsigned int number_group_stp){
 // ----------------  inner_outer_short_circuit It`s my name -------------------------
 
 //First Check Menu & Dv ON or OFF
 
 //Calc  for 4 stages
-  UNUSED(p_active_functions);
-  UNUSED(number_group_stp);
+//  UNUSED(p_active_functions);
+//  UNUSED(number_group_stp);
+// register long i;
+ bw_dstLp_dt.hdrBW.chIdxstage = DZ3_STAGE_BIT;
+ dz2_handler(p_active_functions,number_group_stp);
+  bw_dstLp_dt.hdrBW.chIdxstage = DZ2_STAGE_BIT;
+}
+//
+//--------------------------------------------------------------------------------------------------------
+//````````````````````````````````````````````````````````````````````````````````````````````````````````
+void dz4_handler(unsigned int *p_active_functions, unsigned int number_group_stp);
+//````````````````````````````````````````````````````````````````````````````````````````````````````````
+//=====================================================================================================
+//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+//                  
+//....................................................................................................
+//=====================================================================================================
+void dz4_handler(unsigned int *p_active_functions, unsigned int number_group_stp){
+// ----------------  inner_outer_short_circuit It`s my name -------------------------
+
+//First Check Menu & Dv ON or OFF
+
+//Calc  for 4 stages
+//  UNUSED(p_active_functions);
+//  UNUSED(number_group_stp);
  
+ bw_dstLp_dt.hdrBW.chIdxstage = DZ4_STAGE_BIT;
+ dz2_handler(p_active_functions,number_group_stp); 
+ bw_dstLp_dt.hdrBW.chIdxstage = DZ2_STAGE_BIT;
 }
 //
 //--------------------------------------------------------------------------------------------------------

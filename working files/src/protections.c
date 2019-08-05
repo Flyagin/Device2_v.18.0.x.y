@@ -4766,6 +4766,8 @@ void dz_handler(unsigned int *p_active_functions, unsigned int number_group_stp)
 	fault_U_handler(p_active_functions,number_group_stp);
 	dz1_handler(p_active_functions,number_group_stp);
 	dz2_handler(p_active_functions,number_group_stp);
+	dz3_handler(p_active_functions,number_group_stp);
+//	dz4_handler(p_active_functions,number_group_stp);
 }
 
 /*****************************************************/
