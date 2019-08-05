@@ -83,10 +83,10 @@
 #define TIMEOUT_DZ2_AMTZ_PR_MIN        0
 #define TIMEOUT_DZ2_AMTZ_PR_MAX        5000
 
-#define TIMEOUT_DZ2_VVID_PR_MIN        200
+#define TIMEOUT_DZ2_VVID_PR_MIN        100
 #define TIMEOUT_DZ2_VVID_PR_MAX        5000
 
-#define TIMEOUT_DZ2_AMTZ_VVID_PR_MIN   200
+#define TIMEOUT_DZ2_AMTZ_VVID_PR_MIN   100
 #define TIMEOUT_DZ2_AMTZ_VVID_PR_MAX   5000
 
 #define TIMEOUT_DZ3_DIR_MIN            50
@@ -107,10 +107,10 @@
 #define TIMEOUT_DZ3_AMTZ_PR_MIN        0
 #define TIMEOUT_DZ3_AMTZ_PR_MAX        5000
 
-#define TIMEOUT_DZ3_VVID_PR_MIN        200
+#define TIMEOUT_DZ3_VVID_PR_MIN        100
 #define TIMEOUT_DZ3_VVID_PR_MAX        5000
 
-#define TIMEOUT_DZ3_AMTZ_VVID_PR_MIN   200
+#define TIMEOUT_DZ3_AMTZ_VVID_PR_MIN   100
 #define TIMEOUT_DZ3_AMTZ_VVID_PR_MAX   5000
 
 #define TIMEOUT_DZ4_DIR_MIN            50
@@ -131,10 +131,10 @@
 #define TIMEOUT_DZ4_AMTZ_PR_MIN        0
 #define TIMEOUT_DZ4_AMTZ_PR_MAX        5000
 
-#define TIMEOUT_DZ4_VVID_PR_MIN        200
+#define TIMEOUT_DZ4_VVID_PR_MIN        100
 #define TIMEOUT_DZ4_VVID_PR_MAX        5000
 
-#define TIMEOUT_DZ4_AMTZ_VVID_PR_MIN   200
+#define TIMEOUT_DZ4_AMTZ_VVID_PR_MIN   100
 #define TIMEOUT_DZ4_AMTZ_VVID_PR_MAX   5000
 
 #define TIMEOUT_NKN_DZ_MIN             0
@@ -257,7 +257,7 @@
 #define TIMEOUT_MTZ2_PO_NAPRUZI_PR_MIN          200
 #define TIMEOUT_MTZ2_PO_NAPRUZI_PR_MAX          5000
 
-#define TIMEOUT_MTZ2_VVID_PR_MIN                200
+#define TIMEOUT_MTZ2_VVID_PR_MIN                100
 #define TIMEOUT_MTZ2_VVID_PR_MAX                5000
 
 #define TIMEOUT_MTZ3_MIN                        0

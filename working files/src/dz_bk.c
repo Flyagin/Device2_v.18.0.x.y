@@ -78,14 +78,12 @@ void mf_of_handler(unsigned int *p_active_functions, unsigned int number_group_s
 register long rL,rU;
   UNUSED(number_group_stp);
   //void *memcpy (void *destination, const void *source, size_t n);
-
 #ifdef DEBUG_CONFIGURATION 
 
   memcpy(measurement,Meast_TST,_NUMBER_IM*sizeof(long));
   #warning The variable measurement HAVE DEBUG UNREAL VALUES
   
 #endif    
-
 //Detect Multi Pfase or Single Pfase
     rL = measurement[IM_IA];
     //m_s_phs_stp_state.lVl &= 0x1f8f;//Clr Phase selector

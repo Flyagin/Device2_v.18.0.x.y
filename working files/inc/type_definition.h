@@ -156,8 +156,8 @@ typedef struct
   int32_t timeout_dz2_inv_pr[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ2 НАЗАД  прискорена п.5.27.26.4 [0; 5] крок 0,01с
   int32_t timeout_dz2_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ2 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
   int32_t timeout_dz2_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ2 прискорена для АМСЗ п.5.27.27.4 [0; 5] крок 0,01с
-  int32_t timeout_dz2_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ2 п.5.27.26.2 [0; 5] крок 0,01с
-  int32_t timeout_dz2_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ2 для АМСЗ п.5.27.27.2 [0; 5] крок 0,01с
+  int32_t timeout_dz2_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ2 п.5.27.26.2 [0,1; 5] крок 0,01с
+  int32_t timeout_dz2_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ2 для АМСЗ п.5.27.27.2 [0,1; 5] крок 0,01с
 
   int32_t timeout_dz3_dir[NUMBER_GROUP_USTAVOK];                //Витримка ДЗ3 ВПЕРЕД п.5.27.7 [0.05; 32] крок 0,01с
   int32_t timeout_dz3_dir_pr[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ3 ВПЕРЕД  прискорена п.5.27.26.4 [0; 5] крок 0,01с
@@ -165,8 +165,8 @@ typedef struct
   int32_t timeout_dz3_inv_pr[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ3 НАЗАД  прискорена п.5.27.26.4 [0; 5] крок 0,01с
   int32_t timeout_dz3_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ3 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
   int32_t timeout_dz3_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ3 прискорена для АМСЗ п.5.27.27.4 [0; 5] крок 0,01с
-  int32_t timeout_dz3_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ3 п.5.27.26.2 [0; 5] крок 0,01с
-  int32_t timeout_dz3_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ3 для АМСЗ для АМСЗ п.5.27.27.2 [0; 5] крок 0,01с
+  int32_t timeout_dz3_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ3 п.5.27.26.2 [0,1; 5] крок 0,01с
+  int32_t timeout_dz3_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ3 для АМСЗ для АМСЗ п.5.27.27.2 [0,1; 5] крок 0,01с
 
   int32_t timeout_dz4_dir[NUMBER_GROUP_USTAVOK];                //Витримка ДЗ4 ВПЕРЕД п.5.27.7 [0.05; 32] крок 0,01с
   int32_t timeout_dz4_dir_pr[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ4 ВПЕРЕД  прискорена п.5.27.26.4 [0; 5] крок 0,01с
@@ -174,8 +174,8 @@ typedef struct
   int32_t timeout_dz4_inv_pr[NUMBER_GROUP_USTAVOK];             //Витримка ДЗ4 НАЗАД  прискорена п.5.27.26.4 [0; 5] крок 0,01с
   int32_t timeout_dz4_amtz[NUMBER_GROUP_USTAVOK];               //Витримка ДЗ4 для АМСЗ п.5.27.18 [0.05; 32] крок 0,01с
   int32_t timeout_dz4_amtz_pr[NUMBER_GROUP_USTAVOK];            //Витримка ДЗ4 прискорена для АМСЗ п.5.27.27.4 [0; 5] крок 0,01с
-  int32_t timeout_dz4_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ4 п.5.27.26.2 [0; 5] крок 0,01с
-  int32_t timeout_dz4_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ4 для АМСЗ для АМСЗ п.5.27.27.2 [0; 5] крок 0,01с
+  int32_t timeout_dz4_vvid_pr[NUMBER_GROUP_USTAVOK];            //Витримка вводу прискорення ДЗ4 п.5.27.26.2 [0,1; 5] крок 0,01с
+  int32_t timeout_dz4_amtz_vvid_pr[NUMBER_GROUP_USTAVOK];       //Витримка вводу прискорення ДЗ4 для АМСЗ для АМСЗ п.5.27.27.2 [0,1; 5] крок 0,01с
   
   int32_t timeout_nkn_dz[NUMBER_GROUP_USTAVOK];                 //Витримка ДЗ "Т НКН ДЗ" п.5.27.19.5 [0; 1] крок 0,01с
 
