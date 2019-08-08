@@ -6717,10 +6717,13 @@ inline void vmp_handler(unsigned int p_active_functions[])
     
     //Перевіряємо чи подається команда на вимкнення ВВ ("Робота БО")
     vymknennja_vid_KZ_prt |= (_CHECK_SET_BIT(p_active_functions, RANG_WORK_BO) != 0);
-    MF_KZ |= (_CHECK_SET_BIT(p_active_functions, RANG_2KZ) != 0) || (_CHECK_SET_BIT(p_active_functions, RANG_3KZ) != 0);
+    unsigned int MF_KZ_tmp = ((_CHECK_SET_BIT(p_active_functions, RANG_2KZ) != 0) << 0) | ((_CHECK_SET_BIT(p_active_functions, RANG_3KZ) != 0) << 1);
 
     
-    int X_resistance[3] = {resistance[X_AB], resistance[X_BC], resistance[X_CA]};
+    int X_resistance[3];
+    X_resistance[0] = ((corupted_phases & ((1 << 0) | (1 << 1))) == ((1 << 0) | (1 << 1))) ? resistance[X_AB] : ((unsigned int)UNDEF_RESISTANCE); //AB
+    X_resistance[1] = ((corupted_phases & ((1 << 1) | (1 << 2))) == ((1 << 1) | (1 << 2))) ? resistance[X_BC] : ((unsigned int)UNDEF_RESISTANCE); //BC
+    X_resistance[2] = ((corupted_phases & ((1 << 0) | (1 << 2))) == ((1 << 0) | (1 << 2))) ? resistance[X_CA] : ((unsigned int)UNDEF_RESISTANCE); //CA
     if (
         (((unsigned int)X_resistance[0]) != ((unsigned int)UNDEF_RESISTANCE)) ||
         (((unsigned int)X_resistance[1]) != ((unsigned int)UNDEF_RESISTANCE)) ||
@@ -6785,6 +6788,7 @@ inline void vmp_handler(unsigned int p_active_functions[])
         //Зафіксовано нове значення мінімального міжфазного опору при КЗ
         X_min_KZ_prt = min_interphase_X;
         R_KZ_prt = R_KZ_tmp; //Поки що це число потрібно тільки для визначення знаку (щоб визначити у якому напямку відбулося КЗ)
+        MF_KZ = MF_KZ_tmp;
       }
     }
     else
@@ -6797,12 +6801,18 @@ inline void vmp_handler(unsigned int p_active_functions[])
     //На даний момент немає фазного КЗ
     if(
        (vymknennja_vid_KZ_prt != 0) &&  /*Умова, що відбувалося вимкнення під час останнього КЗ*/
-       (MF_KZ != 1) && /*Умова, що КЗ є міжфазним*/
+       (MF_KZ != 0) && /*Умова, що КЗ є міжфазним*/
        ((current_settings_prt.control_vmp & CTR_VMP_STATE) != 0) && /*ВМП ввімкнено*/ 
        (X_min_KZ_prt != ((unsigned int)UNDEF_RESISTANCE)) /*Умова, що хоча б один міжфазний опір був визначений, а тому і є зафіксований мінімальний реактивний міжфазний опір*/
       )
     {
-      //Визначаємо віддаль до мсця пошкодження поки що без напрямку 
+      if  (MF_KZ & (1 << 0))
+      {
+        //Двофазне КЗ, тому опір треба поділити на 2
+        X_min_KZ_prt >>=1;
+      }
+      
+      //Визначаємо віддаль до місця пошкодження поки що без напрямку 
       unsigned int X_tmp = X_min_KZ_prt*current_settings_prt.TVoltage/current_settings_prt.TCurrent; /*Перерозраховуємо опір на первинну обмотку. Значення залишаємо у мОм*/
       
       unsigned int forward_backward = (R_KZ_prt < 0);
@@ -6848,9 +6858,10 @@ inline void vmp_handler(unsigned int p_active_functions[])
     Я думаю, що їх не так багато і вони б не мали сильно знизити ресурс процесора
     */
     vymknennja_vid_KZ_prt = 0;
-    MF_KZ = false;
+    MF_KZ = 0;
     X_min_KZ_prt = (unsigned int)UNDEF_RESISTANCE;
     R_KZ_prt = 0;
+    corupted_phases = 0;
   }
       
 }
