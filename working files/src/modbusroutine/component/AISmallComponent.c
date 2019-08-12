@@ -44,6 +44,14 @@ int getAISmallModbusRegister(int adrReg)
   //получить содержимое регистра
   if(privateAISmallGetReg2(adrReg)==MARKER_OUTPERIMETR) return MARKER_OUTPERIMETR;
     int offset = adrReg-BEGIN_ADR_REGISTER;
+  semaphore_measure_values_low1 = 1;
+  for (unsigned int i = 0; i < MAX_NUMBER_INDEXES_RESISTANCE; i++ ) 
+  {
+    int temp_value = resistance_middle[i];
+    if (temp_value < 0) temp_value = -temp_value;
+    resistance_low[i] =temp_value;
+  }
+  semaphore_measure_values_low1 = 0;
     switch (offset)
     {
     case 0://UA
@@ -277,73 +285,73 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 398;
 #else
-        return (resistance_middle[R_A] >> 1) &0xFFFF;
+        return (resistance_low[R_A] /100) &0xFFFF;
 #endif
     case 49://XA
 #ifdef TESTZBIRKA_VERSII_PZ
         return 399;
 #else
-        return (resistance_middle[X_A] >> 1) &0xFFFF;
+        return (resistance_low[X_A] /100) &0xFFFF;
 #endif
     case 50://ZA
 #ifdef TESTZBIRKA_VERSII_PZ
         return 400;
 #else
-        return (resistance_middle[Z_A] >> 1) &0xFFFF;
+        return (resistance_low[Z_A] /100) &0xFFFF;
 #endif
     case 51://RB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 401;
 #else
-        return (resistance_middle[R_B] >> 1) &0xFFFF;
+        return (resistance_low[R_B] /100) &0xFFFF;
 #endif
     case 52://XB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 402;
 #else
-        return (resistance_middle[X_B] >> 1) &0xFFFF;
+        return (resistance_low[X_B] /100) &0xFFFF;
 #endif
     case 53://ZB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 403;
 #else
-        return (resistance_middle[Z_B] >> 1) &0xFFFF;
+        return (resistance_low[Z_B] /100) &0xFFFF;
 #endif
     case 54://RC
 #ifdef TESTZBIRKA_VERSII_PZ
         return 404;
 #else
-        return (resistance_middle[R_С] >> 1) &0xFFFF;
+        return (resistance_low[R_С] /100) &0xFFFF;
 #endif
     case 55://XC
 #ifdef TESTZBIRKA_VERSII_PZ
         return 405;
 #else
-        return (resistance_middle[X_С] >> 1) &0xFFFF;
+        return (resistance_low[X_С] /100) &0xFFFF;
 #endif
     case 56://ZC
 #ifdef TESTZBIRKA_VERSII_PZ
         return 406;
 #else
-        return (resistance_middle[Z_C] >> 1) &0xFFFF;
+        return (resistance_low[Z_C] /100) &0xFFFF;
 #endif
     case 57://ZAB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 407;
 #else
-        return (resistance_middle[Z_AB] >> 1) &0xFFFF;
+        return (resistance_low[Z_AB] /100) &0xFFFF;
 #endif
     case 58://ZBC
 #ifdef TESTZBIRKA_VERSII_PZ
         return 408;
 #else
-        return (resistance_middle[Z_BC] >> 1) &0xFFFF;
+        return (resistance_low[Z_BC] /100) &0xFFFF;
 #endif
     case 59://ZCA
 #ifdef TESTZBIRKA_VERSII_PZ
         return 409;
 #else
-        return (resistance_middle[Z_CA] >> 1) &0xFFFF;
+        return (resistance_low[Z_CA] /100) &0xFFFF;
 #endif
 
     case 60://baza
