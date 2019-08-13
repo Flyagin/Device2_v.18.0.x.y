@@ -657,7 +657,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ2_DIR_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz2_dir_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz2_dir_pr[group];
         }
@@ -669,7 +669,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ2_INV_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz2_inv_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz2_inv_pr[group];
         }
@@ -681,19 +681,19 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ2_AMTZ_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz2_amtz_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz2_amtz_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ2_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz2_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz2_vvid_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ2_AMTZ_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz2_amtz_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz2_amtz_vvid_pr[group];
         }
@@ -706,7 +706,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ3_DIR_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz3_dir_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz3_dir_pr[group];
         }
@@ -718,7 +718,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ3_INV_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz3_inv_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz3_inv_pr[group];
         }
@@ -730,19 +730,19 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ3_AMTZ_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz3_amtz_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz3_amtz_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ3_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz3_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz3_vvid_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ3_AMTZ_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz3_amtz_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz3_amtz_vvid_pr[group];
         }
@@ -755,7 +755,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ4_DIR_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz4_dir_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz4_dir_pr[group];
         }
@@ -767,7 +767,7 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ4_INV_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz4_inv_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz4_inv_pr[group];
         }
@@ -779,25 +779,25 @@ void make_ekran_timeout_dz(unsigned int group)
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ4_AMTZ_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz4_amtz_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz4_amtz_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ4_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz4_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz4_vvid_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_DZ4_AMTZ_VVID_PR)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_dz4_amtz_vvid_pr[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_dz4_amtz_vvid_pr[group];
         }
         else if (index_of_ekran_tmp == INDEX_ML_TMO_NKN_DZ)
         {
-          vaga = 10000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
+          vaga = 1000; //максимальний ваговий коефіцієнт для вилілення старшого розряду для витримки
           if (view == true) value = current_settings.timeout_nkn_dz[group]; //у змінну value поміщаємо значення витримки
           else value = edition_settings.timeout_nkn_dz[group];
         }
