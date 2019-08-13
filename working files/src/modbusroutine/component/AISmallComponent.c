@@ -48,6 +48,7 @@ int getAISmallModbusRegister(int adrReg)
   for (unsigned int i = 0; i < MAX_NUMBER_INDEXES_RESISTANCE; i++ ) 
   {
     int temp_value = resistance_middle[i];
+    if (temp_value==UNDEF_RESISTANCE) temp_value = 0;
     if (temp_value < 0) temp_value = -temp_value;
     resistance_low[i] =temp_value;
   }
