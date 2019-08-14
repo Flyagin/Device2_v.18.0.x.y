@@ -1506,6 +1506,15 @@ int postUSTBigWriteAction(void)
 */
      }//if
     }//for(int item=0; item<NUMBER_UP; item++)
+    if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle ||
+       editValue == (uint32_t*)&edition_settings.pickup_dz3_angle ||
+       editValue == (uint32_t*)&edition_settings.pickup_dz4_angle
+      )
+    {
+      if(value>65000) value |= 0xffff0000;//расширить знак
+         (*editValue) = value;
+      goto m1;
+    }//if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle)
     if(editValue == (uint32_t*)&edition_settings.type_of_input_signal)
     {
       if(offset==MARKER1214)
