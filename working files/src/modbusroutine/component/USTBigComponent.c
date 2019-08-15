@@ -1506,15 +1506,6 @@ int postUSTBigWriteAction(void)
 */
      }//if
     }//for(int item=0; item<NUMBER_UP; item++)
-    if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle ||
-       editValue == (uint32_t*)&edition_settings.pickup_dz3_angle ||
-       editValue == (uint32_t*)&edition_settings.pickup_dz4_angle
-      )
-    {
-      if(value>65000) value |= 0xffff0000;//расширить знак
-         (*editValue) = value;
-      goto m1;
-    }//if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle)
     if(editValue == (uint32_t*)&edition_settings.type_of_input_signal)
     {
       if(offset==MARKER1214)
@@ -1657,7 +1648,8 @@ int postUSTBigWriteAction(void)
 
     if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle[grupa_ustavok])
     {
-      float angle_f = (float)value;
+      if(value>65000) value |= 0xffff0000;//расширить знак
+      float angle_f = (int)value;
       edition_settings.pickup_dz2_angle_cos1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz2_angle_sin1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz2_angle_cos2[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
@@ -1665,7 +1657,8 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.pickup_dz2_angle[grupa_ustavok])
     if(editValue == (uint32_t*)&edition_settings.pickup_dz3_angle[grupa_ustavok])
     {
-      float angle_f = (float)value;
+      if(value>65000) value |= 0xffff0000;//расширить знак
+      float angle_f = (int)value;
       edition_settings.pickup_dz3_angle_cos1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz3_angle_sin1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz3_angle_cos2[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
@@ -1673,7 +1666,8 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.pickup_dz3_angle[grupa_ustavok])
     if(editValue == (uint32_t*)&edition_settings.pickup_dz4_angle[grupa_ustavok])
     {
-      float angle_f = (float)value;
+      if(value>65000) value |= 0xffff0000;//расширить знак
+      float angle_f = (int)value;
       edition_settings.pickup_dz4_angle_cos1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz4_angle_sin1[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*sin*/arm_sin_f32(/*(double)*/(PI*angle_f/180.0f)));
       edition_settings.pickup_dz4_angle_cos2[grupa_ustavok] = (int) (AMPLITUDA_SECTOR*/*cos*/arm_cos_f32(/*(double)*/(PI*(angle_f - DELTA_SECTOR_DZ)/180.0f)));
