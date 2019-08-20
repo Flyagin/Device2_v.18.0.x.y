@@ -1,7 +1,7 @@
 #include <string.h> 
 #include "const_global.h"
 //#define CHANGE_MEAS 1
-#define DEBUG_CONFIGURATION 1
+//#define DEBUG_CONFIGURATION 1
 extern unsigned int corupted_phases;
 
 #ifdef DEBUG_CONFIGURATION
