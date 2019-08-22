@@ -8381,6 +8381,7 @@ inline void main_protection(void)
     active_functions[RANG_OP_PR_DZ3    >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_OP_PR_DZ3     ) != 0) << (RANG_OP_PR_DZ3    & 0x1f);
     active_functions[RANG_BLOCK_DZ4    >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_DZ4     ) != 0) << (RANG_BLOCK_DZ4    & 0x1f);
     active_functions[RANG_BLOCK_PR_DZ4 >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_PR_DZ4  ) != 0) << (RANG_BLOCK_PR_DZ4 & 0x1f);
+    active_functions[RANG_OP_PR_DZ4    >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_OP_PR_DZ4     ) != 0) << (RANG_OP_PR_DZ4    & 0x1f);
 
     //ÌÒÇ
     active_functions[RANG_BLOCK_MTZ1     >> 5] |= (_CHECK_SET_BIT(temp_value_for_activated_function, RANG_SMALL_BLOCK_MTZ1    ) != 0) << (RANG_BLOCK_MTZ1     & 0x1f);
