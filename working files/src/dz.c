@@ -54,9 +54,9 @@ const long Meast_TST[] = {
   20    ,// - IM_3I0,
   11    ,// - IM_3I0_other_g,
   12    ,// - IM_3I0_r,
-  7400  ,// - IM_IA,
-  7548  ,// - IM_IB,
-  7775  ,// - IM_IC,
+  400  ,// - IM_IA,
+  548  ,// - IM_IB,
+  775  ,// - IM_IC,
   700   ,// - IM_I2,
   800   ,// - IM_I1,
   101000,// - IM_UA,
@@ -262,6 +262,8 @@ register union {
       unsigned int AND3_1:1;//10
       unsigned int AND3_2:1;//11
       unsigned int AND3_3:1;//12
+      unsigned int ItoLow:1;//13
+      unsigned int UtoLow:1;//14
 
    } bool_vars;
   long lVl;
@@ -325,17 +327,27 @@ register union {
   u32_bit_holder, FAULT_U_U2_STP_STATE_BIT, u32_bit_holder, FAULT_U_0DOT5_T_STATE_BIT);
   if( (u32_bit_holder & (1<<FAULT_U_0DOT5_T_STATE_BIT)) != 0 )
     wrp.bool_vars.AND3_3 = 1;
-  i = (measurement[IM_U2]*(1000*5))/(measurement[IM_I2]*57);//  i = (10*measurement[IM_U2]*I_NOM)/(measurement[IM_I2]*UN_PHS);
-  long j = 200;
-  if (chStpfault_U & 8){
-    j = 190;//j = 2*95/100;i*=100;
-    }
+	if(measurement[IM_I2]< 50)
+		wrp.bool_vars.ItoLow = 1;
+	if(measurement[IM_U2]< 50)
+		wrp.bool_vars.UtoLow = 1;
+	long j = 200;	
+	if(wrp.lVl & ((1<<13)| (1<<14)) ){
+		i = 0;
+	}else{
+			i = (measurement[IM_U2]*(1000*5))/(measurement[IM_I2]*57);//  i = (10*measurement[IM_U2]*I_NOM)/(measurement[IM_I2]*UN_PHS);
+			
+			if (chStpfault_U & 8){
+				j = 190;//j = 2*95/100;i*=100;
+			}
+	}
    if (i > (j)){
         wrp.bool_vars.AND3_2 = 1;
         wrp.bool_vars.AND2_3 = 1;chStpfault_U |= 8;
     }
     else
         chStpfault_U &= 0xf7;
+		
     if( (wrp.lVl & ( (1<<10)| (1<<11)| (1<<12) )) == ( (1<<10)| (1<<11)| (1<<12) ) )
         wrp.bool_vars.OR_3 = 1;
     
@@ -346,12 +358,12 @@ register union {
     i |=_CHECK_SET_BIT(p_active_functions, RANG_PO_INV_DZ3);  
     i |=_CHECK_SET_BIT(p_active_functions, RANG_PO_DIR_DZ4);
     i |=_CHECK_SET_BIT(p_active_functions, RANG_PO_INV_DZ4);  
-   if (i > 0){
+   if (i != 0){
     wrp.bool_vars.AND2_2 = 1;
     }
     if( (wrp.lVl & ( (1<<7)| (1<<8)| (1<<9) )) == ( (1<<7)| (1<<8)| (1<<9) ) )
         wrp.bool_vars.OR_2 = 1;
-#ifdef DEBUG_CONFIGURATION1
+#ifdef DEBUG_CONFIGURATION11
   i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);i|=1;
 #else
   i =_CHECK_SET_BIT(p_active_functions, RANG_EXT_NKN_DZ);
@@ -923,8 +935,8 @@ typedef union mcp_stp_state_Unn2{
       unsigned int nor21_i_2 :1;//25
       unsigned int not23_o_0 :1;//26
       unsigned int not25_o_0 :1;//27
-      unsigned int or18__i_1 :1;//28
-      unsigned int or18__i_0 :1;//29
+      unsigned int ror18__i_1 :1;//28
+      unsigned int ror18__i_0 :1;//29
       unsigned int and22_i_3 :1;//30
       unsigned int b31 :1;//31    
     } bool_vars;
@@ -1391,7 +1403,7 @@ sLV.p_p1->bool_vars.or13__i_0 = 1; sLV.p_p1->bool_vars.or12__i_1 = 1;
                 lV = 1;
                 p2.bool_vars.nor19_i_3 = lV;
                 p2.bool_vars.nor20_i_3 = lV;
-                p2.bool_vars.or18__i_1 = lV;
+                sLV.p_p1->bool_vars.nor18__i_1 = lV;  //p2.bool_vars.or18__i_1 = lV;
             }   
 
             if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DIR_DZ2) == 0){
@@ -1699,7 +1711,7 @@ p2.bool_vars.and24_i_2 = 1;
                 lV = 1;
                 p2.bool_vars.nor19_i_3 = lV;
                 p2.bool_vars.nor20_i_3 = lV;
-                p2.bool_vars.or18__i_1 = lV;
+                sLV.p_p1->bool_vars.nor18__i_1 = lV;  //p2.bool_vars.or18__i_1 = lV;
             }   
 
             if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DIR_DZ3) == 0){
@@ -1939,6 +1951,12 @@ p2.bool_vars.and24_i_2 = 1;
                 _SET_BIT(p_active_functions, RANG_SECTOR_INV_DZ4);
                  sLV.p_p1->bool_vars.or13__i_0 = 1;
             }
+            
+                        #ifdef DEBUG_CONFIGURATION
+sLV.p_p1->bool_vars.or13__i_0 = 1; sLV.p_p1->bool_vars.or12__i_1 = 1;
+#else
+  
+#endif			
             //else if(lV == (-1)){
             //  ;
             //}
@@ -1998,7 +2016,7 @@ p2.bool_vars.and24_i_2 = 1;
                 lV = 1;
                 p2.bool_vars.nor19_i_3 = lV;
                 p2.bool_vars.nor20_i_3 = lV;
-                p2.bool_vars.or18__i_1 = lV;
+                sLV.p_p1->bool_vars.nor18__i_1 = lV;  //p2.bool_vars.or18__i_1 = lV;
             }   
 
             if(_CHECK_SET_BIT(p_active_functions, RANG_PO_DIR_DZ4) == 0){
@@ -2072,7 +2090,11 @@ p2.bool_vars.and24_i_2 = 1;
                 p2.bool_vars.and22_i_2 = 1;
             else
                 p2.bool_vars.and22_i_2 = 0;
-                
+            #ifdef DEBUG_CONFIGURATION
+p2.bool_vars.and22_i_2 = 1;  //? p2.bool_vars.and24_i_2 = 1; 
+#else
+  
+#endif                
             lV = p2.bool_vars.not25_o_0;
             //long pick_up_Resistance_dstLp2 = 0;
             if(lV == 0)
