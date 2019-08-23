@@ -7100,6 +7100,8 @@ inline unsigned int stop_regisrator(unsigned int* carrent_active_functions, unsi
                 ) 
                 &&
                 (i != INDEX_TIMER_ACHR_CHAPV_100MS_1)
+                &&
+                (i != INDEX_TIMER_NKN_DZ)
                )
             global_timers_work = 1;
           }
