@@ -1015,6 +1015,7 @@ int postUPRBigWriteAction(void)
           uint32_t value = tempWriteArray[offsetTempWriteArray+i];
 
           //установка изменений
+          if(uprMaska>=32) uprMaska -= 32;
           (*editControl) &= ~(1<<uprMaska);
           (*editControl) |= (value<<uprMaska);
 
@@ -1052,6 +1053,7 @@ int postUPRBigWriteAction(void)
               if(value&(1<<bit)) temp = 1;
 
               //установка изменений
+              if(uprMaska>=32) uprMaska -= 32;
               (*editControl) &= ~(1<<uprMaska);
               (*editControl) |= (temp<<uprMaska);
 
