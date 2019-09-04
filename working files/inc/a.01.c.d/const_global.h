@@ -1558,27 +1558,9 @@ enum __mtz_abc_direction_const {
 
 #define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_2 (unsigned int)(  \
      (1 << (RANG_PO_INV_DZ4 - 64))                           \
-   | (1 << (RANG_PO_MTZ1 - 64))                               \
-   | (1 << (RANG_PO_MTZN1_VPERED - 64))                       \
-   | (1 << (RANG_PO_MTZN1_NAZAD - 64))                        \
-   | (1 << (RANG_PO_MTZPN1 - 64))                             \
-   | (1 << (RANG_PO_MTZ2 - 64))                               \
-   | (1 << (RANG_PO_MTZN2_VPERED - 64))                       \
-   | (1 << (RANG_PO_MTZN2_NAZAD - 64))                        \
-   | (1 << (RANG_PO_MTZPN2 - 64))                             \
 )
 
-#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_3 (unsigned int)(  \
-     (1 << (RANG_PO_MTZ3 - 96))                               \
-   | (1 << (RANG_PO_MTZN3_VPERED - 96))                       \
-   | (1 << (RANG_PO_MTZN3_NAZAD - 96))                        \
-   | (1 << (RANG_PO_MTZPN3 - 96))                             \
-   | (1 << (RANG_PO_MTZ4 - 96))                               \
-   | (1 << (RANG_PO_MTZN4_VPERED - 96))                       \
-   | (1 << (RANG_PO_MTZN4_NAZAD - 96))                        \
-   | (1 << (RANG_PO_MTZPN4 - 96))                             \
-)
-
+#define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_3        0
 #define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_4        0
 #define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_5        0
 #define MASKA_MONITOTYNG_PHASE_SIGNALES_KZ_6        0
