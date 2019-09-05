@@ -808,7 +808,7 @@ int uprFunc000(int actControl, int inOffset, uint32_t *uprMaska, int validData, 
 
       if(inOffset>=UROV_CONFIGURATION_BEGIN && inOffset<=UROV_CONFIGURATION_END)
         {
-          (*editControl) = (uint32_t*)&edition_settings.control_urov;
+          (*editControl) = &((uint32_t*)&edition_settings.control_urov)[0];
           if((*uprMaska)>=32) (*editControl) = &((uint32_t*)&edition_settings.control_urov)[1];
           if(isValidCONFCondition(UROV_BIT_CONFIGURATION))isValid = 0;
         }//if
@@ -832,7 +832,7 @@ int uprFunc000(int actControl, int inOffset, uint32_t *uprMaska, int validData, 
     {
       int inupOffset = inOffset-345;
       (*uprMaska)   = INDEX_ML_CTRUROV_STARTED_FROM_UP1+inupOffset;
-          (*editControl) = (uint32_t*)&edition_settings.control_urov;
+          (*editControl) = &((uint32_t*)&edition_settings.control_urov)[0];
           if((*uprMaska)>=32) (*editControl) = &((uint32_t*)&edition_settings.control_urov)[1];
       if(isValidCONFCondition(UROV_BIT_CONFIGURATION))isValid = 0;
       if(isValidCONFCondition(UP_BIT_CONFIGURATION))isValid = 0;
@@ -1015,6 +1015,7 @@ int postUPRBigWriteAction(void)
           uint32_t value = tempWriteArray[offsetTempWriteArray+i];
 
           //установка изменений
+          if(uprMaska>=32) uprMaska -= 32;
           (*editControl) &= ~(1<<uprMaska);
           (*editControl) |= (value<<uprMaska);
 
@@ -1052,6 +1053,7 @@ int postUPRBigWriteAction(void)
               if(value&(1<<bit)) temp = 1;
 
               //установка изменений
+              if(uprMaska>=32) uprMaska -= 32;
               (*editControl) &= ~(1<<uprMaska);
               (*editControl) |= (temp<<uprMaska);
 
