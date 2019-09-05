@@ -1000,7 +1000,7 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
   }//if(inOffset>=213 && inOffset<245)
 
 //IF ÂÑÒÀÂÊÀ 1156-1189
-  if(inOffset>=1156 && inOffset<1063 && inOffset!=1172)
+  if(inOffset>=1156 && inOffset<1189 && inOffset!=1172)
   {
   int item = 0;
   int direct = 0;
