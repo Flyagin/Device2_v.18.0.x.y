@@ -5585,19 +5585,19 @@ inline void apv_handler(unsigned int *p_active_functions, unsigned int number_gr
   logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP1) != 0) << 14;
   //"ÑÇÍÏ1"
   logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP1) != 0) << 15;
-  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 28);
+  _AND2(logic_APV_2, 14, logic_APV_2, 15, logic_APV_2, 28);
 
   //Ì:"Ïóñê â³ä ÑÇÍÏ2"
   logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP2) != 0) << 16;
   //"ÑÇÍÏ2"
   logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP2) != 0) << 17;
-  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 29);
+  _AND2(logic_APV_2, 16, logic_APV_2, 17, logic_APV_2, 29);
 
   //Ì:"Ïóñê â³ä ÑÇÍÏ3"
-  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP3) != 0) << 16;
+  logic_APV_2 |= ((current_settings_prt.control_apv & CTR_APV_STARTED_FROM_TZNP3) != 0) << 18;
   //"ÑÇÍÏ3"
-  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP3) != 0) << 17;
-  _AND2(logic_APV_2, 12, logic_APV_2, 13, logic_APV_2, 30);
+  logic_APV_2 |= (_CHECK_SET_BIT(p_active_functions, RANG_TZNP3) != 0) << 19;
+  _AND2(logic_APV_2, 18, logic_APV_2, 19, logic_APV_2, 30);
   
   _OR3(logic_APV_2, 28, logic_APV_2, 29, logic_APV_2, 30, logic_APV_3, 1);
   /***/
