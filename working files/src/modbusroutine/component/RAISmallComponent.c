@@ -2,7 +2,7 @@
 #include "header.h"
 
 //начальный регистр в карте памяти
-#define BEGIN_ADR_REGISTER 439
+#define BEGIN_ADR_REGISTER 445
 //конечный регистр в карте памяти
 #define END_ADR_REGISTER 800
 

@@ -4,7 +4,7 @@
 //начальный регистр в карте памяти
 #define BEGIN_ADR_REGISTER 350
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 438
+#define END_ADR_REGISTER 444
 
 int getAISmallModbusRegister(int);//получить содержимое регистра
 int getAISmallModbusBit(int);//получить содержимое бита
@@ -60,7 +60,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 350;
 #else
-        return (measurement_low[IM_UA]) &0xFFFF;
+        return (measurement_low[IM_UA] >> 3) &0xFFFF;
 #endif
       }
     case 1://UB
@@ -68,7 +68,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 351;
 #else
-        return (measurement_low[IM_UB]) &0xFFFF;
+        return (measurement_low[IM_UB] >> 3) &0xFFFF;
 #endif
       }
     case 2://UC
@@ -76,7 +76,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 352;
 #else
-        return (measurement_low[IM_UC]) &0xFFFF;
+        return (measurement_low[IM_UC] >> 3) &0xFFFF;
 #endif
       }
 
@@ -85,7 +85,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 353;
 #else
-        return (measurement_low[IM_IA]) &0xFFFF;
+        return (measurement_low[IM_IA] >> 2) &0xFFFF;
 #endif
       }
     case 4://IB
@@ -93,7 +93,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 354;
 #else
-        return (measurement_low[IM_IB]) &0xFFFF;
+        return (measurement_low[IM_IB] >> 2) &0xFFFF;
 #endif
       }
     case 5://IC
@@ -101,7 +101,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 355;
 #else
-        return (measurement_low[IM_IC]) &0xFFFF;
+        return (measurement_low[IM_IC] >> 2) &0xFFFF;
 #endif
       }
 
@@ -198,7 +198,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 375;
 #else
-        return (measurement_low[IM_UAB]) &0xFFFF;
+        return (measurement_low[IM_UAB] >> 3) &0xFFFF;
 #endif
       }
     case 26://UBC
@@ -206,7 +206,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 376;
 #else
-        return (measurement_low[IM_UBC]) &0xFFFF;
+        return (measurement_low[IM_UBC] >> 3) &0xFFFF;
 #endif
       }
     case 27://UCA
@@ -214,7 +214,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 377;
 #else
-        return (measurement_low[IM_UCA]) &0xFFFF;
+        return (measurement_low[IM_UCA] >> 3) &0xFFFF;
 #endif
       }
     case 28://3U0
@@ -222,7 +222,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 378;
 #else
-        return (measurement_low[IM_3U0]) &0xFFFF;
+        return (measurement_low[IM_3U0] >> 3) &0xFFFF;
 #endif
       }
     case 29://3I0-1
@@ -230,7 +230,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 379;
 #else
-        return (measurement_low[IM_3I0_r]) &0xFFFF;
+        return (measurement_low[IM_3I0_r] >> 2) &0xFFFF;
 #endif
       }
     case 30://IM_3I0_other_g
@@ -246,7 +246,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 381;
 #else
-        return (measurement_low[IM_I1]) &0xFFFF;
+        return (measurement_low[IM_I1] >> 2) &0xFFFF;
 #endif
       }
     case 32://IM_I2
@@ -254,7 +254,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 382;
 #else
-        return (measurement_low[IM_I2]) &0xFFFF;
+        return (measurement_low[IM_I2] >> 2) &0xFFFF;
 #endif
       }
 //    case 33://Iah2
@@ -272,13 +272,13 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 394;
 #else
-        return (measurement_low[IM_U1]) &0xFFFF;
+        return (measurement_low[IM_U1] >> 3) &0xFFFF;
 #endif
     case 45://U2
 #ifdef TESTZBIRKA_VERSII_PZ
         return 395;
 #else
-        return (measurement_low[IM_U2]) &0xFFFF;
+        return (measurement_low[IM_U2] >> 3) &0xFFFF;
 #endif
 //    case 46://freq TH2
 //    case 47://Z0
@@ -336,29 +336,68 @@ int getAISmallModbusRegister(int adrReg)
 #else
         return (resistance_low[Z_C] /100) &0xFFFF;
 #endif
-    case 57://ZAB
+
+    case 57://RAB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 407;
 #else
-        return (resistance_low[Z_AB] /100) &0xFFFF;
+        return (resistance_low[R_AB] /100) &0xFFFF;
 #endif
-    case 58://ZBC
+    case 58://ZAB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 408;
 #else
-        return (resistance_low[Z_BC] /100) &0xFFFF;
+        return (resistance_low[X_AB] /100) &0xFFFF;
 #endif
-    case 59://ZCA
+    case 59://ZAB
 #ifdef TESTZBIRKA_VERSII_PZ
         return 409;
+#else
+        return (resistance_low[Z_AB] /100) &0xFFFF;
+#endif
+
+    case 60://RBC
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 410;
+#else
+        return (resistance_low[R_BC] /100) &0xFFFF;
+#endif
+    case 61://XBC
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 411;
+#else
+        return (resistance_low[X_BC] /100) &0xFFFF;
+#endif
+    case 62://ZBC
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 412;
+#else
+        return (resistance_low[Z_BC] /100) &0xFFFF;
+#endif
+
+    case 63://RCA
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 413;
+#else
+        return (resistance_low[R_CA] /100) &0xFFFF;
+#endif
+    case 64://XCA
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 414;
+#else
+        return (resistance_low[X_CA] /100) &0xFFFF;
+#endif
+    case 65://ZCA
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 415;
 #else
         return (resistance_low[Z_CA] /100) &0xFFFF;
 #endif
 
-    case 60://baza
+    case 66://baza
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 410;
+        return 416;
 #else
         if (base_index_for_angle <= FULL_ORT_3U0) return (base_index_for_angle + 1) &0xFFFF;
         else
@@ -369,149 +408,149 @@ int getAISmallModbusRegister(int adrReg)
         }
 #endif
       } break;
-    case 61://OFFSET_ANGLE_UA_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 411;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Ua]) &0xFFFF;
-#endif
-      }
-    case 62://OFFSET_ANGLE_UB_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 412;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Ub]) &0xFFFF;
-#endif
-      }
-    case 63://OFFSET_ANGLE_UC_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 413;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Uc]) &0xFFFF;
-#endif
-      }
-    case 64://OFFSET_ANGLE_UAB_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 414;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Uab]) &0xFFFF;
-#endif
-      }
-    case 65://OFFSET_ANGLE_UBC_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 415;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Ubc]) &0xFFFF;
-#endif
-      }
-    case 66://OFFSET_ANGLE_UCA_1
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 416;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_Uca]) &0xFFFF;
-#endif
-      }
-    case 67://OFFSET_ANGLE_3U0_1
+    case 67://OFFSET_ANGLE_UA_1
       {
 #ifdef TESTZBIRKA_VERSII_PZ
         return 417;
 #else
+        return ((unsigned int)phi_angle[FULL_ORT_Ua]) &0xFFFF;
+#endif
+      }
+    case 68://OFFSET_ANGLE_UB_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 418;
+#else
+        return ((unsigned int)phi_angle[FULL_ORT_Ub]) &0xFFFF;
+#endif
+      }
+    case 69://OFFSET_ANGLE_UC_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 419;
+#else
+        return ((unsigned int)phi_angle[FULL_ORT_Uc]) &0xFFFF;
+#endif
+      }
+    case 70://OFFSET_ANGLE_UAB_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 420;
+#else
+        return ((unsigned int)phi_angle[FULL_ORT_Uab]) &0xFFFF;
+#endif
+      }
+    case 71://OFFSET_ANGLE_UBC_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 421;
+#else
+        return ((unsigned int)phi_angle[FULL_ORT_Ubc]) &0xFFFF;
+#endif
+      }
+    case 72://OFFSET_ANGLE_UCA_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 422;
+#else
+        return ((unsigned int)phi_angle[FULL_ORT_Uca]) &0xFFFF;
+#endif
+      }
+    case 73://OFFSET_ANGLE_3U0_1
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 423;
+#else
         return ((unsigned int)phi_angle[FULL_ORT_3U0]) &0xFFFF;
 #endif
       }
-//    case 56://OFFSET_ANGLE_UA_2
-//    case 57://OFFSET_ANGLE_UB_2
-//    case 58://OFFSET_ANGLE_UC_2
-//    case 59://OFFSET_ANGLE_UAB_2
-//    case 60://OFFSET_ANGLE_UBC_2
-//    case 61://OFFSET_ANGLE_UCA_2
-    case 74://OFFSET_ANGLE_Ia_1
+//    case 74://OFFSET_ANGLE_UA_2
+//    case 75://OFFSET_ANGLE_UB_2
+//    case 76://OFFSET_ANGLE_UC_2
+//    case 77://OFFSET_ANGLE_UAB_2
+//    case 78://OFFSET_ANGLE_UBC_2
+//    case 79://OFFSET_ANGLE_UCA_2
+    case 80://OFFSET_ANGLE_Ia_1
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 424;
+        return 430;
 #else
         return ((unsigned int)phi_angle[FULL_ORT_Ia]) &0xFFFF;
 #endif
       }
-    case 75://OFFSET_ANGLE_Ib_1
+    case 81://OFFSET_ANGLE_Ib_1
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 425;
+        return 431;
 #else
         return ((unsigned int)phi_angle[FULL_ORT_Ib]) &0xFFFF;
 #endif
       }
-    case 76://OFFSET_ANGLE_Ic_1
+    case 82://OFFSET_ANGLE_Ic_1
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 426;
+        return 432;
 #else
         return ((unsigned int)phi_angle[FULL_ORT_Ic]) &0xFFFF;
 #endif
       }
-//    case 65://OFFSET_ANGLE_I04
+//    case 83://OFFSET_ANGLE_I04
 //      {
 //#ifdef TESTZBIRKA_VERSII_PZ
-//        return 397;
+//        return 433;
 //#else
 //        return ((unsigned int)phi_angle[FULL_ORT_I04]) &0xFFFF;
 //#endif
 //      }
-    case 78://OFFSET_ANGLE_3I0_1
+    case 84://OFFSET_ANGLE_3I0_1
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 428;
+        return 434;
 #else
         return ((unsigned int)phi_angle[FULL_ORT_3I0]) &0xFFFF;
 #endif
       }
-    case 79://OFFSET_ANGLE_3I0_r
-      {
-#ifdef TESTZBIRKA_VERSII_PZ
-        return 429;
-#else
-        return ((unsigned int)phi_angle[FULL_ORT_3I0_r]) &0xFFFF;
-#endif
-      }
-//    case 68://
-//    case 69://
-//    case 70://
-//    case 71://
-//    case 72://
-    case 85://
+    case 85://OFFSET_ANGLE_3I0_r
       {
 #ifdef TESTZBIRKA_VERSII_PZ
         return 435;
 #else
+        return ((unsigned int)phi_angle[FULL_ORT_3I0_r]) &0xFFFF;
+#endif
+      }
+//    case 86://
+//    case 87://
+//    case 88://
+//    case 89://
+//    case 90://
+    case 91://
+      {
+#ifdef TESTZBIRKA_VERSII_PZ
+        return 441;
+#else
         return resurs_vidkljuchennja & 0xffff;
 #endif
       }
-    case 86://
+    case 92://
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 436;
+        return 442;
 #else
         return (resurs_vidkljuchennja >> 16) & 0xffff;
 #endif
       }
-    case 87://
+    case 93://
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 437;
+        return 443;
 #else
         return resurs_vymykacha & 0xffff;
 #endif
       }
-    case 88://
+    case 94://
       {
 #ifdef TESTZBIRKA_VERSII_PZ
-        return 438;
+        return 444;
 #else
         return (resurs_vymykacha >> 16) & 0xffff;
 #endif
