@@ -4,9 +4,8 @@
 //начальный регистр в карте памяти
 #define BEGIN_ADR_REGISTER 445
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 800
+#define END_ADR_REGISTER 477
 
-#define MMEASUREMENTS_DR_WIDTH                35
 #define MM_ADDRESS_FIRST_MEASUREMENTS_DR       BEGIN_ADR_REGISTER
 
 
@@ -48,6 +47,7 @@ int getRAISmallModbusRegister(int adrReg)
 {
   //получить содержимое регистра
   if(privateRAISmallGetReg2(adrReg)==MARKER_OUTPERIMETR) return MARKER_OUTPERIMETR;
+  
   if (
     //Не подано попередньокоманди вичитування відповідного запису дискретного реєстратора
     //pointInterface=0 метка интерфейса 0-USB 1-RS485
@@ -64,37 +64,11 @@ int getRAISmallModbusRegister(int adrReg)
   ) return MARKER_ERRORPERIMETR; //Не подано попередньокоманди вичитування відповідного запису дискретного реєстратора
 
   //Можна читати дані
-  int number_block, offset;
+  int offset;
   unsigned char *point_to_buffer;
-  number_block = (adrReg - MM_ADDRESS_FIRST_MEASUREMENTS_DR) / MMEASUREMENTS_DR_WIDTH;
-  offset = (adrReg - MM_ADDRESS_FIRST_MEASUREMENTS_DR) - number_block*MMEASUREMENTS_DR_WIDTH;
+  offset = (adrReg - MM_ADDRESS_FIRST_MEASUREMENTS_DR);
   if (pointInterface == USB_RECUEST) point_to_buffer = buffer_for_USB_read_record_dr;
   else point_to_buffer = buffer_for_RS485_read_record_dr;
-
-  if (!(
-        number_block < (
-/*
-#define FIRST_INDEX_START_START_RECORD_DR     0
-#define FIRST_INDEX_DATA_TIME_DR              1
-#define FIRST_INDEX_NAME_OF_CELL_DR           8
-#define FIRST_INDEX_NUMBER_ITEMS_DR           40
-#define FIRST_INDEX_NUMBER_CHANGES_DR         41
-#define FIRST_INDEX_VMP_VALUE                 43
-#define FIRST_INDEX_VMP_EQUAL_MORE            47
-#define FIRST_INDEX_FIRST_DATA_DR             48
-*/
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_PHASE_DR  )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MIN_Z_DR      )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_3I0_DR    )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_3U0_DR    )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MIN_U_DR      )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_U_DR      )) +
-//          (*(point_to_buffer + FIRST_INDEX_NUMBER_MAX_ZOP_DR    )) +
-          (*(point_to_buffer + FIRST_INDEX_VMP_VALUE      )) +
-          (*(point_to_buffer + FIRST_INDEX_VMP_EQUAL_MORE ))
-        )
-      )) return 0;//Блок пустой
-//  unsigned int index;
 
   switch (offset)
   {
