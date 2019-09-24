@@ -1,0 +1,62 @@
+<NotepadPlus>
+    <Session activeView="1">
+        <mainView activeIndex="2">
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="1210" startPos="0" endPos="0" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\main.c" />
+            <File firstVisibleLine="2955" xOffset="0" scrollWidth="2650" startPos="28793" endPos="28793" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\protections.c">
+                <Mark line="2911" />
+                <Fold line="569" />
+                <Fold line="770" />
+                <Fold line="894" />
+                <Fold line="1336" />
+                <Fold line="1461" />
+                <Fold line="1947" />
+                <Fold line="2155" />
+                <Fold line="2272" />
+                <Fold line="2289" />
+                <Fold line="2387" />
+                <Fold line="2429" />
+                <Fold line="2480" />
+                <Fold line="2593" />
+                <Fold line="2957" />
+                <Fold line="3208" />
+                <Fold line="3609" />
+            </File>
+            <File firstVisibleLine="1597" xOffset="0" scrollWidth="2400" startPos="58065" endPos="58065" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\dz.c">
+                <Mark line="897" />
+                <Mark line="1257" />
+                <Mark line="1258" />
+                <Mark line="1287" />
+                <Mark line="1354" />
+                <Mark line="1617" />
+                <Mark line="1677" />
+                <Mark line="1764" />
+                <Fold line="30" />
+                <Fold line="406" />
+                <Fold line="746" />
+                <Fold line="1078" />
+            </File>
+            <File firstVisibleLine="87" xOffset="0" scrollWidth="1590" startPos="1594" endPos="1594" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_global_timers.h" />
+            <File firstVisibleLine="260" xOffset="0" scrollWidth="810" startPos="9354" endPos="9372" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_menu_dz.h">
+                <Fold line="14" />
+                <Fold line="39" />
+            </File>
+        </mainView>
+        <subView activeIndex="0">
+            <File firstVisibleLine="1763" xOffset="0" scrollWidth="2400" startPos="68286" endPos="68286" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\dz.c">
+                <Mark line="897" />
+                <Mark line="1257" />
+                <Mark line="1258" />
+                <Mark line="1287" />
+                <Mark line="1354" />
+                <Mark line="1617" />
+                <Mark line="1677" />
+                <Mark line="1764" />
+            </File>
+            <File firstVisibleLine="30" xOffset="0" scrollWidth="2370" startPos="976" endPos="976" selMode="0" lang="C" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\src\tmp.c" />
+            <File firstVisibleLine="234" xOffset="0" scrollWidth="1590" startPos="9900" endPos="9905" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\const_measurement.h" />
+            <File firstVisibleLine="369" xOffset="0" scrollWidth="1340" startPos="24082" endPos="24082" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\macroses.h" />
+            <File firstVisibleLine="153" xOffset="0" scrollWidth="1740" startPos="13464" endPos="13474" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\type_definition.h" />
+            <File firstVisibleLine="237" xOffset="0" scrollWidth="1440" startPos="7892" endPos="7892" selMode="0" lang="C++" encoding="-1" filename="G:\emb_pj\mrzs_L\mrzsL_a\working files\inc\a.01.c.d\const_global.h" />
+        </subView>
+    </Session>
+</NotepadPlus>
