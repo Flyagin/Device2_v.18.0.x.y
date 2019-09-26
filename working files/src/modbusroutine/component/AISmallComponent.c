@@ -53,6 +53,14 @@ int getAISmallModbusRegister(int adrReg)
     resistance_low[i] =temp_value;
   }
   semaphore_measure_values_low1 = 0;
+  //Копіюємо вимірювання
+  semaphore_measure_values_low1 = 1;
+  for (unsigned int i = 0; i < _NUMBER_IM; i++ ) 
+  {
+    measurement_low[i] = measurement_middle[i];
+  }
+  semaphore_measure_values_low1 = 0;
+
     switch (offset)
     {
     case 0://UA
