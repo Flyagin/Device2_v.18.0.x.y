@@ -6782,6 +6782,7 @@ inline void vmp_handler(unsigned int p_active_functions[])
             &&
             (
              (X_min_KZ_prt == ((unsigned int)UNDEF_RESISTANCE)) || /*Це є ознакою, що для даного КЗ ми перший раз фіксуємо мінімальний опір, тому і його значення помічаємо як мінімальне*/
+             (MF_KZ_tmp > MF_KZ) ||  
              (X_min_KZ_prt > min_interphase_X)
             )   
            )
