@@ -1304,7 +1304,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
     unsigned int position_temp = current_ekran.index_position;
     unsigned int index_of_ekran;
     unsigned int i, offset = 0;
-    int min_max_number[TOTAL_NUMBER_PROTECTION][2] =
+    const int min_max_number[TOTAL_NUMBER_PROTECTION][2] =
     {
       {
        (NUMBER_GENERAL_SIGNAL_FOR_RANG),
@@ -1431,6 +1431,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
       }
       if (current_ekran.index_position >= ((int)index_deleted_function)) position_temp--;
       offset++;
+      //Робота з Watchdog
+      watchdog_routine();
       /*************************************************************/
 
       /*************************************************************/
@@ -1618,6 +1620,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
                 if (current_ekran.index_position >= index_in_list) position_temp--;
           
                 offset++;
+                //Робота з Watchdog
+                watchdog_routine();
               }
               else
               {
@@ -1775,6 +1779,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
                 if (current_ekran.index_position >= index_in_list) position_temp--;
           
                 offset++;
+                //Робота з Watchdog
+                watchdog_routine();
               }
               else
               {
@@ -1839,6 +1845,8 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
           
           offset++;
           index_in_list++;
+          //Робота з Watchdog
+          watchdog_routine();
         }
       }
     }
