@@ -142,7 +142,7 @@ int getAISmallModbusRegister(int adrReg)
 #ifdef TESTZBIRKA_VERSII_PZ
         return 360;
 #else
-        if (S != 0)
+        if (S[0] != 0)
           return (cos_phi_x1000) &0xFFFF;
           return 0x0;
 #endif
