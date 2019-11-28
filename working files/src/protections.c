@@ -3180,12 +3180,12 @@ inline void mtz_handler(unsigned int *p_active_functions, unsigned int number_gr
   
   //ПО Uнцн
   po_u_ncn_setpoint = previous_state_mtz_po_uncn ?
-            u_linear_nom_const * U_DOWN / 100 :
-            u_linear_nom_const;
+            u_f_nom_const * U_DOWN / 100 :
+            u_f_nom_const;
   
-  previous_state_mtz_po_uncn = ((measurement[IM_UAB] <= po_u_ncn_setpoint) ||
-                                (measurement[IM_UBC] <= po_u_ncn_setpoint) ||
-                                (measurement[IM_UCA] <= po_u_ncn_setpoint));
+  previous_state_mtz_po_uncn = ((measurement[IM_UA] <= po_u_ncn_setpoint) ||
+                                (measurement[IM_UB] <= po_u_ncn_setpoint) ||
+                                (measurement[IM_UC] <= po_u_ncn_setpoint));
   
   ctr_mtz_nespr_kil_napr = ctr_mtz_nespr_kil_napr && previous_state_mtz_po_incn && previous_state_mtz_po_uncn; //Неисправность цепей напряжения (_AND3)
   
