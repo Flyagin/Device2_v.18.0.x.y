@@ -568,6 +568,10 @@ void main_routines_for_i2c(void)
         _CLEAR_BIT(control_i2c_taskes, TASK_START_READ_RTC_BIT);
       }
     }
+    else if(_CHECK_SET_BIT(control_i2c_taskes, TASK_BLK_OPERATION_BIT) !=0)
+    {
+      //Зараз треба зачекати з початною опрерацією, тому просто виходимо з цієї підпрограми
+    }
     else if (_CHECK_SET_BIT(control_i2c_taskes, TASK_START_WRITE_RTC_BIT) !=0)
     {
       unsigned int rez;
