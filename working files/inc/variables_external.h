@@ -495,6 +495,7 @@ extern unsigned int edit_serial_number_dev;
 extern unsigned int info_vidkluchennja_vymykacha[2];
 extern unsigned char info_vidkluchennja_vymykachatime[VYMKNENNJA_VID_MAX_NUMBER][7]; 
 
+extern unsigned int  watchdog_l2;
 extern unsigned int control_word_of_watchdog;
 //extern unsigned int test_watchdogs;
 

@@ -832,6 +832,7 @@ unsigned int edit_serial_number_dev;
 unsigned int info_vidkluchennja_vymykacha[2];
 unsigned char info_vidkluchennja_vymykachatime[VYMKNENNJA_VID_MAX_NUMBER][7]; 
 
+unsigned int  watchdog_l2;
 unsigned int control_word_of_watchdog;
 //unsigned int test_watchdogs/* = 0*/;
 
