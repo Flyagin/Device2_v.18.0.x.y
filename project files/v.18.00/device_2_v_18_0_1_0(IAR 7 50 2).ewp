@@ -324,6 +324,7 @@
           <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
           <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
           <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+          <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
           <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
           <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
           <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -620,7 +621,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>device_2_v_18_0_0_2(IAR 7 50 2).bin</state>
+          <state>device_2_v_18_0_1_0(IAR 7 50 2).bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -675,7 +676,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>device_2_v_18_0_0_2(IAR 7 50 2).out</state>
+          <state>device_2_v_18_0_1_0(IAR 7 50 2).out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -990,86 +991,44 @@
     </group>
   </group>
   <group>
-    <name>Linker</name>
-    <file>
-      <name>$PROJ_DIR$\..\StackDepth.suc</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\stm32f2xx_flash.icf</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\stm32f2xx_flash_extsram.icf</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\stm32f2xx_sram.icf</name>
-    </file>
-  </group>
-  <group>
-    <name>Startup</name>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Source\Templates\iar\startup_stm32f2xx.s</name>
-    </file>
-  </group>
-  <group>
-    <name>STM_Periph_Driver</name>
+    <name>FatFs</name>
     <group>
       <name>inc</name>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\misc.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\diskio.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_dbgmcu.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\fatfs.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_dma.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ff.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_exti.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ff_gen_drv.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_gpio.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ffconf.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_i2c.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ffconf_template.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_rcc.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\integer.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_spi.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_syscfg.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_tim.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_usart.h</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\user_diskio.h</name>
       </file>
     </group>
     <group>
       <name>src</name>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\misc.c</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\diskio.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_dbgmcu.c</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\fatfs.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_dma.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_exti.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_fsmc.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_gpio.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_i2c.c</name>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff.c</name>
         <configuration>
           <name>Flash-Debug</name>
           <settings>
@@ -1080,13 +1039,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -1183,7 +1143,7 @@
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -1222,6 +1182,623 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
+                <state>$PROJ_DIR$\..\..\SystemView\Config</state>
+                <state>$PROJ_DIR$\..\..\SystemView\OS</state>
+                <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
+              </option>
+              <option>
+                <name>CCStdIncCheck</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCCodeSection</name>
+                <state>.text</state>
+              </option>
+              <option>
+                <name>IInterwork2</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IProcessorMode2</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCOptLevel</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCOptStrategy</name>
+                <version>0</version>
+                <state>2</state>
+              </option>
+              <option>
+                <name>CCOptLevelSlave</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CompilerMisraRules98</name>
+                <version>0</version>
+                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+              </option>
+              <option>
+                <name>CompilerMisraRules04</name>
+                <version>0</version>
+                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+              </option>
+              <option>
+                <name>CCPosIndRopi</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPosIndRwpi</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPosIndNoDynInit</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccLang</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccCDialect</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccAllowVLA</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccCppDialect</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccExceptions</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccRTTI</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccStaticDestr</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccCppInlineSemantics</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccCmsis</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccFloatSemantics</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCNoLiteralPool</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCOptStrategySlave</name>
+                <version>0</version>
+                <state>2</state>
+              </option>
+            </data>
+          </settings>
+        </configuration>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff_gen_drv.c</name>
+        <configuration>
+          <name>Flash-Debug</name>
+          <settings>
+            <name>ICCARM</name>
+            <data>
+              <version>31</version>
+              <wantNonLocal>0</wantNonLocal>
+              <debug>1</debug>
+              <option>
+                <name>CCOptimizationNoSizeConstraints</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDefines</name>
+                <state>USE_STDPERIPH_DRIVER</state>
+                <state>STM32F2XX</state>
+                <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
+              </option>
+              <option>
+                <name>CCPreprocFile</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPreprocComments</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPreprocLine</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListCFile</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCListCMnemonics</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListCMessages</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCListAssFile</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListAssSource</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCEnableRemarks</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDiagSuppress</name>
+                <state>Pe826</state>
+              </option>
+              <option>
+                <name>CCDiagRemark</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCDiagWarning</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCDiagError</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCObjPrefix</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCAllowList</name>
+                <version>1</version>
+                <state>00000000</state>
+              </option>
+              <option>
+                <name>CCDebugInfo</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IEndianMode</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IProcessor</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IExtraOptionsCheck</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IExtraOptions</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCLangConformance</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCSignedPlainChar</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCRequirePrototypes</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCMultibyteSupport</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDiagWarnAreErr</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCCompilerRuntimeInfo</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IFpuProcessor</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>OutputFile</name>
+                <state>$FILE_BNAME$.o</state>
+              </option>
+              <option>
+                <name>CCLibConfigHeader</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>PreInclude</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CompilerMisraOverride</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCIncludePath2</name>
+                <state>$PROJ_DIR$\..\..\working files\inc</state>
+                <state>$PROJ_DIR$\..\..\working files\inc\a.00.c.d</state>
+                <state>$PROJ_DIR$\..\..\working files\usb</state>
+                <state>$PROJ_DIR$\..\..\working files\src\modbusroutine\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
+                <state>$PROJ_DIR$\..\..\SystemView\Config</state>
+                <state>$PROJ_DIR$\..\..\SystemView\OS</state>
+                <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
+              </option>
+              <option>
+                <name>CCStdIncCheck</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCCodeSection</name>
+                <state>.text</state>
+              </option>
+              <option>
+                <name>IInterwork2</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IProcessorMode2</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCOptLevel</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCOptStrategy</name>
+                <version>0</version>
+                <state>2</state>
+              </option>
+              <option>
+                <name>CCOptLevelSlave</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CompilerMisraRules98</name>
+                <version>0</version>
+                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+              </option>
+              <option>
+                <name>CompilerMisraRules04</name>
+                <version>0</version>
+                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+              </option>
+              <option>
+                <name>CCPosIndRopi</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPosIndRwpi</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPosIndNoDynInit</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccLang</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccCDialect</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccAllowVLA</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IccCppDialect</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccExceptions</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccRTTI</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccStaticDestr</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccCppInlineSemantics</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccCmsis</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IccFloatSemantics</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCNoLiteralPool</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCOptStrategySlave</name>
+                <version>0</version>
+                <state>2</state>
+              </option>
+            </data>
+          </settings>
+        </configuration>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\user_diskio.c</name>
+      </file>
+    </group>
+  </group>
+  <group>
+    <name>Linker</name>
+    <file>
+      <name>$PROJ_DIR$\..\StackDepth.suc</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\stm32f2xx_flash.icf</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\stm32f2xx_flash_extsram.icf</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\stm32f2xx_sram.icf</name>
+    </file>
+  </group>
+  <group>
+    <name>Startup</name>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Source\Templates\iar\startup_stm32f2xx.s</name>
+    </file>
+  </group>
+  <group>
+    <name>STM_Periph_Driver</name>
+    <group>
+      <name>inc</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\misc.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_dbgmcu.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_dma.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_exti.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_gpio.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_i2c.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_rcc.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_spi.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_syscfg.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_tim.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_usart.h</name>
+      </file>
+    </group>
+    <group>
+      <name>src</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\misc.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_dbgmcu.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_dma.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_exti.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_fsmc.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_gpio.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_i2c.c</name>
+        <configuration>
+          <name>Flash-Debug</name>
+          <settings>
+            <name>ICCARM</name>
+            <data>
+              <version>31</version>
+              <wantNonLocal>0</wantNonLocal>
+              <debug>1</debug>
+              <option>
+                <name>CCOptimizationNoSizeConstraints</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDefines</name>
+                <state>USE_STDPERIPH_DRIVER</state>
+                <state>STM32F2XX</state>
+                <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
+              </option>
+              <option>
+                <name>CCPreprocFile</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPreprocComments</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCPreprocLine</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListCFile</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCListCMnemonics</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListCMessages</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCListAssFile</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCListAssSource</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCEnableRemarks</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDiagSuppress</name>
+                <state>Pa091</state>
+              </option>
+              <option>
+                <name>CCDiagRemark</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCDiagWarning</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCDiagError</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCObjPrefix</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCAllowList</name>
+                <version>1</version>
+                <state>00000000</state>
+              </option>
+              <option>
+                <name>CCDebugInfo</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IEndianMode</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IProcessor</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>IExtraOptionsCheck</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IExtraOptions</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CCLangConformance</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCSignedPlainChar</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCRequirePrototypes</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCMultibyteSupport</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>CCDiagWarnAreErr</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCCompilerRuntimeInfo</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>IFpuProcessor</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>OutputFile</name>
+                <state>$FILE_BNAME$.o</state>
+              </option>
+              <option>
+                <name>CCLibConfigHeader</name>
+                <state>1</state>
+              </option>
+              <option>
+                <name>PreInclude</name>
+                <state></state>
+              </option>
+              <option>
+                <name>CompilerMisraOverride</name>
+                <state>0</state>
+              </option>
+              <option>
+                <name>CCIncludePath2</name>
+                <state>$PROJ_DIR$\..\..\working files\inc</state>
+                <state>$PROJ_DIR$\..\..\working files\inc\a.00.c.d</state>
+                <state>$PROJ_DIR$\..\..\working files\usb</state>
+                <state>$PROJ_DIR$\..\..\working files\src\modbusroutine\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -1344,13 +1921,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -1447,7 +2025,7 @@
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -1486,6 +2064,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -1608,13 +2187,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -1711,7 +2291,7 @@
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -1750,6 +2330,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -1875,13 +2456,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -1978,7 +2560,7 @@
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -2017,11 +2599,12 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
                 <state>$PROJ_DIR$\..\..\SystemView\OS</state>
                 <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
-                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
-                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
               </option>
               <option>
                 <name>CCStdIncCheck</name>
@@ -2139,13 +2722,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -2242,7 +2826,7 @@
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -2281,6 +2865,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -2443,6 +3028,7 @@
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
                 <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -2578,6 +3164,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -2725,13 +3312,14 @@
                   <debug>1</debug>
                   <option>
                     <name>CCOptimizationNoSizeConstraints</name>
-                    <state>0</state>
+                    <state>1</state>
                   </option>
                   <option>
                     <name>CCDefines</name>
                     <state>USE_STDPERIPH_DRIVER</state>
                     <state>STM32F2XX</state>
-                    <state>USE_USB_OTG_FS </state>
+                    <state>USE_USB_OTG_FS</state>
+                    <state>KEYBOARD_VER_2_1</state>
                   </option>
                   <option>
                     <name>CCPreprocFile</name>
@@ -2824,11 +3412,11 @@
                   </option>
                   <option>
                     <name>CCRequirePrototypes</name>
-                    <state>0</state>
+                    <state>1</state>
                   </option>
                   <option>
                     <name>CCMultibyteSupport</name>
-                    <state>0</state>
+                    <state>1</state>
                   </option>
                   <option>
                     <name>CCDiagWarnAreErr</name>
@@ -2867,6 +3455,7 @@
                     <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                     <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                     <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                    <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                     <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                     <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                     <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -3014,13 +3603,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
-                  <state>USE_USB_OTG_FS </state>
+                  <state>USE_USB_OTG_FS</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -3113,11 +3703,11 @@
                 </option>
                 <option>
                   <name>CCRequirePrototypes</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCMultibyteSupport</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDiagWarnAreErr</name>
@@ -3156,6 +3746,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -3281,13 +3872,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
-                  <state>USE_USB_OTG_FS </state>
+                  <state>USE_USB_OTG_FS</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -3380,11 +3972,11 @@
                 </option>
                 <option>
                   <name>CCRequirePrototypes</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCMultibyteSupport</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDiagWarnAreErr</name>
@@ -3423,6 +4015,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -3573,13 +4166,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
-                <state>USE_USB_OTG_FS </state>
+                <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -3672,11 +4266,11 @@
               </option>
               <option>
                 <name>CCRequirePrototypes</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -3715,6 +4309,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -3837,13 +4432,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
-                <state>USE_USB_OTG_FS </state>
+                <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -3936,11 +4532,11 @@
               </option>
               <option>
                 <name>CCRequirePrototypes</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -3979,6 +4575,7 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -4101,13 +4698,14 @@
               <debug>1</debug>
               <option>
                 <name>CCOptimizationNoSizeConstraints</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDefines</name>
                 <state>USE_STDPERIPH_DRIVER</state>
                 <state>STM32F2XX</state>
-                <state>USE_USB_OTG_FS </state>
+                <state>USE_USB_OTG_FS</state>
+                <state>KEYBOARD_VER_2_1</state>
               </option>
               <option>
                 <name>CCPreprocFile</name>
@@ -4200,11 +4798,11 @@
               </option>
               <option>
                 <name>CCRequirePrototypes</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCMultibyteSupport</name>
-                <state>0</state>
+                <state>1</state>
               </option>
               <option>
                 <name>CCDiagWarnAreErr</name>
@@ -4243,11 +4841,12 @@
                 <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                 <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
+                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                 <state>$PROJ_DIR$\..\..\SystemView\Config</state>
                 <state>$PROJ_DIR$\..\..\SystemView\OS</state>
                 <state>$PROJ_DIR$\..\..\SystemView\SEGGER</state>
-                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
-                <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
               </option>
               <option>
                 <name>CCStdIncCheck</name>
@@ -4420,9 +5019,6 @@
         <name>interfaces</name>
         <file>
           <name>$PROJ_DIR$\..\..\working files\inc\const_interfaces.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\working files\inc\const_modbus_memory_map.h</name>
         </file>
       </group>
       <group>
@@ -4616,9 +5212,12 @@
       </group>
       <group>
         <name>Serial Dataflash</name>
-        <file>
-          <name>$PROJ_DIR$\..\..\working files\inc\const_driver_serial_dataflash.h</name>
-        </file>
+        <group>
+          <name>a.00.c.d</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\working files\inc\a.00.c.d\const_driver_serial_dataflash.h</name>
+          </file>
+        </group>
       </group>
     </group>
     <group>
@@ -4940,14 +5539,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
                   <state>USE_USB_OTG_FS</state>
-                  <state>KEYBOARD_VER_1</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -5083,6 +5682,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -5197,6 +5797,9 @@
       <group>
         <name>protection</name>
         <file>
+          <name>$PROJ_DIR$\..\..\working files\src\ar_routines.c</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\..\..\working files\src\measurement.c</name>
         </file>
         <file>
@@ -5241,13 +5844,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
                   <state>USE_USB_OTG_FS</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -5383,6 +5987,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -5505,14 +6110,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
                   <state>USE_USB_OTG_FS</state>
-                  <state>KEYBOARD_VER_1</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -5648,6 +6253,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -5770,13 +6376,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
                   <state>USE_USB_OTG_FS</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -5912,6 +6519,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>
@@ -6034,13 +6642,14 @@
                 <debug>1</debug>
                 <option>
                   <name>CCOptimizationNoSizeConstraints</name>
-                  <state>0</state>
+                  <state>1</state>
                 </option>
                 <option>
                   <name>CCDefines</name>
                   <state>USE_STDPERIPH_DRIVER</state>
                   <state>STM32F2XX</state>
                   <state>USE_USB_OTG_FS</state>
+                  <state>KEYBOARD_VER_2_1</state>
                 </option>
                 <option>
                   <name>CCPreprocFile</name>
@@ -6176,6 +6785,7 @@
                   <state>$PROJ_DIR$\..\..\Libraries\CMSIS\Device\ST\STM32F2xx\Include</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_OTG_Driver\inc</state>
+                  <state>$PROJ_DIR$\..\..\Middlewares\FatFs\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Core\inc</state>
                   <state>$PROJ_DIR$\..\..\Libraries\STM32_USB_Device_Library\Class\cdc\inc</state>
                   <state>$PROJ_DIR$\..\..\SystemView\Config</state>

@@ -1289,9 +1289,10 @@ void SPI_ADC_IRQHandler(void)
     /********************************************************
     Формуємо масив миттєвих значень і виконуємо операції для аналогового реєстратора
     ********************************************************/
-    unsigned int number_postfault_slices = 0;
     if (head_data_for_oscylograph_tmp != tail_data_for_oscylograph)
     {
+      unsigned int working_ar = false; /*по замовчуванню ставимо, що Аналоговий реєстратор не працює*/
+      unsigned int index_array_ar_current_before = index_array_ar_current;
       while (
              (head_data_for_oscylograph_tmp != tail_data_for_oscylograph) &&
              (data_for_oscylograph[tail_data_for_oscylograph].DATA_fix != 0)
@@ -1308,12 +1309,11 @@ void SPI_ADC_IRQHandler(void)
           if((prescaler_ar & MASKA_BIT_FOR_PRESCALER) == 0)
           {
             //Масив миттєвих аналогових виборок для аналогового реєстратора
-//            array_ar[index_array_ar_current++] = data_tmp;
             AR_WRITE(index_array_ar_current, data_tmp);
           }
         }
-        //Індекс цифрового осцилографа
-        if (index_array_of_current_data_value >= (NUMBER_ANALOG_CANALES*NUMBER_POINT*NUMBER_PERIOD_TRANSMIT)) index_array_of_current_data_value = 0;/*Умова мал аб бути ==, але щоб перестахуватися на невизначену помилку я поставив >=*/
+//        //Індекс цифрового осцилографа
+//        if (index_array_of_current_data_value >= (NUMBER_ANALOG_CANALES*NUMBER_POINT*NUMBER_PERIOD_TRANSMIT)) index_array_of_current_data_value = 0;/*Умова мал аб бути ==, але щоб перестахуватися на невизначену помилку я поставив >=*/
 
         //Масив дискретних сигналів для аналогового реєстратора
         unsigned int *label_to_active_functions_source = data_for_oscylograph[tail_data_for_oscylograph_tmp].active_functions;
@@ -1326,22 +1326,73 @@ void SPI_ADC_IRQHandler(void)
           for (unsigned int i = 0; i < N_BIG; i++)  active_functions_trg[i] |= *(label_to_active_functions_source + i);
 
           unsigned short int *label_to_active_functions_trg = (unsigned short int*)active_functions_trg;
-          for(unsigned int i = 0; i < number_word_digital_part_ar; i++) 
+          for(unsigned int i = 0; i < NUMBER_WORD_DIGITAL_PART_AR; i++) 
           {
-//            array_ar[index_array_ar_current++] = *(label_to_active_functions_trg + i);
             AR_WRITE(index_array_ar_current, *(label_to_active_functions_trg + i));
           }
           //Індекс масиву об'єднаних виборок для аналогового реєстратора
           if (index_array_ar_current >= SIZE_BUFFER_FOR_AR) index_array_ar_current = 0;/*Умова мала б бути ==, але щоб перестахуватися на невизначену помилку я поставив >=*/
-          
-          //Інкрементуємо кількість зрізів доданих у даному перериванні до післяаварійного масиву об'єднаних виборок для аналогового реєстратора
+
+          unsigned int state_ar_record_m_tmp = data_for_oscylograph[tail_data_for_oscylograph_tmp].state_ar_record;
           if (
-              (data_for_oscylograph[tail_data_for_oscylograph_tmp].state_ar_record == STATE_AR_START) ||
-              (data_for_oscylograph[tail_data_for_oscylograph_tmp].state_ar_record == STATE_AR_SAVE_SRAM_AND_SAVE_FLASH)
+              (state_ar_record_m_tmp == STATE_AR_NONE_M) &&
+              (
+               (state_ar_record_fatfs == STATE_AR_NONE_FATFS) ||
+               (state_ar_record_fatfs == STATE_AR_STOP_WRITE_FATFS) ||
+               (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) ||
+               (state_ar_record_fatfs == STATE_AR_BLOCK_FATFS)
+              )/*умова, що на даний момент часу не ішов запис даних у енергонезалежну пам'ять*/
              )
           {
-            number_postfault_slices++;
+            working_ar = false;
+            //Випадок, коли Аналоговий реєстратор не працює
+            index_array_ar_tail = index_array_ar_heat = index_array_ar_current;
+            tail_to_heat = current_to_tail = false;
           }
+          else
+          {
+            working_ar = true;
+            
+            if (state_ar_record_m_tmp == STATE_AR_WORK_M)
+            {
+              /*
+              Вже новий зріз післяаварійного масиву доданий у масив
+              */
+              if (
+                  (prev_state_ar_record_m == STATE_AR_NONE_M) &&
+                  (state_ar_record_fatfs == STATE_AR_WAIT_TO_WRITE_FATFS)
+                 )   
+              {
+                //Умова, що треба включити доаварійний масив для запису
+              
+                int difference;
+                /*
+                оскільки 1 післяаварійних зрізів доданио у масив,
+                то для визначення першої мітки післяаварійного масиву від index_array_ar_current
+                відняти кількість миттєвих значень у одному зрізі
+                */
+                /*
+                Встановлюємо мітку першого миттєвого значееня післяаваріного масиву і 
+                тимчасово помісчаємо її у змінну "вигрузки" для того, щоб дальша програма 
+                мала "універсальний", тобто прстіший, вигляд
+                */
+                difference = index_array_ar_current - (NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR);
+                if (difference >= 0) index_array_ar_tail = difference;
+                else index_array_ar_tail = difference + SIZE_BUFFER_FOR_AR;
+
+                //Встановлюємо мітку "вигрузки"
+                difference = index_array_ar_tail - (current_settings_prt.prefault_number_periods << VAGA_NUMBER_POINT_AR)*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR);
+                if (difference >= 0) index_array_ar_tail = difference;
+                else index_array_ar_tail = difference + SIZE_BUFFER_FOR_AR;
+              }
+
+              index_array_ar_heat = index_array_ar_current;
+              tail_to_heat = false;
+            }
+          }
+          
+          prev_state_ar_record_m = state_ar_record_m_tmp;
+        
         }
         prescaler_ar++;
     
@@ -1349,142 +1400,54 @@ void SPI_ADC_IRQHandler(void)
 
         if (++tail_data_for_oscylograph >= MAX_INDEX_DATA_FOR_OSCYLOGRAPH) tail_data_for_oscylograph = 0;
       }
-    }
-//    /**************************************************/
-//    //При необхідності повідомляємо про вихід з формування миттєвих значень
-//    /**************************************************/
-//    if (wait_of_receiving_current_data  == true) wait_of_receiving_current_data  = false;
-//    /**************************************************/
 
-    //Управління аналоговим реємстратором
-    if (
-        ((state_ar_record == STATE_AR_START) && (number_postfault_slices != 0)) || 
-        (state_ar_record == STATE_AR_SAVE_SRAM_AND_SAVE_FLASH)
-       )
-    {
-      static unsigned int uncopied_postfault_time_sapmles;
-
-      /*
-      Вже новий зріз післяаварійного масиву у функції доданий у масив
-      */
-        
-      if (state_ar_record == STATE_AR_START)
+      /***
+      Визначаємо, чи не відбулося переповнення      
+      working_ar - значення у цьому місці відповідає останньому часовому зрізу, який доданий у буфер
+      ***/
+      
+      if (working_ar != false)
       {
-        int difference;
-        /*
-        оскільки number_postfault_slices післяаварійних зрізів доданио у масив,
-        то для визначення першої мітки післяаварійного масиву від index_array_ar_current
-        відняти кількість миттєвих значень у одному зрізі
-        */
-        /*
-        Встановлюємо мітку першого миттєвого значееня післяаваріного масиву і 
-        тимчасово помісчаємо її у змінну "вигрузки" для того, щоб дальша програма 
-        мала "універсальний", тобто прстіший, вигляд
-        */
-        difference = index_array_ar_current - number_postfault_slices*(NUMBER_ANALOG_CANALES + number_word_digital_part_ar);
-        if (difference >= 0) index_array_ar_heat = difference;
-        else index_array_ar_heat = difference + SIZE_BUFFER_FOR_AR;
-
-        //Встановлюємо мітку "вигрузки"
-        difference = index_array_ar_heat - (current_settings_prt.prefault_number_periods << VAGA_NUMBER_POINT_AR)*(NUMBER_ANALOG_CANALES + number_word_digital_part_ar);
-        if (difference >= 0) index_array_ar_tail = difference;
-        else index_array_ar_tail = difference + SIZE_BUFFER_FOR_AR;
+        /***
+        Початок відділку беремо від index_array_ar_current_before;
+        ***/
+        
+        int end_tmp = index_array_ar_current - index_array_ar_current_before;
+        if (end_tmp < 0) end_tmp += SIZE_BUFFER_FOR_AR;
+        
+        int tail_tmp = index_array_ar_tail - index_array_ar_current_before;
+        if (
+            (tail_tmp < 0)
+            ||
+            (
+             (tail_tmp == 0) &&
+             (current_to_tail == false)
+            ) 
+           )
+        {
+          tail_tmp += SIZE_BUFFER_FOR_AR;
+        }
+        
+        if (tail_tmp <= end_tmp)
+        {
+          current_to_tail = true;
           
-        //Визначаємо скільки треба зрізів записати для післяаварійного масиву
-        /*
-        !!!Я вибрав саме кількість зрізів а не кількість миттєвих значень, щоб числа
-        були меншими і можна було для контролю не рухатися з кроком у кількість каналів,
-        а змінюючи цю велицину на одиницю!!!
-        */
-        uncopied_postfault_time_sapmles = (current_settings_prt.postfault_number_periods << VAGA_NUMBER_POINT_AR);
-
-        /*
-        Щоб не було ситуації, що переривання по таймеру ще не відмітило деякі часові
-        зрізи, що їх треба додати до післяаварійного масиву - то помічаємо ці часові зрізи, що вони вже 
-        мають бути включені у аналоговий реєстратор.
-        */
-        unsigned int tail_data_for_oscylograph_tmp = tail_data_for_oscylograph;
-        while (head_data_for_oscylograph_tmp != tail_data_for_oscylograph_tmp)
-        {
-           data_for_oscylograph[tail_data_for_oscylograph_tmp++].state_ar_record = state_ar_record;
-           if (tail_data_for_oscylograph_tmp >= MAX_INDEX_DATA_FOR_OSCYLOGRAPH) tail_data_for_oscylograph_tmp = 0;
-        }
-
-        //Переходимо у стан роботи аналогового реєстратора "загрузка і вигрузка"
-        state_ar_record = STATE_AR_SAVE_SRAM_AND_SAVE_FLASH;
-
-      }
+          if (tail_tmp < end_tmp)
+          {
+            //Помилкова ситуація, яка викликана переповненням 
+            _SET_BIT(set_diagnostyka, ERROR_AR_OVERLOAD_BUFFER_BIT);
         
-      /*
-      Встановлюємо мітку "загрузки" і діагностику переповнення буферу з таких 
-      міркувань, що наша програма побудована на принципі, що до цього часу у 
-      змінній index_array_ar_heat знаходиться значення мітки "загрузки" до додавання 
-      number_postfault_slices зрізів. 
-      При цьосму вже додано number_postfault_slices зрізів і змінна
-      index_array_ar_current відповідає з текучий стан "заповнення" буферу миттєвих 
-      значень для аналогового реєстратора.
-      */
-
-      /*
-      Спочатку здійснюємо контроль переповнення буферу (теопретично ця помилка ніколи б
-      не мала виникати, якщо я правильно вибрав розмір масиву з уразуваннями 
-      максимальними розмірами доаварійного і післяаварійного масивів і швидкостей
-      "загрузки" і "вигрузки")
-      */
-      int difference_before, difference_after;
-      unsigned int index_array_ar_tail_tmp = index_array_ar_tail;
-      difference_before = (index_array_ar_heat - index_array_ar_tail_tmp);
-      if (difference_before < 0) difference_before += SIZE_BUFFER_FOR_AR;
-      difference_after = (index_array_ar_current - index_array_ar_tail_tmp);
-      if (difference_after < 0) difference_after += SIZE_BUFFER_FOR_AR;
-      if ((difference_after - difference_before) != number_postfault_slices*(NUMBER_ANALOG_CANALES + number_word_digital_part_ar))
-      {
-        //Помилкова ситуація, яка викликана переповненням 
-        _SET_BIT(set_diagnostyka, ERROR_AR_OVERLOAD_BUFFER_BIT);
-      }
-      else
-      {
-        //Нема помилкової ситуації, яка викликана переповненням
-        _SET_BIT(clear_diagnostyka, ERROR_AR_OVERLOAD_BUFFER_BIT);
-      }
-
-      //Встановлюємо мітку "загрузки" і кількість зрізів, які ще треба добавити до післяаварійного масиву
-      if (uncopied_postfault_time_sapmles >= number_postfault_slices)
-      {
-        index_array_ar_heat = index_array_ar_current;
-        uncopied_postfault_time_sapmles -= number_postfault_slices;
-      }
-      else
-      {
-        int difference = index_array_ar_current - (number_postfault_slices - uncopied_postfault_time_sapmles);
-        if (difference >= 0) index_array_ar_heat = difference;
-        else index_array_ar_heat = difference + SIZE_BUFFER_FOR_AR;
-
-        uncopied_postfault_time_sapmles = 0;
-      }
-
-      if (uncopied_postfault_time_sapmles == 0)
-      {
-        /*
-        Всі післяаварійні зрізи вже запаисані і тому переводимо режим роботи 
-        аналогового реєстратора у режим тільки запису тих значень які ще не записані
-        */
-        state_ar_record = STATE_AR_ONLY_SAVE_FLASH;
-
-        /*
-        Щоб не було ситуації, що переривання по таймеру вже відмітило нові часові
-        зрізи, які треба додати до післяаварійного масиву, але ще вони не оброблені,
-        бо не було оцифровки АЦП - то помічаємо ці часові зрізи, що вони вже 
-        виходять за післяаварійний масив.
-        */
-        unsigned int tail_data_for_oscylograph_tmp = tail_data_for_oscylograph;
-        while (head_data_for_oscylograph_tmp != tail_data_for_oscylograph_tmp)
-        {
-           data_for_oscylograph[tail_data_for_oscylograph_tmp++].state_ar_record = state_ar_record;
-           if (tail_data_for_oscylograph_tmp >= MAX_INDEX_DATA_FOR_OSCYLOGRAPH) tail_data_for_oscylograph_tmp = 0;
+            state_ar_record_m = STATE_AR_BLOCK_M;
+          }
         }
-      }
+        else current_to_tail = false;
         
+        diff_index_heat_tail = tail_tmp - end_tmp;
+      }
+      else diff_index_heat_tail = -1;
+      
+      diff_index_heat_tail = index_array_ar_current - index_array_ar_tail;
+      if (diff_index_heat_tail < 0) diff_index_heat_tail += SIZE_BUFFER_FOR_AR;
     }
     /*******************************************************/
     
@@ -1621,6 +1584,9 @@ void calc_angle(void)
   //Знімаємо семафор заборони обновлення значень з системи захистів
   semaphore_measure_values_low = 0;
   
+  state_calc_phi_angle = true;
+  bank_for_calc_phi_angle = (bank_for_calc_phi_angle ^ 0x1) & 0x1;
+
   //Визначаємо, який вектор беремо за осному
   __full_ort_index index_base = FULL_ORT_Ua;
 
@@ -1703,7 +1669,7 @@ void calc_angle(void)
       {
         if (index_tmp == index)
         {
-          phi_angle[index_tmp] = 0;
+          phi_angle[bank_for_calc_phi_angle][index_tmp] = 0;
           continue;
         }
         else
@@ -1840,19 +1806,19 @@ void calc_angle(void)
               if (angle_int >= 3600) angle_int -= 3600;
               else if (angle_int < 0) angle_int += 3600;
       
-              phi_angle[index_tmp] = angle_int;
+              phi_angle[bank_for_calc_phi_angle][index_tmp] = angle_int;
       
             }
             else
             {
-              phi_angle[index_tmp] = -1;
+              phi_angle[bank_for_calc_phi_angle][index_tmp] = -1;
             }
 
           }
           else
           {
             //Модуль досліджуваного вектора менше порогу - кут невизначений
-            phi_angle[index_tmp] = -1;
+            phi_angle[bank_for_calc_phi_angle][index_tmp] = -1;
           }
         }
       }
@@ -1860,7 +1826,7 @@ void calc_angle(void)
     else
     {
       //Амплітуда базового вектору вимірювання по незрозумілій для мене причини рівна 0 (я думаю, що сюди програма не мала б ніколи заходити). Це перестарховка.
-      for (__full_ort_index index_tmp = FULL_ORT_Ua; index_tmp < FULL_ORT_MAX; index_tmp++) phi_angle[index_tmp] = -1;
+      for (__full_ort_index index_tmp = FULL_ORT_Ua; index_tmp < FULL_ORT_MAX; index_tmp++) phi_angle[bank_for_calc_phi_angle][index_tmp] = -1;
     }
 
 #undef SIN_BASE
@@ -1870,8 +1836,10 @@ void calc_angle(void)
   else
   {
     //Не зафіксовано вектора вимірювання, відносно якого можна розраховувати кути
-    for (__full_ort_index index_tmp = FULL_ORT_Ua; index_tmp < FULL_ORT_MAX; index_tmp++) phi_angle[index_tmp] = -1;
+    for (__full_ort_index index_tmp = FULL_ORT_Ua; index_tmp < FULL_ORT_MAX; index_tmp++) phi_angle[bank_for_calc_phi_angle][index_tmp] = -1;
   }
+
+  state_calc_phi_angle = false;
 }
 
 /*****************************************************/
@@ -1904,9 +1872,10 @@ void calc_power_and_energy(void)
     information_about_clean_energy |= ((1 << USB_RECUEST)|(1 << RS485_RECUEST));
   }
   
+  state_calc_energy = true;
   for (__index_energy i = INDEX_EA_PLUS; i < MAX_NUMBER_INDEXES_ENERGY; i++)
   {
-    if (clean_energy_tmp != 0) energy[i] = 0;
+    if (clean_energy_tmp != 0) energy[0][i] = 0;
     
     int power_data;
     switch (i)
@@ -1951,34 +1920,31 @@ void calc_power_and_energy(void)
     if (power_data >= (PORIG_POWER_ENERGY*MAIN_FREQUENCY)) /*бо у power_data є сума миттєвих потужностей за 1с, які розраховувалися кожні 20мс*/
     {
       double power_quantum = ((double)power_data)/(((double)MAIN_FREQUENCY)*DIV_kWh);
-      double erergy_tmp = energy[i] + power_quantum;
+      double erergy_tmp = energy[0][i] + power_quantum;
       if (erergy_tmp > 999999.999) erergy_tmp = erergy_tmp - 999999.999;
-      energy[i] = erergy_tmp;
+      energy[0][i] = erergy_tmp;
     }
   }
+  state_calc_energy = false;
+  for (__index_energy i = INDEX_EA_PLUS; i < MAX_NUMBER_INDEXES_ENERGY; i++) energy[1][i] = energy[0][i];
   
   float P_float = ((float)P_tmp)/((float)MAIN_FREQUENCY);
   float Q_float = ((float)Q_tmp)/((float)MAIN_FREQUENCY);
   
-  mutex_power = 0xff;
-  P[0] = (int)P_float;
-  Q[0] = (int)Q_float;
-  mutex_power = 0;
-  P[1] = P[0];
-  Q[1] = Q[0];
+  state_calc_power = true;
+  bank_for_calc_power = (bank_for_calc_power ^ 0x1) & 0x1;
+  P[bank_for_calc_power] = (int)P_float;
+  Q[bank_for_calc_power] = (int)Q_float;
   
   //Повна потужність
-  if ( (P[0] != 0) || (Q[0] != 0))
+  if ( (P[bank_for_calc_power] != 0) || (Q[bank_for_calc_power] != 0))
   {
     float in_square_root, S_float;
     in_square_root = P_float*P_float + Q_float*Q_float;
     
     if (arm_sqrt_f32(in_square_root, &S_float) == ARM_MATH_SUCCESS)
     {
-      mutex_power = 0xff;
-      S[0] = (unsigned int)S_float;
-      mutex_power = 0;
-      S[1] = S[0];
+      S[bank_for_calc_power] = (unsigned int)S_float;
     }
     else
     {
@@ -1986,17 +1952,14 @@ void calc_power_and_energy(void)
       total_error_sw_fixed(53);
     }
     
-    cos_phi_x1000 = (int)(1000.0f*P_float/S_float);
+    cos_phi_x1000[bank_for_calc_power] = (int)(1000.0f*P_float/S_float);
   }
   else
   {
-    mutex_power = 0xff;
-    S[0] = 0;
-    mutex_power = 0;
-    S[1] = S[0];
-    
-    cos_phi_x1000 = 0;
+    S[bank_for_calc_power] = 0;
+    cos_phi_x1000[bank_for_calc_power] = 0;
   }
+  state_calc_power = false;
   
 }
 /*****************************************************/

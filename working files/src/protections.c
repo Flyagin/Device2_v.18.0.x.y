@@ -5847,6 +5847,8 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
     
     int32_t analog_value;
     uint32_t PQ = false;
+    uint32_t bank_for_calc_power_tmp = (state_calc_power == false ) ? bank_for_calc_power : ((bank_for_calc_power ^ 0x1) & 0x1);
+
     switch (current_settings_prt.ctrl_UP_input[n_UP])
     {
     case UP_CTRL_Ia_Ib_Ic:
@@ -6027,20 +6029,20 @@ inline void up_handler(unsigned int *p_active_functions, unsigned int number_gro
     case UP_CTRL_P:
       {
         PQ = true;
-        analog_value = P[mutex_power != 0];
+        analog_value = P[bank_for_calc_power_tmp];
         
         break;
       }
     case UP_CTRL_Q:
       {
         PQ = true;
-        analog_value = Q[mutex_power != 0];
+        analog_value = Q[bank_for_calc_power_tmp];
         
         break;
       }
     case UP_CTRL_S:
       {
-        analog_value = S[mutex_power != 0];
+        analog_value = S[bank_for_calc_power_tmp];
         
         break;
       }
@@ -7308,18 +7310,31 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
       //На початок аналізу покищо ще дискретний реєстратор не запущений
       
       //Аналізуємо, чи стоїть умова запуску дискретного реєстратора
+       unsigned int cur_active_sources[N_BIG] =
+       {
+         (carrent_active_functions[0] & current_settings_prt.ranguvannja_digital_registrator[0]),
+         (carrent_active_functions[1] & current_settings_prt.ranguvannja_digital_registrator[1]),
+         (carrent_active_functions[2] & current_settings_prt.ranguvannja_digital_registrator[2]),
+         (carrent_active_functions[3] & current_settings_prt.ranguvannja_digital_registrator[3]),
+         (carrent_active_functions[4] & current_settings_prt.ranguvannja_digital_registrator[4]),
+         (carrent_active_functions[5] & current_settings_prt.ranguvannja_digital_registrator[5]),
+         (carrent_active_functions[6] & current_settings_prt.ranguvannja_digital_registrator[6]),
+         (carrent_active_functions[7] & current_settings_prt.ranguvannja_digital_registrator[7]),
+         (carrent_active_functions[8] & current_settings_prt.ranguvannja_digital_registrator[8]),
+         (carrent_active_functions[9] & current_settings_prt.ranguvannja_digital_registrator[9])
+       };
       if (
           (
-           ((carrent_active_functions[0] & current_settings_prt.ranguvannja_digital_registrator[0]) != 0) ||
-           ((carrent_active_functions[1] & current_settings_prt.ranguvannja_digital_registrator[1]) != 0) ||
-           ((carrent_active_functions[2] & current_settings_prt.ranguvannja_digital_registrator[2]) != 0) ||
-           ((carrent_active_functions[3] & current_settings_prt.ranguvannja_digital_registrator[3]) != 0) ||
-           ((carrent_active_functions[4] & current_settings_prt.ranguvannja_digital_registrator[4]) != 0) ||
-           ((carrent_active_functions[5] & current_settings_prt.ranguvannja_digital_registrator[5]) != 0) ||
-           ((carrent_active_functions[6] & current_settings_prt.ranguvannja_digital_registrator[6]) != 0) ||
-           ((carrent_active_functions[7] & current_settings_prt.ranguvannja_digital_registrator[7]) != 0) ||
-           ((carrent_active_functions[8] & current_settings_prt.ranguvannja_digital_registrator[8]) != 0) ||
-           ((carrent_active_functions[9] & current_settings_prt.ranguvannja_digital_registrator[9]) != 0) ||
+           ((cur_active_sources[0]) != 0) ||
+           ((cur_active_sources[1]) != 0) ||
+           ((cur_active_sources[2]) != 0) ||
+           ((cur_active_sources[3]) != 0) ||
+           ((cur_active_sources[4]) != 0) ||
+           ((cur_active_sources[5]) != 0) ||
+           ((cur_active_sources[6]) != 0) ||
+           ((cur_active_sources[7]) != 0) ||
+           ((cur_active_sources[8]) != 0) ||
+           ((cur_active_sources[9]) != 0) ||
            (state_dr_record == STATE_DR_FORCE_START_NEW_RECORD)
           )   
          )
@@ -7356,7 +7371,11 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
            //І'мя комірки
           for(unsigned int i=0; i< MAX_CHAR_IN_NAME_OF_CELL; i++) 
             buffer_for_save_dr_record[FIRST_INDEX_NAME_OF_CELL_DR + i] = current_settings_prt.name_of_cell[i] & 0xff;
-          
+
+           //Джерела запуску
+          for(unsigned int i = 0; i < NUMBER_BYTES_SAMPLE_DR; i++) 
+            buffer_for_save_dr_record[FIRST_INDEX_SOURCE_DR + i] = *(((unsigned char*)cur_active_sources) + i);
+
           //Помічаємо скільки часу пройшло з початку запуску запису
           time_from_start_record_dr = 0;
           
@@ -7654,44 +7673,10 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
 /*****************************************************/
 
 /*****************************************************/
-//Зафіксована невизначена помилка роботи аналогового реєстратора
-/*****************************************************/
-void fix_undefined_error_ar(unsigned int* carrent_active_functions)
-{
-  //Виставляємо помилку з записом в дисретний реєстратор
-  _SET_BIT(set_diagnostyka, ERROR_AR_UNDEFINED_BIT);
-  _SET_BIT(carrent_active_functions, RANG_DEFECT);
-  //Переводимо режим роботи з реєстратором у сатн "На даний момент ніких дій з дискретним реєстратором не виконується" 
-  continue_previous_record_ar = 0; /*помічаємо, що ми не чикаємо деактивації всіх джерел активації аналогового реєстратора*/
-  state_ar_record_prt = STATE_AR_NO_RECORD | ((unsigned int)(1 << 31));
-  //Скидаєсо сигнал роботи аналогового реєстратора
-  _CLEAR_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR);
-
-  //Виставляємо команду запису структуру для аналогового реєстратора у EEPROM
-  _SET_BIT(control_spi1_taskes, TASK_START_WRITE_INFO_REJESTRATOR_AR_EEPROM_BIT);
-  //Відновлюємо інформаційну структуру для аналогового реєстратора
-  /*
-  Адресу залишаємо попередню, тобто така яка і була
-  */
-  info_rejestrator_ar.saving_execution = 0;
-  /*
-  оскільки скоріше всього якась частна запису відбулася, а це значить, що, якщо там були корисні дані
-  якогось запису, то вони зіпсовані. Тому треба помітити, що якщо у аналоговому реєстраторі до цього часу була
-  максимально можлива кількість записів, то зараз оснанній з них є зіпсований, тобто кількість записів стала 
-  у такому випадку на одиницю менша
-  */
-  unsigned int max_number_records_ar_tmp = max_number_records_ar;
-  if (info_rejestrator_ar.number_records >= max_number_records_ar_tmp) 
-    info_rejestrator_ar.number_records = max_number_records_ar_tmp - 1; /*Умова мал аб бути ==, але щоб перестахуватися на невизначену помилку я поставив >=*/
-}
-/*****************************************************/
-
-/*****************************************************/
 //Функція обробки логіки дискретного реєстратора
 /*****************************************************/
 inline void analog_registrator(unsigned int* carrent_active_functions)
 {
-  static unsigned int unsaved_bytes_of_header_ar;
   static unsigned int prev_active_sources[N_BIG];
   unsigned int cur_active_sources[N_BIG];
   cur_active_sources[0] = carrent_active_functions[0] & current_settings_prt.ranguvannja_analog_registrator[0];
@@ -7705,20 +7690,14 @@ inline void analog_registrator(unsigned int* carrent_active_functions)
   cur_active_sources[8] = carrent_active_functions[8] & current_settings_prt.ranguvannja_analog_registrator[8];
   cur_active_sources[9] = carrent_active_functions[9] & current_settings_prt.ranguvannja_analog_registrator[9];
 
-  //Попередньо скидаємо невизначену помилку  роботи аналогового реєстратора
-  _SET_BIT(clear_diagnostyka, ERROR_AR_UNDEFINED_BIT);
-
-  if (continue_previous_record_ar != 0)
+  if (forbidden_new_record_ar_mode_0 != 0)
   {
     /*
     Ця ситуація означає, що були активними джерела аналогового реєстратора, які запустили
     в роботу аналоговий реєстратор, і тепер для розблокування можливості запускати новий запис ми 
     чекаємо ситуації, що
-    - всі джерела активації деактивуються (у будь-який час чи до завершення записування текучого
-    запису аналогового реєстратора, чи вже після завершення записування. Це буде умовою
-    розблокування можливості запису нового запису)
-    - попердній запис записаний  у DataFlash
-    - всі джерела не деактивувалися але появилося нове джерело
+    - всі джерела активації деактивуються 
+    - появитьс новий сигнал запуску, якого не було раніше
     */
     if(
        (cur_active_sources[0] == 0) &&
@@ -7734,9 +7713,9 @@ inline void analog_registrator(unsigned int* carrent_active_functions)
       ) 
     {
       //Перша умова розблокування можливості початку нового запису виконана
-      continue_previous_record_ar = 0;
+      forbidden_new_record_ar_mode_0 = 0;
     }
-    else if  (state_ar_record == STATE_AR_NO_RECORD)
+    else if ((current_settings_prt.control_ar & CTR_AR_AVAR_STATE) == 0)
     {
       //Попередній запис повністю записаний у DataFlash, але ще деякі джерела активації не деакттивувалися
       unsigned int diff_active_sources[N_BIG];
@@ -7765,22 +7744,32 @@ inline void analog_registrator(unsigned int* carrent_active_functions)
         ) 
       {
         //Друга умова розблокування можливості початку нового запису виконана
-        continue_previous_record_ar = 0;
+        forbidden_new_record_ar_mode_0 = 0;
       }
     }
   }
 
-  switch (state_ar_record)
+  if (
+      (global_timers[INDEX_TIMER_FULL_AR_RECORD] >= MAX_TIME_FULL_AR_RECORD) ||
+      (state_ar_record_m == STATE_AR_BLOCK_M) ||
+      (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) ||
+      (state_ar_record_fatfs == STATE_AR_BLOCK_FATFS)
+     )   
   {
-  case STATE_AR_NO_RECORD:
+    if (global_timers[INDEX_TIMER_FULL_AR_RECORD] >= MAX_TIME_FULL_AR_RECORD) _SET_BIT(set_diagnostyka, ERROR_AR_TEMPORARY_BUSY_BIT);
+
+    state_ar_record_prt = STATE_AR_BLOCK_PRT;
+    global_timers[INDEX_TIMER_POSTFAULT] = -1;
+    global_timers[INDEX_TIMER_FULL_AR_RECORD] = -1;
+  }
+  
+  switch (state_ar_record_prt)
+  {
+  case STATE_AR_NONE_PRT:
     {
-      if(semaphore_read_state_ar_record == 0)
+      if (state_ar_record_fatfs == STATE_AR_NONE_FATFS)
       {
-        /*
-        Можливо була ситуація, що при попередній роботі модуля аналогового реєстратора відбувалося блокування роботи аналоговго реєстратора
-        Знятий семафор semaphore_read_state_ar_record при умові, що стан роботи аналогового реєстратора STATE_AR_NO_RECORD означає,
-        що зараз немає перешкод на його запуск, тому знімаємо теоретично можливу подію про тимчасову неготовність роботи аналогового реєстратора
-        */
+        global_timers[INDEX_TIMER_FULL_AR_RECORD] = -1;
         _SET_BIT(clear_diagnostyka, ERROR_AR_TEMPORARY_BUSY_BIT);
       }
 
@@ -7799,255 +7788,182 @@ inline void analog_registrator(unsigned int* carrent_active_functions)
            (cur_active_sources[9] != 0)
           )
           &&  
-          (continue_previous_record_ar == 0) /*при попередній роботі ан.реєстротора (якщо така була) вже всі джерела активації були зняті і зароз вони знову виникли*/ 
+          (forbidden_new_record_ar_mode_0 == 0) /*при попередній роботі ан.реєстротора (якщо така була) вже всі джерела активації були зняті і зароз вони знову виникли*/ 
          )
       {
-        //Перевіряємо, чи при початку нового запису у нас не іде спроба переналаштвати аналоговий реєстратор
-        if(semaphore_read_state_ar_record == 0)
+        //Є умова запуску аналогового реєстратора
+
+        if (state_ar_record_fatfs != STATE_AR_STOP_WRITE_FATFS)
         {
-          //Є умова запуску аналогового реєстратора
-          continue_previous_record_ar = 0xff; /*помічаємо будь-яким числом, що активувалися дзжерела ан.реєстратора, які запустили роботц аналогового реєстратора*/
-    
-          //Можна починати новий запис
-          
-          //Записуємо мітку початку запису
-          header_ar.label_start_record = LABEL_START_RECORD_AR;
-          //Записуємо час початку запису
-          unsigned char *label_to_time_array;
-          if (copying_time == 2) label_to_time_array = time_copy;
-          else label_to_time_array = time;
-          for(unsigned int i = 0; i < 7; i++) header_ar.time[i] = *(label_to_time_array + i);
-          //Коефіцієнт трансформації T0
-          header_ar.T0 = current_settings_prt.T0;
-          //Коефіцієнт трансформації TT
-          header_ar.TCurrent = current_settings_prt.TCurrent;
-          //Коефіцієнт трансформації TН
-          header_ar.TVoltage = current_settings_prt.TVoltage;
-          //І'мя ячейки
-          for(unsigned int i=0; i<MAX_CHAR_IN_NAME_OF_CELL; i++)
-            header_ar.name_of_cell[i] = current_settings_prt.name_of_cell[i] & 0xff;
-          
-          //Помічаємо, що ще ми ще не "відбирали" миттєві значення з масив для аналогового реєстратора
-          copied_number_samples = 0;
-          //Визначаємо загальну кількість миттєвих значень, які мають бути записані у мікросхему dataFlash2
-          total_number_samples = ((current_settings_prt.prefault_number_periods + current_settings_prt.postfault_number_periods) << VAGA_NUMBER_POINT_AR)*(NUMBER_ANALOG_CANALES + number_word_digital_part_ar);
-
-          //Визначаємо,що покищо заготовок аналогового реєстратора не скопійоманий у масив звідки будуть дані забирватися вже для запису у DataFlash
-          unsaved_bytes_of_header_ar = sizeof(__HEADER_AR);
-
-          //Визначаємо з якої адреси записувати
-          temporary_address_ar = info_rejestrator_ar.next_address;
-
-          //Визначаєом, що поки що немає підготовлених даних для запису
-          count_to_save = 0;
-          //Виставляємо будь-яким ненульовим числом дозвіл на підготовку нових даних для запису
-          permit_copy_new_data = 0xff;
-
-          //Робим спробу перекопіювати хоч частину заголовку аналогового реєстраторра і підготовлених даних у масив для запису в DataFlash
-          if (making_buffer_for_save_ar_record(&unsaved_bytes_of_header_ar) != 0)
+          //Переводимо режим роботи із аналоговим реєстратором у стан "Запус нового запису"
+          if (current_settings_prt.control_ar & CTR_AR_AVAR_STATE)
           {
-            //Відбулася незрозуміла ситуація - сюди програма теоретично ніколи не мала б заходити
-            fix_undefined_error_ar(carrent_active_functions);
+            state_ar_record_prt = STATE_AR_AVAR_PRT;
           }
           else
           {
-            //Переводимо режим роботи із аналоговим реєстратором у стан "Запус нового запису"
-            state_ar_record_prt = STATE_AR_START | ((unsigned int)(1 << 31));
-            //Виставляємо активну функцію
-            _SET_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR);
-
-            //У структурі по інформації стану реєстраторів виставляємо повідомлення, що почався запис і ще не закінчився
-            _SET_BIT(control_spi1_taskes, TASK_START_WRITE_INFO_REJESTRATOR_AR_EEPROM_BIT);
-            info_rejestrator_ar.saving_execution = 1;
+            state_ar_record_prt = STATE_AR_POSTAVAR_PRT;
+            global_timers[INDEX_TIMER_POSTFAULT] = 0; //Запускаємо таймер післяаварійного процесу
+          }
+        
+          if (state_ar_record_fatfs == STATE_AR_NONE_FATFS)
+          {
+            //запис на рівні FATFs зараз не проводиться, тому треба підготувати інформацію про умову старту нового запису
+          
+             global_timers[INDEX_TIMER_FULL_AR_RECORD] = 20*current_settings_prt.prefault_number_periods; //Запускаємо таймер цілого запису  з врахуванням щбуде доданий доаварійний масив
+          
+            //Записуємо мітку початку запису
+            header_ar.label_start_record = LABEL_START_RECORD_AR;
+            //Записуємо час початку запису
+            unsigned char *label_to_time_array;
+            if (copying_time == 2) label_to_time_array = time_copy;
+            else label_to_time_array = time;
+            for(unsigned int i = 0; i < 7; i++) header_ar.time[i] = *(label_to_time_array + i);
+            //Коефіцієнт трансформації T0
+            header_ar.T0 = current_settings_prt.T0;
+            //Коефіцієнт трансформації TT
+            header_ar.TCurrent = current_settings_prt.TCurrent;
+            //Коефіцієнт трансформації TН
+            header_ar.TVoltage = current_settings_prt.TVoltage;
+            //Час доаварійного масиву
+            header_ar.prefault_number_periods = current_settings_prt.prefault_number_periods;
+            //І'мя комірки
+            for(unsigned int i=0; i<MAX_CHAR_IN_NAME_OF_CELL; i++)
+              header_ar.name_of_cell[i] = current_settings_prt.name_of_cell[i] & 0xff;
+            //Сигнали, які запустили в роботу Аналоговий реєстратор
+            for (size_t i = 0; i < N_BIG; i++)
+              header_ar.cur_active_sources[i] = (prev_active_sources[i] ^ cur_active_sources[i]) & cur_active_sources[i];
           }
         }
         else
         {
-          //Виставляємо помилку, що тимчасово аналоговий реєстратор є занятий (черз те, що іде намаганні змінити часові витримки)
           _SET_BIT(set_diagnostyka, ERROR_AR_TEMPORARY_BUSY_BIT);
-          _SET_BIT(carrent_active_functions, RANG_DEFECT);
         }
       }
+
       break;
     }
-  case STATE_AR_START:
+  case STATE_AR_AVAR_PRT:
     {
-      //Ніяких дій не виконуємо, поки не встанвиться режим STATE_AR_SAVE_SRAM_AND_SAVE_FLASH,  або STATE_AR_ONLY_SAVE_FLASH
-      break;
-    }
-  case STATE_AR_SAVE_SRAM_AND_SAVE_FLASH:
-  case STATE_AR_ONLY_SAVE_FLASH:
-    {
-      if (state_ar_record == STATE_AR_ONLY_SAVE_FLASH)
+      if (
+          (
+           (cur_active_sources[0] == 0) &&
+           (cur_active_sources[1] == 0) &&
+           (cur_active_sources[2] == 0) &&
+           (cur_active_sources[3] == 0) &&
+           (cur_active_sources[4] == 0) &&
+           (cur_active_sources[5] == 0) &&
+           (cur_active_sources[6] == 0) &&
+           (cur_active_sources[7] == 0) &&
+           (cur_active_sources[8] == 0) &&
+           (cur_active_sources[9] == 0)
+          )
+          || 
+          ((current_settings_prt.control_ar & CTR_AR_AVAR_STATE) == 0) /*може статися хіба, коли під час роботи ан.реєстратора змінено це налаштування*/
+         )
       {
-        /*
-        Весь післяаварійний масив підготовлений до запису
-        */
-        if (_CHECK_SET_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR) != 0)
-        {
-          //Знімаємо сигнал роботи аналогового реєстратора
-          _CLEAR_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR);
-        }
+        state_ar_record_prt = STATE_AR_POSTAVAR_PRT;
+        global_timers[INDEX_TIMER_POSTFAULT] = 0; //Запускаємо таймер післяаварійного процесу
+      }
+      
+      break;
+    }
+  case STATE_AR_POSTAVAR_PRT:
+    {
+      if (
+          ((current_settings_prt.control_ar & CTR_AR_AVAR_STATE) != 0) &&
+          (
+           (cur_active_sources[0] != 0) ||
+           (cur_active_sources[1] != 0) ||
+           (cur_active_sources[2] != 0) ||
+           (cur_active_sources[3] != 0) ||
+           (cur_active_sources[4] != 0) ||
+           (cur_active_sources[5] != 0) ||
+           (cur_active_sources[6] != 0) ||
+           (cur_active_sources[7] != 0) ||
+           (cur_active_sources[8] != 0) ||
+           (cur_active_sources[9] != 0)
+          )
+         )
+      {
+        //Повертаємося до аварійного процесу
+        state_ar_record_prt = STATE_AR_AVAR_PRT;
+        global_timers[INDEX_TIMER_POSTFAULT] = -1; //Зупиняємо таймер післяаварійного процесу
+      }
+      else if (global_timers[INDEX_TIMER_POSTFAULT] >= (int)(20*current_settings_prt.postfault_number_periods))
+      {
+        //Завершився післяаварійний процес
+        global_timers[INDEX_TIMER_POSTFAULT] = -1; //Зупиняємо таймер післяаварійного процесу
+        state_ar_record_prt = STATE_AR_NONE_PRT;
         
-        if (_CHECK_SET_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR) == 0)
+        if (
+            /*перевірку на те, що режим "Власнеаварійний процес" ввімкнутий не треба, бо при умові активних джерел ми б попали у попередню умову де з післяаваріного процесу йде поворот до аварійного процесу*/
+            (cur_active_sources[0] != 0) ||
+            (cur_active_sources[1] != 0) ||
+            (cur_active_sources[2] != 0) ||
+            (cur_active_sources[3] != 0) ||
+            (cur_active_sources[4] != 0) ||
+            (cur_active_sources[5] != 0) ||
+            (cur_active_sources[6] != 0) ||
+            (cur_active_sources[7] != 0) ||
+            (cur_active_sources[8] != 0) ||
+            (cur_active_sources[9] != 0)
+           )
         {
-          /*
-          Враховуємо також той момент, коли сигнал запуску роботи аналогового реєсстратора був знятий
-          */
-          if  (continue_previous_record_ar == 0)
-          {
-            /*
-            Перевіряємо, чи немає умови запуску нового заппису до моменту, 
-            поки ще старий запис не закінчився повністю
-            */
-            if (
-                (cur_active_sources[0] != 0) ||
-                (cur_active_sources[1] != 0) ||
-                (cur_active_sources[2] != 0) ||
-                (cur_active_sources[3] != 0) ||
-                (cur_active_sources[4] != 0) ||
-                (cur_active_sources[5] != 0) ||
-                (cur_active_sources[6] != 0) ||
-                (cur_active_sources[7] != 0) ||
-                (cur_active_sources[8] != 0) ||
-                (cur_active_sources[9] != 0)
-               ) 
-            {
-              //Виставляємо помилку, що тимчасово аналоговий реєстратор є занятий (черз те, що завершується попередній запис)
-              _SET_BIT(set_diagnostyka, ERROR_AR_TEMPORARY_BUSY_BIT);
-              _SET_BIT(carrent_active_functions, RANG_DEFECT);
-            }
-          }
+          forbidden_new_record_ar_mode_0 = 0xff; /*помічаємо будь-яким числом, що є активними деякі сигнали від попереднього записту*/
         }
       }
       
-      if (permit_copy_new_data != 0)
-      {
-        /*
-        Робим спробу перекопіювати хоч частину заголовку аналогового реєстраторра 
-        і підготовлених даних у масив для запису в DataFlash тільки тоді, коли є дозвіл
-        на цю операцію
-        */
-        if (making_buffer_for_save_ar_record(&unsaved_bytes_of_header_ar) != 0)
-        {
-          //Відбулася незрозуміла ситуація - сюди програма теоретично ніколи не мала б заходити
-          fix_undefined_error_ar(carrent_active_functions);
-        }
-      }
-      else
-      {
-        if (
-            (copied_number_samples == total_number_samples) &&
-            (count_to_save == 0                           ) && 
-            (
-             (control_tasks_dataflash &
-              (
-               TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR | 
-               TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR
-              )
-             ) == 0
-            )   
-           )
-        {
-          //Умова зупинки роботи анаалогового реєстратора
-          if(
-             (index_array_ar_tail == index_array_ar_heat) &&
-             (state_ar_record == STATE_AR_ONLY_SAVE_FLASH)  
-            )  
-          {
-            //Коректна умова зупинки роботи аналогового реєстратора
-            state_ar_record_prt = STATE_AR_NO_RECORD | ((unsigned int)(1 << 31));
-
-            //Виставляємо команду запису структури аналогового реєстратора у EEPROM
-            _SET_BIT(control_spi1_taskes, TASK_START_WRITE_INFO_REJESTRATOR_AR_EEPROM_BIT);
-            //Визначаємо нову адресу наступного запису, нову кількість записів і знімаємо сигналізацію, що зараз іде запис
-            if ((temporary_address_ar + size_one_ar_record) > (NUMBER_PAGES_INTO_DATAFLASH_2 << VAGA_SIZE_PAGE_DATAFLASH_2))
-              temporary_address_ar = 0; 
-            info_rejestrator_ar.next_address = temporary_address_ar;
-            info_rejestrator_ar.saving_execution = 0;
-            unsigned int max_number_records_ar_tmp = max_number_records_ar;
-            if (info_rejestrator_ar.number_records < max_number_records_ar_tmp) info_rejestrator_ar.number_records += 1;
-            else info_rejestrator_ar.number_records = max_number_records_ar_tmp;
-          }
-          else
-          {
-            /*В процесі роботи аналогового реєстратора відбувся збій, який привів
-            до непередбачуваного завершення роботи аналогового реєстратора
-            
-            Це скоріше всього виникло внаслідок того, що ми досягнули передчасно
-            максимальної кількості зкопійованих миттєвих значень
-            */
-            fix_undefined_error_ar(carrent_active_functions);
-          }
-        }
-        else
-        {
-          //Треба подати команду на запис підготовлених даних
-          if (
-              (count_to_save != 0 ) 
-              && 
-              (
-               (control_tasks_dataflash &
-                (
-                 TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR | 
-                 TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR
-                )
-               ) == 0
-              )   
-             )
-          {
-            /*
-            Подаємо команду на запис нових даних тільки тоді коли не іде зараз запис
-            попередньо підготованих даних і коли є нові дані для запису
-            */
-            
-            if (((temporary_address_ar & 0x1ff) + count_to_save) <= SIZE_PAGE_DATAFLASH_2)
-            {
-              //Немає помилки при фомауванні кількості байт для запису (в одну сторінку дані поміщаються з текучої адреси)
-              
-              if (count_to_save == SIZE_PAGE_DATAFLASH_2) control_tasks_dataflash |= TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR;
-              else control_tasks_dataflash |= TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR;
-            }
-            else
-            {
-              //Відбулася незрозуміла ситуація - сюди програма теоретично ніколи не мала б заходити
-              fix_undefined_error_ar(carrent_active_functions);
-            }
-          }
-        }
-
-      }
       break;
     }
-  case STATE_AR_TEMPORARY_BLOCK:
+  case STATE_AR_BLOCK_PRT:
     {
-      //На даний момент певні внутрішні операції блокують роботу аналогового реєстратрора
-      //Аналізуємо, чи стоїть умова запуску аналогового реєстратора
+      //Аналізуємо чи немає умови почати новий запис поки ми не вийшли з блокованого стану
       if (
-          (cur_active_sources[0] != 0) ||
-          (cur_active_sources[1] != 0) ||
-          (cur_active_sources[2] != 0) ||
-          (cur_active_sources[3] != 0) ||
-          (cur_active_sources[4] != 0) ||
-          (cur_active_sources[5] != 0) ||
-          (cur_active_sources[6] != 0) ||
-          (cur_active_sources[7] != 0) ||
-          (cur_active_sources[8] != 0) ||
-          (cur_active_sources[9] != 0)
+          (state_ar_record_fatfs == STATE_AR_NONE_FATFS) &&
+          (state_ar_record_m == STATE_AR_NONE_M)
          )
       {
-        //Виставляємо помилку, що тимчасово аналоговий реєстратор є занятий
-        _SET_BIT(set_diagnostyka, ERROR_AR_TEMPORARY_BUSY_BIT);
-        _SET_BIT(carrent_active_functions, RANG_DEFECT);
+        state_ar_record_prt = STATE_AR_NONE_PRT;
+        
+        if(
+           (cur_active_sources[0] != 0) ||
+           (cur_active_sources[1] != 0) ||
+           (cur_active_sources[2] != 0) ||
+           (cur_active_sources[3] != 0) ||
+           (cur_active_sources[4] != 0) ||
+           (cur_active_sources[5] != 0) ||
+           (cur_active_sources[6] != 0) ||
+           (cur_active_sources[7] != 0) ||
+           (cur_active_sources[8] != 0) ||
+           (cur_active_sources[9] != 0)
+          )   
+        {
+          forbidden_new_record_ar_mode_0 = 0xff; /*помічаємо будь-яким числом, що є активними деякі сигнали від попереднього записту*/
+        }
       }
+      
       break;
     }
   default:
     {
-      //Відбулася незрозуміла ситуація - сюди програма теоретично ніколи не мала б заходити
-      fix_undefined_error_ar(carrent_active_functions);
+      //Теоретично цього ніколи не мало б бути
+      total_error_sw_fixed(32);
       break;
     }
+  }
+  
+  //Виставляння/скидання функції Роботи Аналогового реєстратора
+  if (
+      (state_ar_record_prt == STATE_AR_AVAR_PRT) ||
+      (state_ar_record_prt == STATE_AR_POSTAVAR_PRT)
+     )
+  {
+    _SET_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR);
+  }
+  else
+  {
+    _CLEAR_BIT(carrent_active_functions, RANG_WORK_A_REJESTRATOR);
   }
 
   prev_active_sources[0] = cur_active_sources[0];
@@ -8693,40 +8609,40 @@ inline void main_protection(void)
   /**************************/
   //Сигнал "Несправность Общая"
   /**************************/
-  unsigned int diagnostyka_tmp[3];
-  diagnostyka_tmp[0] = diagnostyka[0];
-  diagnostyka_tmp[1] = diagnostyka[1];
-  diagnostyka_tmp[2] = diagnostyka[2];
+  unsigned int diagnostyka_tmp[N_DIAGN];
+  for (size_t i = 0; i < N_DIAGN; i ++)
+  {
+    diagnostyka_tmp[i] = diagnostyka[i];
 
-  diagnostyka_tmp[0] &= (unsigned int)(~clear_diagnostyka[0]); 
-  diagnostyka_tmp[0] |= set_diagnostyka[0]; 
-
-  diagnostyka_tmp[1] &= (unsigned int)(~clear_diagnostyka[1]); 
-  diagnostyka_tmp[1] |= set_diagnostyka[1]; 
-
-  diagnostyka_tmp[2] &= (unsigned int)(~clear_diagnostyka[2]); 
-  diagnostyka_tmp[2] |= set_diagnostyka[2]; 
-  
-//  diagnostyka_tmp[2] &= USED_BITS_IN_LAST_INDEX; 
+    diagnostyka_tmp[i] &= (unsigned int)(~clear_diagnostyka[i]); 
+    diagnostyka_tmp[i] |= set_diagnostyka[i]; 
+  }
 
   _CLEAR_BIT(diagnostyka_tmp, EVENT_START_SYSTEM_BIT);
   _CLEAR_BIT(diagnostyka_tmp, EVENT_SOFT_RESTART_SYSTEM_BIT);
   _CLEAR_BIT(diagnostyka_tmp, EVENT_DROP_POWER_BIT);
-  if (
-      (diagnostyka_tmp[0] != 0) ||
-      (diagnostyka_tmp[1] != 0) ||
-      (diagnostyka_tmp[2] != 0)
-     )   
+  unsigned int not_null = false;
+  for (size_t i = 0; i < N_DIAGN; i++) 
+  {
+    not_null |= (diagnostyka_tmp[i] != 0);
+    if (not_null) break;
+  }
+              
+  if (not_null)
   {
     _SET_BIT(active_functions, RANG_DEFECT);
     /**************************/
     //Сигнал "Несправность Аварийная"
     /**************************/
-    if (
-        ((diagnostyka_tmp[0] & MASKA_AVAR_ERROR_0) != 0) ||
-        ((diagnostyka_tmp[1] & MASKA_AVAR_ERROR_1) != 0) ||
-        ((diagnostyka_tmp[2] & MASKA_AVAR_ERROR_2) != 0)
-       )   
+    const unsigned int maska_avar_error[N_DIAGN] = {MASKA_AVAR_ERROR_0, MASKA_AVAR_ERROR_1, MASKA_AVAR_ERROR_2};
+
+    not_null = false;
+    for (size_t i = 0; i < N_DIAGN; i++) 
+    {
+      not_null |= ((diagnostyka_tmp[i] & maska_avar_error[i])  != 0);
+      if (not_null) break;
+    }
+    if (not_null)
     {
       _SET_BIT(active_functions, RANG_AVAR_DEFECT);
     }
@@ -9453,11 +9369,6 @@ inline void main_protection(void)
   }
 
   copying_active_functions = 0; //Помічаємо, що обновлення значення активних функцій завершене
-  if ((state_ar_record_prt  & ((unsigned int)(1 << 31))) != 0) 
-  {
-    state_ar_record_prt &= (unsigned int)(~(1 << 31));
-    state_ar_record = state_ar_record_prt;
-  }
   
   /*
   Робимо копію значення активних функцій для того, щоб коли ці знаення будуть
@@ -9844,10 +9755,7 @@ void TIM2_IRQHandler(void)
     /***********************************************************/
     //Перевіряємо, чи відбувалися зміни настройок
     /***********************************************************/
-    if (
-        (changed_settings == CHANGED_ETAP_ENDED) && /*Це є умова, що нові дані підготовлені для передачі їх у роботу системою захистів (і при цьому зараз дані не змінюються)*/
-        (state_ar_record  != STATE_AR_START    )    /*Це є умова, що на даний момент не може виникнути переривання від вимірювальної системи (з вищим пріоритетом за пріоритет системи захистів) з умовою початку формування запису аналогового реєстратора. де треба буде взяти ширину доаварійного і післяаварійного масивів*/ 
-       )   
+    if (changed_settings == CHANGED_ETAP_ENDED) /*Це є умова, що нові дані підготовлені для передачі їх у роботу системою захистів (і при цьому зараз дані не змінюються)*/
     {
       //Копіюємо таблицю настройок у копію цієї таблиці але з якою працює (читає і змінює) тільки система захистів
       current_settings_prt = current_settings;
@@ -9867,46 +9775,8 @@ void TIM2_IRQHandler(void)
     /***********************************************************/
 
     /***********************************************************/
-    //Перевіряємо необхідність очистки аналогового і дискретного реєстраторів
+    //Перевіряємо необхідність очистки дискретного реєстраторів
     /***********************************************************/
-    //Аналоговий реєстратор
-    if (
-        ((clean_rejestrators & CLEAN_AR) != 0 )
-        &&  
-        (state_ar_record == STATE_AR_NO_RECORD)
-        &&  
-        (
-         (control_tasks_dataflash & (
-                                     TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR |
-                                     TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR      |
-                                     TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB                         |
-                                     TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485                       |
-                                     TASK_MAMORY_READ_DATAFLASH_FOR_AR_MENU
-                                    )
-         ) == 0
-        )   
-       )
-    {
-      //Виставлено каманда очистити аналогового реєстратора
-
-      //Виставляємо команду запису цієї структури у EEPROM
-      _SET_BIT(control_spi1_taskes, TASK_START_WRITE_INFO_REJESTRATOR_AR_EEPROM_BIT);
-    
-      //Очищаємо структуру інформації по дискретному реєстраторі
-      info_rejestrator_ar.next_address = MIN_ADDRESS_AR_AREA;
-      info_rejestrator_ar.saving_execution = 0;
-      info_rejestrator_ar.number_records = 0;
-    
-      //Помічаємо, що номер запису не вибраний
-      number_record_of_ar_for_menu = 0xffff;
-      number_record_of_ar_for_USB = 0xffff;
-      number_record_of_ar_for_RS485 = 0xffff;
-
-      //Знімаємо команду очистки аналогового реєстратора
-      clean_rejestrators &= (unsigned int)(~CLEAN_AR);
-    }
-    
-    //Дискретний реєстратор
     if (
         ((clean_rejestrators & CLEAN_DR) != 0)
         &&  
@@ -9972,10 +9842,10 @@ void TIM2_IRQHandler(void)
           {
             if (error_rele[index] < 3) error_rele[index]++;
             if (error_rele[index] >= 3 ) _SET_BIT(set_diagnostyka, (ERROR_DIGITAL_OUTPUT_1_BIT + index));
-        }
+          }
           else error_rele[index] = 0;
+        }
       }
-    }
       else
       {
         for (unsigned int index = 0; index < NUMBER_OUTPUTS; index++) error_rele[index] = 0;
@@ -10053,33 +9923,15 @@ void TIM2_IRQHandler(void)
     }
     
     //Перевіряємо достовірність значень для аналогового реєстратора
-    if (
-        (state_ar_record  != STATE_AR_TEMPORARY_BLOCK) &&
-        (changed_settings == CHANGED_ETAP_NONE       )  
-       )   
-    {
-      //Перевірку здійснюємо тільки тоді, коли не іде зміна часових параметрів
-      unsigned int size_one_ar_record_tmp = size_one_ar_record, max_number_records_ar_tmp = max_number_records_ar;
-      if (
-          ((number_word_digital_part_ar*8*sizeof(short int)) < NUMBER_TOTAL_SIGNAL_FOR_RANG)
-          ||  
-          (size_one_ar_record_tmp != (sizeof(__HEADER_AR) + ((current_settings_prt.prefault_number_periods + current_settings_prt.postfault_number_periods) << VAGA_NUMBER_POINT_AR)*(NUMBER_ANALOG_CANALES + number_word_digital_part_ar)*sizeof(short int)))
-          ||
-          (
-           !(
-             (size_one_ar_record_tmp* max_number_records_ar_tmp      <= ((NUMBER_PAGES_INTO_DATAFLASH_2 << VAGA_SIZE_PAGE_DATAFLASH_2))) &&
-             (size_one_ar_record_tmp*(max_number_records_ar_tmp + 1) >  ((NUMBER_PAGES_INTO_DATAFLASH_2 << VAGA_SIZE_PAGE_DATAFLASH_2)))
-            ) 
-          ) 
-         )
-      {
-        //Теоретично ця помилка ніколи не малаб реєструватися
-        /*Якщо виникла така ситуація то треба зациклити пророграму, щоб вона пішла на перезапуск - 
-        бо відбулася недопустима незрозуміла помилка у розраховуваних параметрах аналогового реєстратора.
-        Не зрозумілу чого вона виникла, коли і де, коректність роботи пригоамного забезпечення під питанням!*/
-        total_error_sw_fixed(5);
-      }
-    }
+//    //Перевіряємо достовірність значень для аналогового реєстратора
+//    if ((number_word_digital_part_ar*8*sizeof(short int)) < NUMBER_TOTAL_SIGNAL_FOR_RANG)
+//    {
+//      //Теоретично ця помилка ніколи не малаб реєструватися
+//      /*Якщо виникла така ситуація то треба зациклити ропаграму, щоб вона пішла на перезапуск - 
+//      бо відбулася недопустима незрозуміла помилка у розраховуваних параметрах аналогового реєстратора.
+//      Не зрозумілу чого вона виникла, коли і де, коректність роботи пригоамного забезпечення під питанням!*/
+//      total_error_sw_fixed(5);
+//    }
 
     //Функції захистів
     main_protection();

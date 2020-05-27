@@ -199,6 +199,7 @@ int superReader20(int offsetRegister, int fileNumber, int recordNumber, int reco
 {
   switch (fileNumber)
     {
+/*
     case 1://Конфигурация аналогового регистратора
       return configAnalogRegistrator(offsetRegister, recordNumber, recordLen);
 
@@ -216,7 +217,26 @@ int superReader20(int offsetRegister, int fileNumber, int recordNumber, int reco
 
     case 6://Данные дискретного регистратора 1часть
       return dataDiskretRegistrator(offsetRegister, recordNumber, recordLen);
+*/
 
+    case 1://Конфигурация дискретного регистратора
+      return configDiskretRegistrator(offsetRegister, recordNumber, recordLen);
+
+    case 2://Данные дискретного регистратора 1часть
+    case 3://Данные дискретного регистратора 2часть
+      if (fileNumber == 3) recordNumber += 10000;
+      return dataDiskretRegistrator(offsetRegister, recordNumber, recordLen);
+
+    case 4://Конфигурация аналогового регистратора
+      return configAnalogRegistrator(offsetRegister, recordNumber, recordLen);
+
+    default:
+      {
+      //Данные аналогового регистратора 
+      if (fileNumber == 0) break;
+      if (fileNumber > 5) recordNumber += (fileNumber - 5)*10000;
+      return dataAnalogRegistrator(offsetRegister, recordNumber, recordLen);
+      }//default
     }//switch
 
   return MARKER_ERRORPERIMETR;
@@ -263,17 +283,16 @@ int openRegistrator(int number_file)
 //ОБЩЕЕ AR DR
   if (
     (
-      (number_file >= 1) &&
-      (number_file <= 4) &&
+      (number_file >= 4) &&
       (
-        ((pointInterface == USB_RECUEST  ) && (number_record_of_ar_for_USB   == 0xffff)) ||
-        ((pointInterface == RS485_RECUEST  ) && (number_record_of_ar_for_RS485 == 0xffff))
+        ((pointInterface == USB_RECUEST  ) && ((number_record_of_ar_for_USB   == -1) || (id_ar_record_for_USB[0]   == '\0'))) ||
+        ((pointInterface == RS485_RECUEST) && ((number_record_of_ar_for_RS485 == -1) || (id_ar_record_for_RS485[0] == '\0')))
       )
     )
     ||
     (
-      (number_file >= 5) &&
-      (number_file <= 6) &&
+      (number_file >= 1) &&
+      (number_file <= 2) &&
       (
         ((pointInterface == USB_RECUEST  ) && (number_record_of_dr_for_USB   == 0xffff)) ||
         ((pointInterface == RS485_RECUEST  ) && (number_record_of_dr_for_RS485 == 0xffff))
@@ -285,21 +304,20 @@ int openRegistrator(int number_file)
       return -1;
     }
   else if (
-    (number_file >= 1) &&
-    (number_file <= 4) &&
+    (number_file >= 4) &&
     (
       (
-        (state_ar_record != STATE_AR_NO_RECORD      ) &&
-        (state_ar_record != STATE_AR_TEMPORARY_BLOCK)
+        (state_ar_record_fatfs != STATE_AR_NONE_FATFS) &&
+        (state_ar_record_fatfs != STATE_AR_MEMORY_FULL_FATFS) &&
+        (state_ar_record_fatfs != STATE_AR_BLOCK_FATFS)
       )
       ||
       ((clean_rejestrators & CLEAN_AR) != 0)
       ||
       (
         (control_tasks_dataflash & (
-           TASK_ERASE_DATAFLASH_2                                        |
-           TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR |
-           TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR
+           TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_FS |
+           TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_FS
          )
         ) != 0
       )
@@ -317,8 +335,8 @@ int openRegistrator(int number_file)
       */
     }
   else if (
-    (number_file >= 5) &&
-    (number_file <= 6) &&
+    (number_file >= 1) &&
+    (number_file <= 2) &&
     (
       (
         ((pointInterface == USB_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_DR_USB  ) != 0)) ||
@@ -334,33 +352,8 @@ int openRegistrator(int number_file)
       return -2;
     }//if
 
-//ТОЛЬКО AR
-  if(number_file<5)//
-    {
-      //Очікуємо поки завершиться зчитуквання даних для аналогового реєстратора
-      while (
-        ((pointInterface == USB_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB  ) != 0)) ||
-        ((pointInterface == RS485_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485) != 0))
-      )
-        {
-          //Якщ очасом буде спрацьовувати Watchdog, то тут треба буде поставити функцію роботи з ним
-          if (
-            (control_spi1_taskes[0] != 0) ||
-            (control_spi1_taskes[1] != 0) ||
-            (state_execution_spi1 > 0)
-          )
-            {
-              mutex_spi1 = true;
-              if (driver_spi_df[number_chip_dataflsh_exchange].state_execution == TRANSACTION_EXECUTING_NONE)
-                {
-                  main_routines_for_spi1();
-                }
-              mutex_spi1 = false;
-            }
-        }//while
-    }//if(number_file<5)
 //ТОЛЬКО DR
-  else
+  if(number_file<3)//
     {
       while (
         ((pointInterface == USB_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_DR_USB  ) != 0)) ||
@@ -383,6 +376,10 @@ int openRegistrator(int number_file)
             }
         }//while
     }//else
+//ТОЛЬКО AR
+  else
+    {
+    }//if(number_file<5)
 
   return 0;
 }//openRegistrator(int number_file)
@@ -390,26 +387,34 @@ int openRegistrator(int number_file)
 int dataAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
 {
 //данные аналогового регистратора
-  //Максимальна кількість часових зрівів
-  int max_number_time_sample = (current_settings.prefault_number_periods + current_settings.postfault_number_periods) << VAGA_NUMBER_POINT_AR;
-  unsigned int lenMax = (3 + NUMBER_ANALOG_CANALES + number_word_digital_part_ar);
+  unsigned int lenMax = (3 + NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR);
   if ((unsigned int)recordLen > lenMax) return MARKER_ERRORPERIMETR;//уйти если превышение
 
-  if(recordNumber>max_number_time_sample) return MARKER_ERRORPERIMETR;//уйти если превышение
-
-
   int *point_to_first_number_time_sample, *point_to_last_number_time_sample;
+  char *point_id_ar_record;
+  int *point_to_max_number_time_sample;
+  unsigned char *point_to_Buffer;
 
   if (pointInterface == USB_RECUEST)
     {
+      point_id_ar_record = id_ar_record_for_USB;
       point_to_first_number_time_sample = &first_number_time_sample_for_USB;
       point_to_last_number_time_sample  = &last_number_time_sample_for_USB;
+      point_to_max_number_time_sample = &max_number_time_sample_USB;
+          
+      point_to_Buffer = buffer_for_USB_read_record_ar;
     }
   else
     {
+      point_id_ar_record = id_ar_record_for_RS485;
       point_to_first_number_time_sample = &first_number_time_sample_for_RS485;
       point_to_last_number_time_sample  = &last_number_time_sample_for_RS485;
+      point_to_max_number_time_sample = &max_number_time_sample_RS485;
+          
+      point_to_Buffer = buffer_for_RS485_read_record_ar;
     }
+
+  if(recordNumber>*point_to_max_number_time_sample) return MARKER_ERRORPERIMETR;//уйти если превышение
 
   //Перевіряємо чи зчитано заголовок аналогового реєстратора
   if (
@@ -418,46 +423,43 @@ int dataAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
   )
     {
       //Запитуваний часовий зріз не є зчитаним
-
-      //Виставляємо читання без заголовку запису даного запису з запитуваноого номеру зрізу і дальше, скільки можливо, часових зрізів
-      *point_to_first_number_time_sample = recordNumber;
-      int last_number_time_sample_tmp = recordNumber + SIZE_PAGE_DATAFLASH_2/((NUMBER_ANALOG_CANALES + number_word_digital_part_ar)*sizeof(short int));
-      if (last_number_time_sample_tmp <= max_number_time_sample)
+      FIL fil;
+      FRESULT res = f_open(&fil, point_id_ar_record, FA_READ);
+      if (res == FR_OK) 
+      {
+        //Виставляємо читання без заголовку запису даного запису з запитуваноого номеру зрізу і дальше, скільки можливо, часових зрізів 
+        *point_to_first_number_time_sample = recordNumber;
+        int last_number_time_sample_tmp = recordNumber + SIZE_PAGE_DATAFLASH_2/((NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int));
+        int max_number_time_sample = *point_to_max_number_time_sample;
+            
+        if (last_number_time_sample_tmp <= max_number_time_sample)
         {
           *point_to_last_number_time_sample = last_number_time_sample_tmp - 1;//номер останнього часового зрізу ВКЛЮЧНО
         }
-      else
+        else
         {
           *point_to_last_number_time_sample = max_number_time_sample - 1;
         }
-
-      //Подаємо команду зчитати дані у бувер пам'яті
-      if (pointInterface == USB_RECUEST)
-        control_tasks_dataflash |= TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB;
-      else
-        control_tasks_dataflash |= TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485;
-
-      //Очікуємо поки завершиться зчитуквання даних для аналогового реєстратора
-      while (
-        ((pointInterface == USB_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB  ) != 0)) ||
-        ((pointInterface == RS485_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485) != 0))
-      )
+              
+        res = f_lseek(&fil, (sizeof(__HEADER_AR) + recordNumber*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int)));
+        if (res == FR_OK)
         {
-          //Якщо очасом буде спрацьовувати Watchdog, то тут треба буде поставити функцію роботи з ним
-          if (
-            (control_spi1_taskes[0] != 0) ||
-            (control_spi1_taskes[1] != 0) ||
-            (state_execution_spi1 > 0)
-          )
-            {
-              mutex_spi1 = true;
-              if (driver_spi_df[number_chip_dataflsh_exchange].state_execution == TRANSACTION_EXECUTING_NONE)
-                {
-                  main_routines_for_spi1();
-                }
-              mutex_spi1 = false;
-            }
-        }//while
+          unsigned int read_tmp;
+          UINT ByteToRead = ((unsigned int)(*point_to_last_number_time_sample) - recordNumber + 1)*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
+          res = f_read(&fil, point_to_Buffer, ByteToRead, &read_tmp);
+          if ((res != FR_OK) || (read_tmp != ByteToRead)) return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+        }
+        else return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+
+        res = f_close(&fil);
+        if (res != FR_OK) 
+        {
+          //Невизначена ситуація, якої ніколи б не мало бути.
+          _SET_BIT(set_diagnostyka, ERROR_AR_UNDEFINED_BIT);
+          return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+        }
+      }
+      else return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
     }
 
   //Якщо ми сюди дійшли, то вважаємо що запитувана виборка зчитана і знаходиться у буфері читання аналогового реєстратора для інтерфейсу
@@ -467,12 +469,12 @@ int dataAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
   if((*point_to_first_number_time_sample) == -1)
     {
       index_time_sample = sizeof(__HEADER_AR) + recordNumber*
-                          (NUMBER_ANALOG_CANALES + number_word_digital_part_ar)*sizeof(short int);
+                          (NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
     }
   else
     {
       index_time_sample = 0 + (recordNumber - (*point_to_first_number_time_sample))*
-                          (NUMBER_ANALOG_CANALES + number_word_digital_part_ar)*sizeof(short int);
+                          (NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
     }
 
   switch(offsetRegister)

@@ -1,12 +1,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "constants.h"
+#include "fatfs.h"
 #include "libraries.h"
 #include "variables_global.h"
 #include "functions_global.h"
 #include "variables_global_m.h"
 
 /*******************************************************************************/
-//Робота з Wotchdog
+//Робота з Watchdog
 /*******************************************************************************/
 inline void watchdog_routine(void)
 {
@@ -39,19 +40,19 @@ inline void watchdog_routine(void)
     control_word_of_watchdog =  0;
   }
 #ifdef DEBUG_TEST
-  else
-  {
-    unsigned int time_1_watchdog_output_tmp = time_2_watchdog_output;
-    unsigned int time_2_watchdog_output_tmp = TIM4->CNT;
-    if (time_2_watchdog_output_tmp >= time_1_watchdog_output_tmp) delta_time = time_2_watchdog_output_tmp - time_1_watchdog_output_tmp;
-    else delta_time = time_2_watchdog_output_tmp + 0xffff - time_1_watchdog_output_tmp;
-    unsigned int time_delta_watchdog_output_tmp = delta_time* 10;
-    
-    if (time_delta_watchdog_output_tmp > 100000)
-    {
-      while(time_delta_watchdog_output_tmp != 0);
-    }
-  }
+//  else
+//  {
+//    unsigned int time_1_watchdog_output_tmp = time_2_watchdog_output;
+//    unsigned int time_2_watchdog_output_tmp = TIM4->CNT;
+//    if (time_2_watchdog_output_tmp >= time_1_watchdog_output_tmp) delta_time = time_2_watchdog_output_tmp - time_1_watchdog_output_tmp;
+//    else delta_time = time_2_watchdog_output_tmp + 0xffff - time_1_watchdog_output_tmp;
+//    unsigned int time_delta_watchdog_output_tmp = delta_time* 10;
+//    
+//    if (time_delta_watchdog_output_tmp > 100000)
+//    {
+//      while(time_delta_watchdog_output_tmp != 0);
+//    }
+//  }
 #endif
 
   if (restart_timing_watchdog == 0)
@@ -80,7 +81,7 @@ inline void watchdog_routine(void)
 /*************************************************************************
 Періодичні низькопріоритетні задачі
 *************************************************************************/
-inline void periodical_operations(void)
+void periodical_operations(void)
 {
   //Обмін через SPI_1
   if (  
@@ -117,67 +118,6 @@ inline void periodical_operations(void)
     
   //Робота з Watchdog
   watchdog_routine();
-
-  //Робота з таймером очікування нових змін налаштувань
-  if ((timeout_idle_new_settings >= current_settings.timeout_idle_new_settings) && (restart_timeout_idle_new_settings == 0))
-  {
-    if (_CHECK_SET_BIT(active_functions, RANG_SETTINGS_CHANGED) != 0) 
-    {
-      current_settings_interfaces = current_settings;
-      type_of_settings_changed = 0;
-      _CLEAR_BIT(active_functions, RANG_SETTINGS_CHANGED);
-    }
-  }
-  
-  //Обмін по USB
-  if (current_settings.password_interface_USB)
-  {
-    unsigned int timeout = current_settings.timeout_deactivation_password_interface_USB;
-    if ((timeout != 0) && (timeout_idle_USB >= timeout) && ((restart_timeout_interface & (1 << USB_RECUEST)) == 0)) password_set_USB = 1;
-  }
-  Usb_routines();
-
-  //Обмін по RS-485
-  if (current_settings.password_interface_RS485)
-  {
-    unsigned int timeout = current_settings.timeout_deactivation_password_interface_RS485;
-    if ((timeout != 0) && (timeout_idle_RS485 >= timeout) && ((restart_timeout_interface & (1 << RS485_RECUEST)) == 0)) password_set_RS485 = 1;
-  }
-  if(
-     (RxBuffer_RS485_count != 0) &&
-     (make_reconfiguration_RS_485 == 0) &&
-     ((DMA_StreamRS485_Rx->CR & (uint32_t)DMA_SxCR_EN) == 0)
-    )
-  {
-    //Це є умовою, що дані стоять у черзі  на обробку
-      
-    //Робота з Watchdog
-    watchdog_routine();
-
-    //Обробляємо запит
-    inputPacketParserRS485();
-    
-    //Виставляємо, що кількість прийнятих байт рівна 0
-    RxBuffer_RS485_count = 0;
-  }
-  else if (make_reconfiguration_RS_485 != 0)
-  {
-    //Стоїть умова переконфігурувати RS-485
-      
-    //Перевіряємо чи на даний моент не іде передача даних на верхній рівень
-    if (GPIO_ReadOutputDataBit(GPIO_485DE, GPIO_PIN_485DE) == Bit_RESET)
-    {
-
-      //Переконфігуровуємо USART для RS-485
-      USART_RS485_Configure();
-
-      //Відновлюємо моніторинг каналу RS-485
-      restart_monitoring_RS485();
-      
-      //Знімаємо індикацю про невикану переконфігупацію інтерфейсу RS-485
-      make_reconfiguration_RS_485 = 0;
-    }
-  }
 
   /*******************/
   //Контроль достовірності важливих даних
@@ -278,7 +218,7 @@ inline void periodical_operations(void)
     //Стоїть у черзі активна задача самоконтролю по резервній копії для аналогового реєстратора
     //Виконуємо її
     unsigned int result;
-    result = control_info_rejestrator(&info_rejestrator_ar_ctrl, crc_info_rejestrator_ar_ctrl);
+    result = control_info_ar_rejestrator(&info_rejestrator_ar_ctrl, crc_info_rejestrator_ar_ctrl);
       
     if (result == 1)
     {
@@ -357,14 +297,13 @@ inline void periodical_operations(void)
     //Скидаємо активну задачу самоконтролю по резервній копії для аналогового реєстратора
     periodical_tasks_TEST_RESURS_LOCK = false;
   }
-
+  
   if (watchdog_l2) 
   {
     //Теоретично цього ніколи не мало б бути
     total_error_sw_fixed(119);
   }
-  /*******************/
-
+  
 //  /*******************/
 //  //Копіювання даних миттєвого масиву для передавання у інші системи
 //  /*******************/
@@ -390,6 +329,90 @@ inline void periodical_operations(void)
   if(resurs_temp < 0xfffffffe) resurs_temp++;
 
   watchdog_routine();
+}
+/*************************************************************************/
+
+/*************************************************************************
+Періодичні низькопріоритетні задачі комунікації
+*************************************************************************/
+void periodical_operations_communication(unsigned int ar_working)
+{
+  //Робота з Watchdog
+  watchdog_routine();
+  
+  //Робота з таймером очікування нових змін налаштувань
+  if ((timeout_idle_new_settings >= current_settings.timeout_idle_new_settings) && (restart_timeout_idle_new_settings == 0))
+  {
+    if (_CHECK_SET_BIT(active_functions, RANG_SETTINGS_CHANGED) != 0) 
+    {
+      current_settings_interfaces = current_settings;
+      type_of_settings_changed = 0;
+      _CLEAR_BIT(active_functions, RANG_SETTINGS_CHANGED);
+    }
+  }
+  
+  static unsigned int selection_USB_RS485;
+
+  if ((ar_working == false) || ((selection_USB_RS485 & 0x1) == 0))
+  {
+    //Обмін по USB
+    if (current_settings.password_interface_USB)
+    {
+      unsigned int timeout = current_settings.timeout_deactivation_password_interface_USB;
+      if ((timeout != 0) && (timeout_idle_USB >= timeout) && ((restart_timeout_interface & (1 << USB_RECUEST)) == 0)) password_set_USB = 1;
+    }
+    Usb_routines();
+  }
+
+  if ((ar_working == false) || ((selection_USB_RS485 & 0x1) != 0))
+  {
+    //Обмін по RS-485
+    if (current_settings.password_interface_RS485)
+    {
+      unsigned int timeout = current_settings.timeout_deactivation_password_interface_RS485;
+      if ((timeout != 0) && (timeout_idle_RS485 >= timeout) && ((restart_timeout_interface & (1 << RS485_RECUEST)) == 0)) password_set_RS485 = 1;
+    }
+    if(
+       (RxBuffer_RS485_count != 0) &&
+       (make_reconfiguration_RS_485 == 0) &&
+       ((DMA_StreamRS485_Rx->CR & (uint32_t)DMA_SxCR_EN) == 0)
+      )
+    {
+      //Це є умовою, що дані стоять у черзі  на обробку
+      
+      //Робота з Watchdog
+      watchdog_routine();
+
+      //Обробляємо запит
+      inputPacketParserRS485();
+    
+      //Виставляємо, що кількість прийнятих байт рівна 0
+      RxBuffer_RS485_count = 0;
+    }
+    else if (make_reconfiguration_RS_485 != 0)
+    {
+      //Стоїть умова переконфігурувати RS-485
+      
+      //Перевіряємо чи на даний моент не іде передача даних на верхній рівень
+      if (GPIO_ReadOutputDataBit(GPIO_485DE, GPIO_PIN_485DE) == Bit_RESET)
+      {
+
+        //Переконфігуровуємо USART для RS-485
+        USART_RS485_Configure();
+
+        //Відновлюємо моніторинг каналу RS-485
+        restart_monitoring_RS485();
+      
+        //Знімаємо індикацю про невикану переконфігупацію інтерфейсу RS-485
+        make_reconfiguration_RS_485 = 0;
+      }
+    }
+  }
+
+  //Робота з Watchdog
+  watchdog_routine();
+       
+  selection_USB_RS485++;
 }
 /*************************************************************************/
 
@@ -509,9 +532,9 @@ int main(void)
     */
     _SET_BIT(control_spi1_taskes, TASK_START_WRITE_INFO_REJESTRATOR_AR_EEPROM_BIT);
     
-    info_rejestrator_ar.next_address = MIN_ADDRESS_AR_AREA;
-    info_rejestrator_ar.saving_execution = 0;
-    info_rejestrator_ar.number_records = 0;
+    info_rejestrator_ar.first_number = -1;
+    info_rejestrator_ar.last_number = -1;
+    _SET_STATE(FATFS_command, FATFS_FORMAT);
     while(
           (control_spi1_taskes[0]     != 0) ||
           (control_spi1_taskes[1]     != 0) ||
@@ -555,8 +578,10 @@ int main(void)
                  );
     control_word_of_watchdog =  0;
   }
-  
+
   watchdog_l2 = true;
+  global_component_installation();  
+  
   USBD_Init(&USB_OTG_dev,
 #ifdef USE_USB_OTG_HS 
             USB_OTG_HS_CORE_ID,
@@ -581,11 +606,6 @@ int main(void)
   }
   /**********************/
     
-  //Визначаємо, чи стоїть дозвіл запису через інтерфейси з паролем
-  if (current_settings.password_interface_RS485 == 0) password_set_RS485 = 0;
-  else password_set_RS485 = 1;
-  timeout_idle_RS485 = current_settings.timeout_deactivation_password_interface_RS485;
-  
   timeout_idle_new_settings = current_settings.timeout_idle_new_settings;
   //Визначаємо, чи стоїть дозвіл запису через інтерфейси з паролем
   if (current_settings.password_interface_RS485 == 0) password_set_RS485 = 0;
@@ -626,12 +646,10 @@ int main(void)
                  );
     control_word_of_watchdog =  0;
   }
-  restart_resurs_count = 0xff;/*Ненульове значення перезапускає лічильники*/
 
   /**********************/
   //Конфігуруємо I2C
   /**********************/
-//  low_speed_i2c = 0xff;
   Configure_I2C(I2C);
   /**********************/
 
@@ -640,14 +658,29 @@ int main(void)
   _SET_BIT(control_i2c_taskes, TASK_START_READ_RTC_BIT);
   _SET_BIT(control_i2c_taskes, TASK_BLK_OPERATION_BIT);
   
-  
+    //Робота з watchdogs
+  if ((control_word_of_watchdog & WATCHDOG_KYYBOARD) == WATCHDOG_KYYBOARD)
+  {
+    //Змінюємо стан біту зовнішнього Watchdog на протилежний
+    GPIO_WriteBit(
+                  GPIO_EXTERNAL_WATCHDOG,
+                  GPIO_PIN_EXTERNAL_WATCHDOG,
+                  (BitAction)(1 - GPIO_ReadOutputDataBit(GPIO_EXTERNAL_WATCHDOG, GPIO_PIN_EXTERNAL_WATCHDOG))
+                 );
+    control_word_of_watchdog =  0;
+  }
+  restart_resurs_count = 0xff;/*Ненульове значення перезапускає лічильники*/
+
   time_2_watchdog_input = time_2_watchdog_output = TIM4->CNT;
   restart_timing_watchdog = 0xff;
   
-
+  //Ініціалізація FATFs
+  MX_FATFS_Init();
+  
   /* Періодичні задачі */
   while (1)
   {
+    //Немає активних операцій по Аналоговому реєстратору
     if (periodical_tasks_TEST_FLASH_MEMORY != 0)
     {
       /************************************************************/
@@ -658,7 +691,7 @@ int main(void)
       for (unsigned int i = ((unsigned int)&__checksum_end -(unsigned int)&__checksum_begin +1); i > 0; i--)
       {
         sum += *point++;
-        periodical_operations();
+        ar_routine_with_fatfs();
       }
       if (sum != (unsigned short)__checksum) _SET_BIT(set_diagnostyka, ERROR_INTERNAL_FLASH_BIT);
       else _SET_BIT(clear_diagnostyka, ERROR_INTERNAL_FLASH_BIT);
@@ -666,7 +699,7 @@ int main(void)
 
       periodical_tasks_TEST_FLASH_MEMORY = false;
     }
-    else periodical_operations();
+    else ar_routine_with_fatfs();
   }
 }
 /*******************************************************************************/

@@ -1,6 +1,12 @@
 #ifndef __LIBRARIES_H
 #define __LIBRARIES_H
 
+#include  <intrinsics.h>
+#include <stdbool.h>
+#include <math.h>
+#include <arm_math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "stm32f2xx.h"
 #include "stm32f2xx_it.h"
@@ -13,12 +19,6 @@
 #include "usbd_usr.h"
 #include "usb_conf.h"
 #include "usbd_desc.h"
-
-#include  <intrinsics.h>
-#include <stdbool.h>
-#include <math.h>
-#include <arm_math.h>
-#include <stdlib.h>
 
 #pragma section = "variables_RAM1"
 #pragma section = "Analog_Registrator_Buffer"

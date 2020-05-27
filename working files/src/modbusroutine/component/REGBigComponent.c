@@ -62,7 +62,17 @@ int getREGBigModbusRegister(int adrReg)
     case 33://Время записи аналогового регистратора (послеаварый массив)
       return (current_settings_interfaces.postfault_number_periods) &0xFFFF; //В таблицю настройок записуємо не мілісекунди, а кількість періодів
     case 34://Количество аналоговых регистраторов
-      return (info_rejestrator_ar.number_records) &0xFFFF;
+      {
+        unsigned int first_number = (info_rejestrator_ar.first_number < 0) ? 0 : (info_rejestrator_ar.first_number + 1);
+        unsigned int last_number  = (info_rejestrator_ar.last_number  < 0) ? 0 : (info_rejestrator_ar.last_number + 1);
+      
+        unsigned int number_records;
+        if (first_number == 0) number_records = 0;
+        else if (first_number >= last_number) number_records = first_number - last_number + 1;
+        else number_records = NUMBER_FATFS_NAME - last_number + first_number + 1;
+                
+        return (number_records) & 0xFFFF;
+      }
 #define IMUNITET_REG35 35
     case IMUNITET_REG35://Текущий аналоговый регистратор
       if(pointInterface==USB_RECUEST)//метка интерфейса 0-USB 1-RS485
@@ -119,16 +129,27 @@ int setREGBigModbusRegister(int adrReg, int dataReg)
     case 34://Количество аналоговых регистраторов
       return MARKER_ERRORDIAPAZON;
     case 35://Текущий аналоговый регистратор
-      if (
-        ((clean_rejestrators & CLEAN_AR) != 0) ||
-        (
-          ((pointInterface == USB_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB  ) != 0)) ||
-          ((pointInterface == RS485_RECUEST  ) && ((control_tasks_dataflash & TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485) != 0))
-        )
-      ) return MARKER_ERRORDIAPAZON;
-      if(! ((unsigned int)dataReg < info_rejestrator_ar.number_records)) return MARKER_ERRORDIAPAZON;
-      if((unsigned int)dataReg > max_number_records_ar) return MARKER_ERRORDIAPAZON;
+      {
+        if (
+            ((clean_rejestrators & CLEAN_AR) != 0) ||
+            (
+             (state_ar_record_fatfs != STATE_AR_NONE_FATFS) &&
+             (state_ar_record_fatfs != STATE_AR_MEMORY_FULL_FATFS) &&
+             (state_ar_record_fatfs != STATE_AR_BLOCK_FATFS)
+            )
+          ) return MARKER_ERRORDIAPAZON;
 
+        unsigned int first_number = (info_rejestrator_ar.first_number < 0) ? 0 : (info_rejestrator_ar.first_number + 1);
+        unsigned int last_number  = (info_rejestrator_ar.last_number  < 0) ? 0 : (info_rejestrator_ar.last_number + 1);
+                
+        unsigned int number_records;
+        if (first_number == 0) number_records = 0;
+        else if (first_number >= last_number) number_records = first_number - last_number + 1;
+        else number_records = NUMBER_FATFS_NAME - last_number + first_number + 1;
+                
+        if(! ((unsigned int)dataReg < number_records)) return MARKER_ERRORDIAPAZON;
+
+      }
       break;
     case 70://Количество дискретных регистраторов
       return MARKER_ERRORDIAPAZON;
@@ -218,45 +239,101 @@ int postREGBigWriteAction(void)
           break;
         case 35://Текущий аналоговый регистратор
         {
-          unsigned int *point_to_number_record_of_ar;
+          int *point_to_number_record_of_ar;
           int *point_to_first_number_time_sample, *point_to_last_number_time_sample;
+          char *point_id_ar_record;
+          int *point_to_max_number_time_sample;
+          unsigned char *point_to_Buffer;
 
           if (pointInterface == USB_RECUEST)
             {
               point_to_number_record_of_ar = &number_record_of_ar_for_USB;
+              point_id_ar_record = id_ar_record_for_USB;
               point_to_first_number_time_sample = &first_number_time_sample_for_USB;
               point_to_last_number_time_sample = &last_number_time_sample_for_USB;
+              point_to_max_number_time_sample = &max_number_time_sample_USB;
+          
+              point_to_Buffer = buffer_for_USB_read_record_ar;
             }
           else
             {
               point_to_number_record_of_ar = &number_record_of_ar_for_RS485;
+              point_id_ar_record = id_ar_record_for_RS485;
               point_to_first_number_time_sample = &first_number_time_sample_for_RS485;
               point_to_last_number_time_sample = &last_number_time_sample_for_RS485;
+              point_to_max_number_time_sample = &max_number_time_sample_RS485;
+          
+              point_to_Buffer = buffer_for_RS485_read_record_ar;
             }
+          
+          unsigned short int data = tempWriteArray[offsetTempWriteArray+i];
+        
+          int record_name = info_rejestrator_ar.first_number - data;
+          if (record_name < 0) record_name += NUMBER_FATFS_NAME;
 
-          //Встановлюємо номер запису аналогового реєстратора для читання
-          *point_to_number_record_of_ar = tempWriteArray[offsetTempWriteArray+i];
-          //Подаємо команду читання аналогового реєстратора для  інтерфейсу
-
-          //Виставляємо читання заголовку запису даного запису і дальше, скільки можливо, часових зрізів
-          *point_to_first_number_time_sample = -1;
-          int last_number_time_sample_tmp = (SIZE_PAGE_DATAFLASH_2 - sizeof(__HEADER_AR))/((NUMBER_ANALOG_CANALES + number_word_digital_part_ar)*sizeof(short int));
-          int max_number_time_sample = (current_settings.prefault_number_periods + current_settings.postfault_number_periods) << VAGA_NUMBER_POINT_AR;
-          if (last_number_time_sample_tmp <= max_number_time_sample)
+          int n = snprintf(point_id_ar_record, (8 + 1), "%d", record_name);
+          if (n > 8) n = 8; //Теоретично цього ніколи б не мало бути
+          point_id_ar_record[n++] = '.';
+          point_id_ar_record[n++] = 'd';
+          point_id_ar_record[n++] = 'a';
+          point_id_ar_record[n++] = 't';
+          point_id_ar_record[n++] = '\0';
+        
+          unsigned int error = 0;
+          FIL fil;
+          FRESULT res = f_open(&fil, point_id_ar_record, FA_READ);
+          if (res == FR_OK) 
+          {
+            res = f_lseek(&fil, 0);
+            if (res == FR_OK)
             {
-              *point_to_last_number_time_sample = last_number_time_sample_tmp - 1;//номер останнього часового зрізу ВКЛЮЧНО
+              //Виставляємо читання заголовку запису даного запису і дальше, скільки можливо, часових зрізів 
+              *point_to_first_number_time_sample = -1;
+              int last_number_time_sample_tmp = (SIZE_PAGE_DATAFLASH_2 - sizeof(__HEADER_AR))/((NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int));
+              int max_number_time_sample = *point_to_max_number_time_sample = (f_size(&fil) - sizeof(__HEADER_AR))/((NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int));
+            
+              if (max_number_time_sample >= 0)
+              {
+                if (last_number_time_sample_tmp <= max_number_time_sample)
+                {
+                  *point_to_last_number_time_sample = last_number_time_sample_tmp - 1;//номер останнього часового зрізу ВКЛЮЧНО
+                }
+                else
+                {
+                  *point_to_last_number_time_sample = max_number_time_sample - 1;
+                }
+              
+                unsigned int read_tmp;
+                UINT ByteToRead = sizeof(__HEADER_AR) + ((unsigned int)(*point_to_last_number_time_sample) + 1)*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
+                res = f_read(&fil, point_to_Buffer, ByteToRead, &read_tmp);
+                if ((res != FR_OK) || (read_tmp != ByteToRead)) error = ERROR_SLAVE_DEVICE_FAILURE;
+              }
+              else error = ERROR_SLAVE_DEVICE_FAILURE;
             }
-          else
+            else error = ERROR_SLAVE_DEVICE_FAILURE;
+
+            res = f_close(&fil);
+            if (res != FR_OK) 
             {
-              *point_to_last_number_time_sample = max_number_time_sample - 1;
+              //Невизначена ситуація, якої ніколи б не мало бути.
+              _SET_BIT(set_diagnostyka, ERROR_AR_UNDEFINED_BIT);
+              error = ERROR_SLAVE_DEVICE_FAILURE;
             }
-
-          //Подаємо команду зчитати дані у бувер пам'яті
-          if (pointInterface == USB_RECUEST)
-            control_tasks_dataflash |= TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB;
+          }
+          else error = ERROR_SLAVE_DEVICE_FAILURE;
+        
+          if (error == 0)
+          {
+            //Встановлюємо номер запису аналогового реєстратора для читання
+            *point_to_number_record_of_ar = data;
+          }
           else
-            control_tasks_dataflash |= TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485;
-
+          {
+            //Помічаємо, що немає вибраної аварії для читання
+            *point_to_number_record_of_ar = -1;
+            point_id_ar_record[0] = '\0';
+            return ERROR_VALID2;
+          }
         }
         break;//case 35
         case 71://Текущий дискретный регистратор
@@ -289,17 +366,17 @@ int postREGBigWriteAction(void)
           if (
             (current_ekran.current_level == EKRAN_DATA_LADEL_AR)
             ||
-            (state_ar_record             != STATE_AR_NO_RECORD )
-            ||
+            (state_ar_record_m           != STATE_AR_NONE_M )
+            ||  
+            (state_ar_record_prt         != STATE_AR_NONE_PRT )
+            ||  
             (
-              (control_tasks_dataflash & (
-                 TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR |
-                 TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_AR      |
-                 TASK_MAMORY_READ_DATAFLASH_FOR_AR_USB                         |
-                 TASK_MAMORY_READ_DATAFLASH_FOR_AR_RS485                       |
-                 TASK_MAMORY_READ_DATAFLASH_FOR_AR_MENU
-               )
-              ) != 0
+             (control_tasks_dataflash & (
+                                         TASK_MAMORY_PART_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_FS |
+                                         TASK_MAMORY_PAGE_PROGRAM_THROUGH_BUFFER_DATAFLASH_FOR_FS      |
+                                         TASK_MAMORY_READ_DATAFLASH_FOR_FS 
+                                        )
+             ) != 0
             )
             ||
             ((clean_rejestrators & CLEAN_AR) != 0)

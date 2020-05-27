@@ -861,7 +861,7 @@ void make_ekran_angle(void)
       //Наступні рядки треба перевірити, чи їх требе відображати у текучій кофігурації
       if (index_of_ekran < MAX_ROW_FOR_MEASURMENT_ANGLE)
       {
-        int value = phi_angle[index_of_ekran];
+        int value = phi_angle[bank_for_calc_phi_angle][index_of_ekran];
 
 #define LAST_POSITION_OF_TITLE  10
         
@@ -1058,22 +1058,22 @@ void make_ekran_power(unsigned int pervynna_vtorynna)
       {
       case INDEX_ML_P:
         {
-          temp_value = P[0];
+          temp_value = P[bank_for_calc_power];
           break;
         }
       case INDEX_ML_Q:
         {
-          temp_value = Q[0];
+          temp_value = Q[bank_for_calc_power];
           break;
         }
       case INDEX_ML_S:
         {
-          temp_value = S[0];
+          temp_value = S[bank_for_calc_power];
           break;
         }
       case INDEX_ML_COS_PHI:
         {
-          temp_value = cos_phi_x1000;
+          temp_value = cos_phi_x1000[bank_for_calc_power];
           break;
         }
       default:
@@ -1100,7 +1100,7 @@ void make_ekran_power(unsigned int pervynna_vtorynna)
       else
       {
         unsigned int position = start_position;
-        if (S[0] != 0)
+        if (S[bank_for_calc_power] != 0)
         {
           unsigned int dilnyk = 1000;
           for (unsigned int j = 0; j < 4; j++)

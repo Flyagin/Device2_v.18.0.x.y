@@ -4,6 +4,8 @@
 #define EKRAN_DIAGNOSTYKA                    (EKRAN_POINT_TIME_RANGUVANNJA + 1)
 
 #define MAX_ROW_FOR_DIAGNOSTYKA              (8*(4 + 4 + 4))  /*2 слова типу unsigned int + ще одне слово але з трьох байт. щоб розмір одного запису реєстратора програмних подій не був більшим 32 байти. А коли треба - то змінимо*/  
+#define N_DIAGN                              ((MAX_ROW_FOR_DIAGNOSTYKA >> 5) + ((MAX_ROW_FOR_DIAGNOSTYKA & 0x1f) != 0))
+#define N_DIAGN_BYTES                        ((MAX_ROW_FOR_DIAGNOSTYKA >> 3) + ((MAX_ROW_FOR_DIAGNOSTYKA & 0x07) != 0))
 
 //#define USED_BITS_IN_LAST_INDEX  0x00ffffff  
 
@@ -64,8 +66,8 @@ ERROR_DIGITAL_OUTPUT_1_BIT,
 
 ERROR_AR_TEMPORARY_BUSY_BIT = ERROR_DIGITAL_OUTPUT_1_BIT + 16,
 ERROR_AR_OVERLOAD_BUFFER_BIT,
+ERROR_AR_MEMORY_FULL_BIT,
 ERROR_AR_UNDEFINED_BIT,
-ERROR_AR_LOSS_INFORMATION_BIT,
 
 ERROR_DR_TEMPORARY_BUSY_BIT,
 ERROR_DR_UNDEFINED_BIT,
@@ -103,6 +105,8 @@ ERROR_BDV_DZ_FIX,
 ERROR_BDV_DZ_CTLR,
 ERROR_BDZ_FIX,
 ERROR_BDZ_CTLR,
+
+ERROR_FATFS
 };
 
 #define MASKA_AVAR_ERROR_0        (unsigned int)(               \
@@ -221,8 +225,8 @@ ERROR_BDZ_CTLR,
   " Ош.вых.реле ?.?",   \
   "Ан.рег.вр.занят.",   \
   " Пер.буф.aн.рег.",   \
+  " П.aн.рег.исч.  ",   \
   "Неопр.ош.ан.рег.",   \
-  "Потеря д.ан.рег.",   \
   " Д.рег.вр.занят.",   \
   " Неопр.ош.д.рег.",   \
   " Потеря д.д.рег.",   \
@@ -252,7 +256,7 @@ ERROR_BDZ_CTLR,
   " БДВ-ДЗ к.      ",   \
   " БДЗ ф.         ",   \
   " БДЗ к.         ",   \
-  " Ошибка 95      "
+  " Ош.Ф.С.        "
 
 # define NAME_DIAGN_UA  \
   " Пом.I2C        ",   \
@@ -319,8 +323,8 @@ ERROR_BDZ_CTLR,
   " Пом.вих.реле?.?",   \
   "Ан.р.тимч.зайнят",   \
   " Переп.буф.aн.р.",   \
+  " П.aн.рег.вич.  ",   \
   "Невизн.пом.ан.р.",   \
-  "Втрата д.ан.р.  ",   \
   "Д.р.тимч.зайнят.",   \
   " Невизн.пом.д.р.",   \
   " Втрата д.д.р.  ",   \
@@ -350,7 +354,7 @@ ERROR_BDZ_CTLR,
   " БДВ-ДЗ к.      ",   \
   " БДЗ ф.         ",   \
   " БДЗ к.         ",   \
-  " Помилка 95     "
+  " Пом.Ф.С.       "
 
 # define NAME_DIAGN_EN  \
   " I2C Err.       ",   \
@@ -417,8 +421,8 @@ ERROR_BDZ_CTLR,
   " DO?.? Ctrl.Err.",   \
   " An.Rec.busy    ",   \
   " An.Rec.buff.OVF",   \
+  " Mem.An.Rec.Full",   \
   "Undef.An.Rec.Err",   \
-  "An.Rec.Data lost",   \
   " D.Rec.busy     ",   \
   "Undef.D.Rec.Err.",   \
   " D.Rec.Data lost",   \
@@ -448,7 +452,7 @@ ERROR_BDZ_CTLR,
   " BDV-DZ ctrl.   ",   \
   " BDZ f.         ",   \
   " BDZ ctrl.      ",   \
-  " Error 95       "
+  " Error FS       "
 
 # define NAME_DIAGN_KZ  \
   " Ош.I2C         ",   \
@@ -515,8 +519,8 @@ ERROR_BDZ_CTLR,
   " Ош.вых.реле ?.?",   \
   "Ан.рег.вр.занят.",   \
   " Пер.буф.aн.рег.",   \
+  " П.aн.рег.исч.  ",   \
   "Неопр.ош.ан.рег.",   \
-  "Потеря д.ан.рег.",   \
   " Д.рег.вр.занят.",   \
   " Неопр.ош.д.рег.",   \
   " Потеря д.д.рег.",   \
@@ -546,6 +550,6 @@ ERROR_BDZ_CTLR,
   " БДВ-ДЗ к.      ",   \
   " БДЗ ф.         ",   \
   " БДЗ к.         ",   \
-  " Ошибка 95      "
+  " Ош.Ф.С.        "
     
 #endif

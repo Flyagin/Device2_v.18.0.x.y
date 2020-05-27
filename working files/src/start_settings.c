@@ -80,7 +80,7 @@ void global_vareiables_installation(void)
 //    data_for_oscylograph[i].DATA_fix = 0;
 //    for (unsigned int j = 0; j < NUMBER_ANALOG_CANALES; j++) data_for_oscylograph[i].data[j] = 0;
 //    for (unsigned int j = 0; j < N_BIG; j++) data_for_oscylograph[i].active_functions[j] = 0;
-    data_for_oscylograph[i].state_ar_record = STATE_AR_NO_RECORD;
+    data_for_oscylograph[i].state_ar_record = STATE_AR_NONE_M;
   }
 
 //  for (unsigned int i = 0; i < MAX_INDEX_PhK; i++)
@@ -207,13 +207,13 @@ void global_vareiables_installation(void)
   }
   /**************************/
   
-  /**************************
-  Константа (які від версії до версії може змінюватися), але для даного проекту 
-  завжди визначена
-  **************************/
+//  /**************************
+//  Константа (які від версії до версії може змінюватися), але для даного проекту 
+//  завжди визначена
+//  **************************/
 //  number_word_digital_part_ar = NUMBER_TOTAL_SIGNAL_FOR_RANG/(8*sizeof(short int));
 //  if ((number_word_digital_part_ar*8*sizeof(short int)) < NUMBER_TOTAL_SIGNAL_FOR_RANG) number_word_digital_part_ar += 1;
-  /**************************/
+//  /**************************/
 
   /**************************/
   //
@@ -411,7 +411,6 @@ void global_vareiables_installation(void)
   //Modbus-RTU
   type_of_settings_changed = 0;
   password_ustuvannja = 0;
-  global_component_installation();  
 }
 /**************************************/
 

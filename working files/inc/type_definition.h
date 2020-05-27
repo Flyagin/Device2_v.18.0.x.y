@@ -71,7 +71,7 @@ typedef struct
                                                       //0 - Нормальний
                                                       //1 - Тригерний
     
-  unsigned int number_iteration_el;                                             //Максимадбна кількість ітерацій для розширеної логіки
+  unsigned int number_iteration_el;                                             //Максимальна кількість ітерацій для розширеної логіки
 //  unsigned int number_defined_df;                                               //Кількість визначуваних функцій у конфігурації приладу
 //  unsigned int number_defined_dt;                                               //Кількість визначуваних тригерів у конфігурації приладу
 //  unsigned int number_defined_and;                                              //Кількість визначуваних "І" у конфігурації приладу
@@ -401,6 +401,7 @@ typedef struct
   //Аналоговий реєстратор
   unsigned int prefault_number_periods; //Час доаварійного масиву (кількість періодів промислової частоти)
   unsigned int postfault_number_periods;//Час післяарійного масиву (кількість періодів промислової частоти)
+  unsigned int control_ar;              //Поля для управління аналоговим реєстратором
 
   //Комунікація
   unsigned int name_of_cell[MAX_CHAR_IN_NAME_OF_CELL];//І'мя ячейки
@@ -482,6 +483,19 @@ typedef struct
 
 typedef struct
 {
+  int first_number;
+  int last_number;
+} __INFO_AR_REJESTRATOR;
+
+typedef struct _FIL_FATFS
+{
+  unsigned int opened;
+  FIL fil;
+  
+} __FIL_FATFS;
+
+typedef struct
+{
   unsigned int state_execution;     //стан виконуваної заразоперації
   
   unsigned int code_operation;      //Код виконуваної операції
@@ -495,7 +509,9 @@ typedef struct
   unsigned int T0;
   unsigned int TCurrent;
   unsigned int TVoltage;
+  unsigned int prefault_number_periods;
   unsigned char name_of_cell[MAX_CHAR_IN_NAME_OF_CELL];
+  unsigned int cur_active_sources[N_BIG];
 } __HEADER_AR;
 
 typedef enum __STATE_READING_ADCs {

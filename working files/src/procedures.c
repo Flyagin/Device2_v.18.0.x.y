@@ -2743,41 +2743,6 @@ unsigned int set_new_settings_from_interface(unsigned int source)
     }
   }
   
-  unsigned int change_timeout_ar = 0;
-  if (
-      (current_settings.prefault_number_periods != current_settings_interfaces.prefault_number_periods) ||
-      (current_settings.postfault_number_periods != current_settings_interfaces.postfault_number_periods)
-     ) 
-  {
-    //Помічаємо, що додатково ще треба буде виконати дії по зміні часових витримок аналогового реєстратора
-    change_timeout_ar = 1;
-    
-    unsigned int semaphore_read_state_ar_record_copy = semaphore_read_state_ar_record;
-
-    /*Встановлюємо симафор - суть якого полягає у тому, що якщо процес запису нової 
-    аварії не йде - то на час його установлення новий запис починати не можна, якщо ж вже іде ноий запис,
-    то він має продовжуватися і, навпаки, блокувати роботу аналогового реєстратора не можна*/
-    semaphore_read_state_ar_record = 1;
-
-    if (
-        (state_ar_record == STATE_AR_NO_RECORD      ) ||
-        (state_ar_record == STATE_AR_TEMPORARY_BLOCK)
-       )   
-    {
-      /*На даний момент не йде запис текучого аналогового аварійного процесу,
-      тому для зміни часових настройок тимчасово встановлюємо стан роботи
-      аналогового реєстратора у заблокований режим*/
-      state_ar_record = STATE_AR_TEMPORARY_BLOCK; 
-      
-    }
-    else
-    {
-      //Операція тимчасово недоступна, бо іде робота аналогового реєстратора
-      error = ERROR_SLAVE_DEVICE_BUSY;
-      semaphore_read_state_ar_record = semaphore_read_state_ar_record_copy;
-    }
-  }
-  
   unsigned int set_password_USB = false;
   if (
       (current_settings.password_interface_USB != current_settings_interfaces.password_interface_USB) &&
@@ -2832,42 +2797,6 @@ unsigned int set_new_settings_from_interface(unsigned int source)
       //Виставляємо команду про переконфігурування RS-485
       if (reconfiguration_RS_485_with_reset_usart != 0) make_reconfiguration_RS_485 = 0xff;
     }
-    if (
-        (state_ar_record == STATE_AR_TEMPORARY_BLOCK) ||
-        (semaphore_read_state_ar_record != 0)  
-       )
-    {
-      /*
-      Ця ситуація може бути, коли встановлюються мінімальні настройки,
-      або коли змінюється ширина доаварійного або післяаварійного процесу
-      аналогового реєстратора.
-      При цьому завжди має бути, що змінна state_ar_record рівна величині
-      STATE_AR_TEMPORARY_BLOCK і змінна semaphore_read_state_ar_record
-      не рівна нулю. Ящо ці 
-      умови не виконуються - то треба перезапустити прилад,
-      бо програмне забезпечення себе веде непередбачуваним шляхом.
-      */
-      if(
-         ((change_timeout_ar != 0)) &&
-         (state_ar_record == STATE_AR_TEMPORARY_BLOCK) &&
-         (semaphore_read_state_ar_record != 0)  
-        )
-      {
-        //Виконуємо дії по зміні часових витримок аналогового реєстратора
-        actions_after_changing_tiomouts_ar();
-
-        //Розблоковуємо роботу аналогового реєстратора
-        state_ar_record = STATE_AR_NO_RECORD;
-
-        //Знімаємо семафор
-        semaphore_read_state_ar_record = 0;
-      }
-      else
-      {
-        //Якщо сюди дійшла програма, значить відбулася недопустива помилка, тому треба зациклити програму, щоб вона пішла на перезагрузку
-        total_error_sw_fixed(41);
-      }
-    }
 
     fix_change_settings(2, source);
 
@@ -2912,48 +2841,38 @@ void changing_diagnostyka_state(void)
   - Спочатку очищаємо біти а потім встановлюємо, бо фіксація події має більший 
     пріоритет за очищення
   *****/
-  unsigned int clear_diagnostyka_tmp[3], set_diagnostyka_tmp[3];
+  unsigned int clear_diagnostyka_tmp[N_DIAGN], set_diagnostyka_tmp[N_DIAGN];
   
-  clear_diagnostyka_tmp[0] = clear_diagnostyka[0];
-  clear_diagnostyka_tmp[1] = clear_diagnostyka[1];
-  clear_diagnostyka_tmp[2] = clear_diagnostyka[2];
-
-  set_diagnostyka_tmp[0] = set_diagnostyka[0];
-  set_diagnostyka_tmp[1] = set_diagnostyka[1];
-  set_diagnostyka_tmp[2] = set_diagnostyka[2];
+  for (size_t i = 0; i < N_DIAGN; i++)
+  {
+    clear_diagnostyka_tmp[i] = clear_diagnostyka[i];
+    set_diagnostyka_tmp[i] = set_diagnostyka[i];
+  }
     
-  diagnostyka[0] &= (unsigned int)(~clear_diagnostyka_tmp[0]); 
-  diagnostyka[0] |= set_diagnostyka_tmp[0]; 
+  for (size_t i = 0; i < N_DIAGN; i++)
+  {
+    diagnostyka[i] &= (unsigned int)(~clear_diagnostyka_tmp[i]); 
+    diagnostyka[i] |= set_diagnostyka_tmp[i]; 
+  }
 
-  diagnostyka[1] &= (unsigned int)(~clear_diagnostyka_tmp[1]); 
-  diagnostyka[1] |= set_diagnostyka_tmp[1]; 
-
-  diagnostyka[2] &= (unsigned int)(~clear_diagnostyka_tmp[2]); 
-  diagnostyka[2] |= set_diagnostyka_tmp[2]; 
-  
-//  diagnostyka[2] &= USED_BITS_IN_LAST_INDEX; 
-
-  clear_diagnostyka[0] &= (unsigned int)(~clear_diagnostyka_tmp[0]);
-  clear_diagnostyka[1] &= (unsigned int)(~clear_diagnostyka_tmp[1]);
-  clear_diagnostyka[2] &= (unsigned int)(~clear_diagnostyka_tmp[2]);
-  
-  set_diagnostyka[0] &= (unsigned int)(~set_diagnostyka_tmp[0]);
-  set_diagnostyka[1] &= (unsigned int)(~set_diagnostyka_tmp[1]);
-  set_diagnostyka[2] &= (unsigned int)(~set_diagnostyka_tmp[2]);
+  for (size_t i = 0; i < N_DIAGN; i++)
+  {
+    clear_diagnostyka[i] &= (unsigned int)(~clear_diagnostyka_tmp[i]);
+    set_diagnostyka[i] &= (unsigned int)(~set_diagnostyka_tmp[i]);
+  }
   /*****/
   
   //Визначаємо, чи відбулися зміни
-  unsigned int value_changes[3], diagnostyka_now[3];
+  unsigned int value_changes[N_DIAGN], diagnostyka_now[N_DIAGN];
   /*
   Робимо копію тепершньої діагностики, бо ця функція працює на найнижчому пріоритеті,
   тому під час роботи може появитися нові значення, які ми не врахували у цій функції
   */
-  diagnostyka_now[0] = diagnostyka[0];
-  diagnostyka_now[1] = diagnostyka[1];
-  diagnostyka_now[2] = diagnostyka[2];
-  value_changes[0] = diagnostyka_before[0] ^ diagnostyka_now[0];
-  value_changes[1] = diagnostyka_before[1] ^ diagnostyka_now[1];
-  value_changes[2] = diagnostyka_before[2] ^ diagnostyka_now[2];
+  for (size_t i = 0; i < N_DIAGN; i++)
+  {
+    diagnostyka_now[i] = diagnostyka[i];
+    value_changes[i] = diagnostyka_before[i] ^ diagnostyka_now[i];
+  }
   
   /*
   У реєстраторі програмних подій має реєструватися тільки перехід з пасивного стану у активний
@@ -3025,11 +2944,14 @@ void changing_diagnostyka_state(void)
   /*****/
 
   //Перевіряємо, чи треба виконувати дії поо зміні діагностики
-  if (
-      (value_changes[0] != 0) ||
-      (value_changes[1] != 0) ||
-      (value_changes[2] != 0)
-     )
+  unsigned int not_null = false;
+  for (size_t i = 0; i < N_DIAGN; i++) 
+  {
+    not_null |= (value_changes[i] != 0);
+    if (not_null) break;
+  }
+  
+  if (not_null)
   {
     //Є біти, які треба встановити, або зняти
     
@@ -3059,14 +2981,10 @@ void changing_diagnostyka_state(void)
         між операціями копіювання стану діагностики на початку цієї функції і
         операцією, як зараз ми будемо виконувати
         */
-        diagnostyka_now[0] = diagnostyka[0];
-        diagnostyka_now[1] = diagnostyka[1];
-        diagnostyka_now[2] = diagnostyka[2];
+        _SET_BIT(diagnostyka_now, ERROR_PR_ERR_OVERLOAD_BIT);
         
         //Підраховуємо нову кількість змін в діагностиці
-        value_changes[0] = diagnostyka_before[0] ^ diagnostyka_now[0];
-        value_changes[1] = diagnostyka_before[1] ^ diagnostyka_now[1];
-        value_changes[2] = diagnostyka_before[2] ^ diagnostyka_now[2];
+        value_changes[ERROR_PR_ERR_OVERLOAD_BIT >> 5] = diagnostyka_before[ERROR_PR_ERR_OVERLOAD_BIT >> 5] ^ diagnostyka_now[ERROR_PR_ERR_OVERLOAD_BIT >> 5];
       }
 
       //Вираховуємо кількість змін сигналів
@@ -3114,33 +3032,17 @@ void changing_diagnostyka_state(void)
 
         buffer_pr_err_records[index_into_buffer_pr_err + 8] = number_changes & 0xff;
       
-        //Записуємо попередній стан діагностики
-        buffer_pr_err_records[index_into_buffer_pr_err + 9 ] =  diagnostyka_before[0]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 10] = (diagnostyka_before[0] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 11] = (diagnostyka_before[0] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 12] = (diagnostyka_before[0] >> 24) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 13] =  diagnostyka_before[1]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 14] = (diagnostyka_before[1] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 15] = (diagnostyka_before[1] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 16] = (diagnostyka_before[1] >> 24) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 17] =  diagnostyka_before[2]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 18] = (diagnostyka_before[2] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 19] = (diagnostyka_before[2] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 20] = (diagnostyka_before[2] >> 24) & 0xff;
+        for (size_t i = 0; i < N_DIAGN_BYTES; i ++)
+        {
+          unsigned int n_word = i >> 2;
+          unsigned int shift = 8*(i & 0x3);
+          
+          //Записуємо попередній стан діагностики
+          buffer_pr_err_records[index_into_buffer_pr_err + 9 + i] =  (diagnostyka_before[n_word] >> shift) & 0xff;
 
-        //Записуємо теперішній стан діагностики
-        buffer_pr_err_records[index_into_buffer_pr_err + 21] =  diagnostyka_now[0]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 22] = (diagnostyka_now[0] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 23] = (diagnostyka_now[0] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 24] = (diagnostyka_now[0] >> 24) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 25] =  diagnostyka_now[1]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 26] = (diagnostyka_now[1] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 27] = (diagnostyka_now[1] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 28] = (diagnostyka_now[1] >> 24) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 29] =  diagnostyka_now[2]        & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 30] = (diagnostyka_now[2] >> 8 ) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 31] = (diagnostyka_now[2] >> 16) & 0xff;
-        buffer_pr_err_records[index_into_buffer_pr_err + 32] = (diagnostyka_now[2] >> 24) & 0xff;
+          //Записуємо теперішній стан діагностики
+          buffer_pr_err_records[index_into_buffer_pr_err + 9 + N_DIAGN_BYTES + i] =  (diagnostyka_now[n_word] >> shift) & 0xff;
+        }
         
         /*
         У реєстраторі програмних подій має реєструватися тільки перехід з пасивного стану у активний
@@ -3165,9 +3067,7 @@ void changing_diagnostyka_state(void)
         }
 
         //Фіксуємо попередній стан, який ми вже записали і відносно якого будемо визначати нові зміни
-        diagnostyka_before[0] = diagnostyka_now[0];
-        diagnostyka_before[1] = diagnostyka_now[1];
-        diagnostyka_before[2] = diagnostyka_now[2];
+        for (size_t i = 0; i < N_DIAGN; i ++) diagnostyka_before[i] = diagnostyka_now[i];
 
         //Підготовлюємося до запуску запису у реєстратор програмних подій
           unsigned int next_index_into_fifo_buffer = head + 1;
@@ -3392,6 +3292,38 @@ unsigned int control_info_rejestrator(__INFO_REJESTRATOR* info_rejestrator_point
   unsigned char  *point = (unsigned char*)(info_rejestrator_point); 
   unsigned int i = 0;
   while (i < sizeof(__INFO_REJESTRATOR))
+  {
+    temp_value_1 = *(point);
+    crc_info_rejestrator_tmp += temp_value_1;
+    point++;
+    i++;
+  }
+  
+  if (crc_info_rejestrator == crc_info_rejestrator_tmp)
+  {
+    //Контроль достовірності реєстратора пройшов успішно
+    result = 1;    
+  }
+  else
+  {
+    //Контроль достовірності реєстратора не пройшов
+    result = 0;    
+  }
+  
+  return result;
+}
+/*****************************************************/
+
+/*****************************************************/
+//Контроль достовірності інформації по аналоговому реєстратору
+/*****************************************************/
+unsigned int control_info_ar_rejestrator(__INFO_AR_REJESTRATOR* info_rejestrator_point, unsigned char crc_info_rejestrator)
+{
+  unsigned int result;
+  unsigned char crc_info_rejestrator_tmp = 0, temp_value_1;
+  unsigned char  *point = (unsigned char*)(info_rejestrator_point); 
+  unsigned int i = 0;
+  while (i < sizeof(__INFO_AR_REJESTRATOR))
   {
     temp_value_1 = *(point);
     crc_info_rejestrator_tmp += temp_value_1;

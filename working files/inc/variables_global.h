@@ -22,7 +22,7 @@ const unsigned int input_adc[NUMBER_INPUTs_ADCs][2]={
                                                      {1,0xb370},
                                                      {1,0xb770},
                                                      {1,0xbb70},
-                                                     {1,0xbf70},
+                                                     {1,0xbf70}
                                                     };
 EXTENDED_OUTPUT_DATA output_adc[NUMBER_INPUTs_ADCs];
 ROZSHYRENA_VYBORKA rozshyrena_vyborka;
@@ -223,7 +223,8 @@ unsigned int measurement_low[_NUMBER_IM];
 const unsigned int index_converter[NUMBER_ANALOG_CANALES]  = {FULL_ORT_3I0, FULL_ORT_Ia, FULL_ORT_Ib , FULL_ORT_Ic, FULL_ORT_Ua , FULL_ORT_Ub , FULL_ORT_Uc , FULL_ORT_3U0};
 int ortogonal_calc[2*FULL_ORT_MAX];
 int ortogonal_calc_low[2*FULL_ORT_MAX];
-int phi_angle[FULL_ORT_MAX];
+int phi_angle[2][FULL_ORT_MAX];
+uint32_t bank_for_calc_phi_angle, state_calc_phi_angle;
 int base_index_for_angle = -1;
 
 int P_plus[2];
@@ -234,10 +235,11 @@ int Q_3q[2];
 int Q_4q[2];
 unsigned int lichylnyk_1s_po_20ms;
 unsigned int bank_for_enegry;
-unsigned int mutex_power;
-int P[2], Q[2], cos_phi_x1000;
+int P[2], Q[2], cos_phi_x1000[2];
 unsigned int S[2];
-double energy[MAX_NUMBER_INDEXES_ENERGY];
+uint32_t bank_for_calc_power, state_calc_power;
+double energy[2][MAX_NUMBER_INDEXES_ENERGY];
+uint32_t state_calc_energy;
 unsigned int clean_energy;
 unsigned int information_about_clean_energy;
 
@@ -410,10 +412,10 @@ unsigned int fix_active_buttons, fix_active_buttons_ctrl;
 unsigned int mutex_interface;
 unsigned int activation_function_from_interface[N_SMALL];
 unsigned int reset_trigger_function_from_interface;
-unsigned int diagnostyka_before[3];
-volatile unsigned int diagnostyka[3];
-unsigned int set_diagnostyka[3];
-unsigned int clear_diagnostyka[3];
+unsigned int diagnostyka_before[N_DIAGN];
+volatile unsigned int diagnostyka[N_DIAGN];
+unsigned int set_diagnostyka[N_DIAGN];
+unsigned int clear_diagnostyka[N_DIAGN];
 
 uint32_t board_register;
 
@@ -682,40 +684,43 @@ unsigned char buffer_for_USB_read_record_pr_err[SIZE_ONE_RECORD_PR_ERR];
 unsigned char buffer_for_RS485_read_record_pr_err[SIZE_ONE_RECORD_PR_ERR];
 
 unsigned int what_we_are_reading_from_dataflash_1;
-unsigned int what_we_are_reading_from_dataflash_2;
+
+//FATFS
+uint32_t FATFS_command;
 
 //Аналоговий реєстратор
 unsigned char crc_info_rejestrator_ar;
-__INFO_REJESTRATOR info_rejestrator_ar;
+__INFO_AR_REJESTRATOR info_rejestrator_ar;
 unsigned char crc_info_rejestrator_ar_ctrl;
-__INFO_REJESTRATOR info_rejestrator_ar_ctrl;
-unsigned int size_one_ar_record;
-const unsigned int number_word_digital_part_ar = (NUMBER_TOTAL_SIGNAL_FOR_RANG / (8*sizeof(short int))) + ((NUMBER_TOTAL_SIGNAL_FOR_RANG % (8*sizeof(short int))) != 0);
-unsigned int max_number_records_ar; //Максимальна кількість записів в аналоговому реєстраторі при вибраних витримках (розраховується з витрмиок доаварійного і післяаварійного часу)
-unsigned int semaphore_read_state_ar_record; //Коли цей симафор встановлений, то якщо не йде запис, то новий запис не можна починати, а якщо іде, то можна продовжувати запис
-unsigned int continue_previous_record_ar; //Сигналізує, не зняті вще всі джерела запуску аналогового реєстратора після його попе6реднього запуску
-int state_ar_record = STATE_AR_NO_RECORD;
-unsigned int state_ar_record_prt = STATE_AR_NO_RECORD;
+__INFO_AR_REJESTRATOR info_rejestrator_ar_ctrl;
+//const unsigned int number_word_digital_part_ar = ( NUMBER_TOTAL_SIGNAL_FOR_RANG / (8*sizeof(short int)) ) + ( ( NUMBER_TOTAL_SIGNAL_FOR_RANG % (8*sizeof(short int))) != 0);
+unsigned int forbidden_new_record_ar_mode_0 /*= 0*/; 
+unsigned int state_ar_record_m = STATE_AR_NONE_M, state_ar_record_prt = STATE_AR_NONE_PRT, state_ar_record_fatfs = STATE_AR_NONE_FATFS;
+unsigned int prev_state_ar_record_m = STATE_AR_NONE_M;
 SRAM1_AR short int array_ar[SIZE_BUFFER_FOR_AR];
 SRAM1 short int word_SRAM1;
-unsigned int index_array_ar_current;
+unsigned int index_array_ar_current /*= 0*/;
 unsigned int index_array_ar_heat;
 unsigned int index_array_ar_tail;
-unsigned int prescaler_ar; //Потрібний для того, щоб з 32 виборок на секунду зробити 16 виборки на секунду
+unsigned char tail_to_heat, current_to_tail;
+int diff_index_heat_tail; /*ця змінна поки використовується мною тільки для діагностики*/
+unsigned int prescaler_ar /*= 0*/; //Потрібний для того, щоб з 32 виборок на секунду зробити 16 виборки на секунду
 __HEADER_AR header_ar;
-unsigned char buffer_for_save_ar_record[SIZE_PAGE_DATAFLASH_2];
-unsigned int temporary_address_ar;
-volatile unsigned int count_to_save;
-unsigned int permit_copy_new_data;
-unsigned int copied_number_samples, total_number_samples;
-unsigned int etap_writing_part_page_ar_into_dataflash = ETAP_NONE;
-unsigned int number_record_of_ar_for_menu = 0xffff; //Це число означає, що номер запису не вибраний
-unsigned int number_record_of_ar_for_USB = 0xffff; //Це число означає, що номер запису не вибраний
-unsigned int number_record_of_ar_for_RS485 = 0xffff; //Це число означає, що номер запису не вибраний
+unsigned char buffer_for_fs[SIZE_PAGE_DATAFLASH_2];
+unsigned int fs_temporary_address;
+volatile unsigned int fs_count_to_transfer;
+unsigned int etap_writing_part_page_fs_into_dataflash = ETAP_NONE;
+int number_record_of_ar_for_menu = -1; //Це число означає, що номер запису не вибраний
+int number_record_of_ar_for_USB = -1; //Це число означає, що номер запису не вибраний
+char id_ar_record_for_USB[8 + 1 + 3 + 1];
+int max_number_time_sample_USB;
+int number_record_of_ar_for_RS485 = -1; //Це число означає, що номер запису не вибраний
 int first_number_time_sample_for_USB;// -1 - заголовок запису ан.р.; 0 - перший часовий зріз доаварійного масиву і т.д.
 int last_number_time_sample_for_USB;// -1 - заголовок запису ан.р.; 0 - перший часовий зріз доаварійного масиву і т.д.
 int first_number_time_sample_for_RS485;// -1 - заголовок запису ан.р.; 0 - перший часовий зріз доаварійного масиву і т.д.
 int last_number_time_sample_for_RS485;// -1 - заголовок запису ан.р.; 0 - перший часовий зріз доаварійного масиву і т.д.
+char id_ar_record_for_RS485[8 + 1 + 3 + 1];
+int max_number_time_sample_RS485;
 
 //Дискретний реєстратор
 unsigned char crc_info_rejestrator_dr;
@@ -971,7 +976,6 @@ extern unsigned int __checksum_end;
 
 #endif
 
-//unsigned int test_array[2][3];
 
 
 #endif

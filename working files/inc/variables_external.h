@@ -78,7 +78,8 @@ extern unsigned int measurement_low[_NUMBER_IM];
 extern const unsigned int index_converter[NUMBER_ANALOG_CANALES];
 extern int ortogonal_calc[2*FULL_ORT_MAX];
 extern int ortogonal_calc_low[2*FULL_ORT_MAX];
-extern int phi_angle[FULL_ORT_MAX];
+extern int phi_angle[2][FULL_ORT_MAX];
+extern uint32_t bank_for_calc_phi_angle, state_calc_phi_angle;
 extern int base_index_for_angle;
 
 extern int P_plus[2];
@@ -89,10 +90,11 @@ extern int Q_3q[2];
 extern int Q_4q[2];
 extern unsigned int lichylnyk_1s_po_20ms;
 extern unsigned int bank_for_enegry;
-extern unsigned int mutex_power;
-extern int P[2], Q[2], cos_phi_x1000;
+extern int P[2], Q[2], cos_phi_x1000[2];
 extern unsigned int S[2];
-extern double energy[MAX_NUMBER_INDEXES_ENERGY];
+extern uint32_t bank_for_calc_power, state_calc_power;
+extern double energy[2][MAX_NUMBER_INDEXES_ENERGY];
+extern uint32_t state_calc_energy;
 extern unsigned int clean_energy;
 extern unsigned int information_about_clean_energy;
 
@@ -169,10 +171,10 @@ extern unsigned int fix_active_buttons, fix_active_buttons_ctrl;
 extern unsigned int mutex_interface;
 extern unsigned int activation_function_from_interface[N_SMALL];
 extern unsigned int reset_trigger_function_from_interface;
-extern unsigned int diagnostyka_before[3];
-extern volatile unsigned int diagnostyka[3];
-extern unsigned int set_diagnostyka[3];
-extern unsigned int clear_diagnostyka[3];
+extern unsigned int diagnostyka_before[N_DIAGN];
+extern volatile unsigned int diagnostyka[N_DIAGN];
+extern unsigned int set_diagnostyka[N_DIAGN];
+extern unsigned int clear_diagnostyka[N_DIAGN];
 
 extern uint32_t board_register;
 
@@ -337,40 +339,43 @@ extern unsigned char buffer_for_USB_read_record_pr_err[SIZE_ONE_RECORD_PR_ERR];
 extern unsigned char buffer_for_RS485_read_record_pr_err[SIZE_ONE_RECORD_PR_ERR];
 
 extern unsigned int what_we_are_reading_from_dataflash_1;
-extern unsigned int what_we_are_reading_from_dataflash_2;
+
+//FATFS
+extern uint32_t FATFS_command;
 
 //Аналоговий реєстратор
 extern unsigned char crc_info_rejestrator_ar;
-extern __INFO_REJESTRATOR info_rejestrator_ar;
+extern __INFO_AR_REJESTRATOR info_rejestrator_ar;
 extern unsigned char crc_info_rejestrator_ar_ctrl;
-extern __INFO_REJESTRATOR info_rejestrator_ar_ctrl;
-extern unsigned int size_one_ar_record;
-extern const unsigned int number_word_digital_part_ar;
-extern unsigned int max_number_records_ar;
-extern unsigned int semaphore_read_state_ar_record;
-extern unsigned int continue_previous_record_ar;
-extern int state_ar_record;
-extern unsigned int state_ar_record_prt;
+extern __INFO_AR_REJESTRATOR info_rejestrator_ar_ctrl;
+//extern const unsigned int number_word_digital_part_ar;
+extern unsigned int forbidden_new_record_ar_mode_0;
+extern unsigned int state_ar_record_m, state_ar_record_prt, state_ar_record_fatfs;
+extern unsigned int prev_state_ar_record_m;
 extern short int array_ar[SIZE_BUFFER_FOR_AR];
 extern short int word_SRAM1;
 extern unsigned int index_array_ar_current;
 extern unsigned int index_array_ar_heat;
 extern unsigned int index_array_ar_tail;
+extern unsigned char tail_to_heat, current_to_tail;
+extern int diff_index_heat_tail;
 extern unsigned int prescaler_ar;
 extern __HEADER_AR header_ar;
-extern unsigned char buffer_for_save_ar_record[SIZE_PAGE_DATAFLASH_2];
-extern unsigned int temporary_address_ar;
-extern volatile unsigned int count_to_save;
-extern unsigned int permit_copy_new_data;
-extern unsigned int copied_number_samples, total_number_samples;
-extern unsigned int etap_writing_part_page_ar_into_dataflash;
-extern unsigned int number_record_of_ar_for_menu;
-extern unsigned int number_record_of_ar_for_USB;
-extern unsigned int number_record_of_ar_for_RS485;
+extern unsigned char buffer_for_fs[SIZE_PAGE_DATAFLASH_2];
+extern unsigned int fs_temporary_address;
+extern volatile unsigned int fs_count_to_transfer;
+extern unsigned int etap_writing_part_page_fs_into_dataflash;
+extern int number_record_of_ar_for_menu;
+extern int number_record_of_ar_for_USB;
+extern char id_ar_record_for_USB[8 + 1 + 3 + 1];
+extern int max_number_time_sample_USB;
+extern int number_record_of_ar_for_RS485;
 extern int first_number_time_sample_for_USB;
 extern int last_number_time_sample_for_USB;
 extern int first_number_time_sample_for_RS485;
 extern int last_number_time_sample_for_RS485;
+extern char id_ar_record_for_RS485[8 + 1 + 3 + 1];
+extern int max_number_time_sample_RS485;
 
 //Дискретний реєстратор
 extern unsigned char crc_info_rejestrator_dr;
@@ -526,6 +531,5 @@ extern unsigned int __checksum_end;
 
 
 #endif
-//extern unsigned int test_array[2][3];
 
 #endif

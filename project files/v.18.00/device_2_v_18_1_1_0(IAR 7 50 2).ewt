@@ -1067,6 +1067,60 @@
     </group>
   </group>
   <group>
+    <name>FatFs</name>
+    <group>
+      <name>inc</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\diskio.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\fatfs.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ff.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ff_gen_drv.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ffconf.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\ffconf_template.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\integer.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\inc\user_diskio.h</name>
+      </file>
+    </group>
+    <group>
+      <name>src</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\diskio.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\fatfs.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff.c</name>
+        <configuration>
+          <name>Flash-Debug</name>
+        </configuration>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff_gen_drv.c</name>
+        <configuration>
+          <name>Flash-Debug</name>
+        </configuration>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\user_diskio.c</name>
+      </file>
+    </group>
+  </group>
+  <group>
     <name>Linker</name>
     <file>
       <name>$PROJ_DIR$\..\StackDepth.suc</name>
@@ -1502,9 +1556,6 @@
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_mtz.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\working files\inc\const_menu_outputs.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\..\working files\inc\const_menu_point_time_settings.h</name>
         </file>
         <file>
@@ -1597,9 +1648,12 @@
       </group>
       <group>
         <name>Serial Dataflash</name>
-        <file>
-          <name>$PROJ_DIR$\..\..\working files\inc\const_driver_serial_dataflash.h</name>
-        </file>
+        <group>
+          <name>a.01.c.d</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\working files\inc\a.01.c.d\const_driver_serial_dataflash.h</name>
+          </file>
+        </group>
       </group>
     </group>
     <group>
@@ -1692,9 +1746,6 @@
               <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\component\PREGBigComponent.c</name>
             </file>
             <file>
-              <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\component\QAISmallComponent.c</name>
-            </file>
-            <file>
               <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\component\RAISmallComponent.c</name>
             </file>
             <file>
@@ -1748,6 +1799,9 @@
           </group>
           <file>
             <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\procedures_m.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\component\QAISmallComponent.c</name>
           </file>
           <file>
             <name>$PROJ_DIR$\..\..\working files\src\modbusroutine\start_settings_m.c</name>
@@ -1918,6 +1972,9 @@
       </group>
       <group>
         <name>protection</name>
+        <file>
+          <name>$PROJ_DIR$\..\..\working files\src\ar_routines.c</name>
+        </file>
         <file>
           <name>$PROJ_DIR$\..\..\working files\src\measurement.c</name>
         </file>

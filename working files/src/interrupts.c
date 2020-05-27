@@ -432,10 +432,69 @@ void TIM5_IRQHandler(void)
     {
       //Переповнення не зафіксоване
       _SET_BIT(clear_diagnostyka, ERROR_OSCYLOJRAPH_OVERFLOW);
+      
+      //Перевірка на те, чи не потрібно запустити роботу аналогового реєстртора на рівні "Вимірювання"
+      if (
+          (state_ar_record_fatfs == STATE_AR_WAIT_TO_STOP_WRITE_FATFS) &&  
+          (state_ar_record_m != STATE_AR_BLOCK_M) &&
+          (index_array_ar_tail != index_array_ar_heat)
+         )
+      {
+        state_ar_record_fatfs = STATE_AR_WRITE_FATFS;
+      }
+      
+      if (
+          (
+           (state_ar_record_m == STATE_AR_NONE_M) ||
+           (state_ar_record_m == STATE_AR_WORK_STOP_M)
+          ) 
+          &&
+          (_CHECK_SET_BIT (active_functions, RANG_WORK_A_REJESTRATOR) != 0)  
+         )   
+      {
+        state_ar_record_m = STATE_AR_WORK_M;
+        
+        if (state_ar_record_fatfs == STATE_AR_NONE_FATFS) state_ar_record_fatfs = STATE_AR_WAIT_TO_WRITE_FATFS;
+      }
+      else if (
+               (state_ar_record_m == STATE_AR_WORK_M) &&
+               (_CHECK_SET_BIT (active_functions, RANG_WORK_A_REJESTRATOR) == 0)  
+              )
+      {
+        state_ar_record_m = STATE_AR_WORK_STOP_M;
+      }
+      else if (
+               (state_ar_record_m == STATE_AR_WORK_STOP_M) &&
+               (
+                (state_ar_record_fatfs == STATE_AR_WAIT_TO_STOP_WRITE_FATFS) ||
+                (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) ||
+                (state_ar_record_fatfs == STATE_AR_BLOCK_FATFS)
+               )   
+              )
+      {
+        state_ar_record_m = STATE_AR_NONE_M;
+        if (state_ar_record_fatfs == STATE_AR_WAIT_TO_STOP_WRITE_FATFS) state_ar_record_fatfs = STATE_AR_STOP_WRITE_FATFS;
+        else if (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) state_ar_record_fatfs = STATE_AR_NONE_FATFS;
+      }
+      else if (
+               (state_ar_record_m == STATE_AR_BLOCK_M) &&
+               (
+                (state_ar_record_fatfs == STATE_AR_WAIT_TO_STOP_WRITE_FATFS) ||
+                (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) ||
+                (state_ar_record_fatfs == STATE_AR_BLOCK_FATFS)
+               )   
+              )
+      {
+        state_ar_record_m = STATE_AR_NONE_M;
+        if (state_ar_record_fatfs == STATE_AR_WAIT_TO_STOP_WRITE_FATFS) state_ar_record_fatfs = STATE_AR_STOP_WRITE_FATFS;
+        else if (state_ar_record_fatfs == STATE_AR_MEMORY_FULL_FATFS) state_ar_record_fatfs = STATE_AR_NONE_FATFS;
+
+        _SET_BIT(clear_diagnostyka, ERROR_AR_OVERLOAD_BUFFER_BIT);
+      }
     
       //Мітка часу
       data_for_oscylograph[head_data_for_oscylograph].time_stemp = current_tick;
-      data_for_oscylograph[head_data_for_oscylograph].state_ar_record = state_ar_record;
+      data_for_oscylograph[head_data_for_oscylograph].state_ar_record = state_ar_record_m;
 
       //Активні дискретні сигнали
       unsigned int *label_to_active_functions_target = data_for_oscylograph[head_data_for_oscylograph].active_functions;
@@ -933,7 +992,8 @@ void TIM4_IRQHandler(void)
         number_seconds = 0;
         if((POWER_CTRL->IDR & POWER_CTRL_PIN) != (uint32_t)Bit_RESET)
         {
-          reinit_LCD = true;
+          if (state_ar_record_fatfs != STATE_AR_WRITE_FATFS) reinit_LCD = true; /*реініціалізацію індикатора робимо, коли не іде запис Аналогового реєстратора*/
+          
           if (++number_minutes >= PERIOD_SAVE_ENERGY_IN_MINUTES)
           {
             number_minutes = 0;
@@ -1277,7 +1337,7 @@ void TIM4_IRQHandler(void)
               number_chip_dataflsh_exchange = (number_chip_dataflsh_exchange + 1) & (NUMBER_DATAFLASH_CHIP - 1);
             }
 
-            //Робимо запит на нову мікросхему DataFlash, якщо э такий
+            //Робимо запит на нову мікросхему DataFlash, якщо є такий
             main_function_for_dataflash_req(number_chip_dataflsh_exchange);
           }
         }
@@ -1452,19 +1512,19 @@ void TIM4_IRQHandler(void)
     
     /*Vidladka*/
 #ifdef DEBUG_TEST
-    static unsigned int t_1, t_2, delta_tmp;
-    t_1 = TIM4->CCR2;
-    t_2 = TIM4->CNT;
-    if (t_1 >= t_2) delta_tmp = t_1 - t_2;
-    else delta_tmp = t_1 + 0xffff - t_2;
-    
-    if (
-        (delta_tmp > TIM4_CCR2_VAL) &&
-        (TIM_GetITStatus(TIM4, TIM_IT_CC2) == RESET)  
-       )   
-    {
-      while(delta_tmp > 0);
-    }
+//    static unsigned int t_1, t_2, delta_tmp;
+//    t_1 = TIM4->CCR2;
+//    t_2 = TIM4->CNT;
+//    if (t_1 >= t_2) delta_tmp = t_1 - t_2;
+//    else delta_tmp = t_1 + 0xffff - t_2;
+//    
+//    if (
+//        (delta_tmp > TIM4_CCR2_VAL) &&
+//        (TIM_GetITStatus(TIM4, TIM_IT_CC2) == RESET)  
+//       )   
+//    {
+//      while(delta_tmp > 0);
+//    }
 #endif
     /***/
     /***********************************************************/

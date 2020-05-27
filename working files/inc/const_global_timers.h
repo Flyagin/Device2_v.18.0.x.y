@@ -122,7 +122,10 @@ enum _index_timer
   
   INDEX_TIMER_UP1,
   
-  NEXT_TIMER = (INDEX_TIMER_UP1 + NUMBER_UP)
+  INDEX_TIMER_POSTFAULT = (INDEX_TIMER_UP1 + NUMBER_UP),
+  INDEX_TIMER_FULL_AR_RECORD,
+  
+  NEXT_TIMER
 };
 
 enum __mtz_tmr_const {
