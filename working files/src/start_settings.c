@@ -190,15 +190,6 @@ void global_vareiables_installation(void)
   /**************************/
 
   /**************************/
-  //Змінні, які потрібні для роботи
-  /**************************/
-//  for(unsigned int i = 0; i < NUMBER_DEFINED_FUNCTIONS; i++)
-//  {
-//    etap_execution_df[i] = NONE_DF;
-//  }
-  /**************************/
-
-  /**************************/
   //Змінні, які потрібні для дискретного реєстратора
   /**************************/
   for(unsigned int i = 0; i < SIZE_BUFFER_FOR_DR_RECORD; i++)

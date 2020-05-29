@@ -565,7 +565,7 @@ int main(void)
   changing_diagnostyka_state();//Підготовлюємо новий потенційно можливий запис для реєстратора програмних подій
 
   /**********************/
-  //Ініціалізація USB
+  //Ініціалізація компонет Ігоря для Modbus + USB
   /**********************/
   //Робота з watchdogs
   if ((control_word_of_watchdog & WATCHDOG_KYYBOARD) == WATCHDOG_KYYBOARD)

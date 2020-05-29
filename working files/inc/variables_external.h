@@ -181,8 +181,7 @@ extern uint32_t board_register;
 extern int global_timers[MAX_NUMBER_GLOBAL_TIMERS];
 extern unsigned int timer_prt_signal_output_mode_2;
 extern unsigned int output_timer_prt_signal_output_mode_2;
-extern unsigned int etap_execution_df[NUMBER_DEFINED_FUNCTIONS];
-//extern unsigned int state_df;
+extern unsigned int static_logic_df;
 
 extern unsigned int previous_states_APV_0;
 extern unsigned int trigger_APV_0;

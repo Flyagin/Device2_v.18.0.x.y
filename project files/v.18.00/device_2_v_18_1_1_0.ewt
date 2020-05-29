@@ -1444,9 +1444,15 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff.c</name>
+                <configuration>
+                    <name>Flash-Debug</name>
+                </configuration>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\ff_gen_drv.c</name>
+                <configuration>
+                    <name>Flash-Debug</name>
+                </configuration>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\Middlewares\FatFs\src\user_diskio.c</name>
@@ -1963,9 +1969,6 @@
             </group>
             <group>
                 <name>protection</name>
-                <file>
-                    <name>$PROJ_DIR$\..\..\working files\inc\const_df.h</name>
-                </file>
                 <file>
                     <name>$PROJ_DIR$\..\..\working files\inc\const_global_timers.h</name>
                 </file>
