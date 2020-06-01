@@ -196,7 +196,7 @@ enum _command_fatfs
 #define NUMBER_FATFS_NAME       0x1000000       
 #define MASKA_FATFS_NAME        (NUMBER_FATFS_NAME - 1)
 
-#define SIZE_BUFFER_FOR_AR   (166806)
+#define SIZE_BUFFER_FOR_AR   (250182)
 
 #define CLEAN_AR_BIT          0
 #define CLEAN_AR              (1 << CLEAN_AR_BIT)
