@@ -3,7 +3,7 @@
 //начальный регистр в карте памяти
 #define BEGIN_ADR_REGISTER 12000
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 12042
+#define END_ADR_REGISTER 12055
 
 int privatePKVBigGetReg2(int adrReg);
 
@@ -90,80 +90,80 @@ int PKVFunc000(int inOffset, int regPKV, uint32_t **editValue)
 //      (*editValue) = &stubnull;
 //      break;
 
-//    case 16://Символ 1 и 2
+//    case 23://Символ 1 и 2
 //      (*editValue) = &edition_settings.name_of_cell[0];
 //      break;
-//    case 17://Символ 3 и 4
+//    case 24://Символ 3 и 4
 //      (*editValue) = &edition_settings.name_of_cell[2];
 //      break;
-//    case 18://Символ 5 и 6
+//    case 25://Символ 5 и 6
 //      (*editValue) = &edition_settings.name_of_cell[4];
 //      break;
-//    case 19://Символ 7 и 8
+//    case 26://Символ 7 и 8
 //      (*editValue) = &edition_settings.name_of_cell[6];
 //      break;
-//    case 20://Символ 9 и 10
+//    case 27://Символ 9 и 10
 //      (*editValue) = &edition_settings.name_of_cell[8];
 //      break;
-//    case 21://Символ 11 и 12
+//    case 28://Символ 11 и 12
 //      (*editValue) = &edition_settings.name_of_cell[10];
 //      break;
-//    case 22://Символ 13 и 14
+//    case 29://Символ 13 и 14
 //      (*editValue) = &edition_settings.name_of_cell[12];
 //      break;
-//    case 23://Символ 15 и 16
+//    case 30://Символ 15 и 16
 //      (*editValue) = &edition_settings.name_of_cell[14];
 //      break;
-  case 24://Год
+  case 31://Год
     if(regPKV&0xff00) diapazon=0;
     if(regPKV>0x99) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 25://Месяц
+  case 32://Месяц
     if(regPKV&0xff00) diapazon=0;
     if(regPKV==0) diapazon=0;
     if(regPKV>0x12) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 26://День
+  case 33://День
     if(regPKV&0xff00) diapazon=0;
     if(regPKV==0) diapazon=0;
     if(regPKV>0x31) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 27://Час
+  case 34://Час
     if(regPKV&0xff00) diapazon=0;
     if(regPKV>0x23) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 28://Минуты
+  case 35://Минуты
     if(regPKV&0xff00) diapazon=0;
     if(regPKV>0x59) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 29://Секунды
+  case 36://Секунды
     if(regPKV&0xff00) diapazon=0;
     if(regPKV>0x59) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
-  case 30://Сотые секунды
+  case 37://Сотые секунды
     if(regPKV&0xff00) diapazon=0;
     if(regPKV>0x99) diapazon=0;
     if((regPKV&0xf)>9) diapazon=0;
     break;
 
-//    case 31://Часовой пояс
-//    case 32://Переход на Зимнее/Летнее время
-//    case 33://Месяц перехода на Летнее время
-//    case 34://Неделя месяца перехода на Летнее время
-//    case 35://День недели перехода на Летнее время
-//    case 36://Час недели перехода на Летнее время
-//    case 37://Месяц перехода на Зимнее время
-//    case 38://Неделя месяца перехода на Зимнее время
-//    case 39://День недели перехода на Зимнее время
-//    case 40://Час недели перехода на Зимнее время
-//    case 41://Синхронизация времени
-//    case 42://Время утраты синхронизации
+//    case 38://Часовой пояс
+//    case 39://Переход на Зимнее/Летнее время
+//    case 40://Месяц перехода на Летнее время
+//    case 41://Неделя месяца перехода на Летнее время
+//    case 42://День недели перехода на Летнее время
+//    case 43://Час недели перехода на Летнее время
+//    case 44://Месяц перехода на Зимнее время
+//    case 45://Неделя месяца перехода на Зимнее время
+//    case 46://День недели перехода на Зимнее время
+//    case 47://Час недели перехода на Зимнее время
+//    case 48://Синхронизация времени
+//    case 49://Время утраты синхронизации
 //      (*editValue) = &stubnull;
 //      break;
 
@@ -214,42 +214,42 @@ int getPKVBigModbusRegister(int adrReg)
     return MARKER_ERRORPERIMETR;
   case 6://Количество стоп-бит
     return (((unsigned short)*editValue)+1) &0xFFFF;
-  case 16://Символ 1 и 2
+  case 23://Символ 1 и 2
     return (edition_settings.name_of_cell[0]&0xFF) | ((edition_settings.name_of_cell[1]<<8)&0xFF00);
-  case 17://Символ 3 и 4
+  case 24://Символ 3 и 4
     return (edition_settings.name_of_cell[2]&0xFF) | ((edition_settings.name_of_cell[3]<<8)&0xFF00);
-  case 18://Символ 5 и 6
+  case 25://Символ 5 и 6
     return (edition_settings.name_of_cell[4]&0xFF) | ((edition_settings.name_of_cell[5]<<8)&0xFF00);
-  case 19://Символ 7 и 8
+  case 26://Символ 7 и 8
     return (edition_settings.name_of_cell[6]&0xFF) | ((edition_settings.name_of_cell[7]<<8)&0xFF00);
-  case 20://Символ 9 и 10
+  case 27://Символ 9 и 10
     return (edition_settings.name_of_cell[8]&0xFF) | ((edition_settings.name_of_cell[9]<<8)&0xFF00);
-  case 21://Символ 11 и 12
+  case 28://Символ 11 и 12
     return (edition_settings.name_of_cell[10]&0xFF) | ((edition_settings.name_of_cell[11]<<8)&0xFF00);
-  case 22://Символ 13 и 14
+  case 29://Символ 13 и 14
     return (edition_settings.name_of_cell[12]&0xFF) | ((edition_settings.name_of_cell[13]<<8)&0xFF00);
-  case 23://Символ 15 и 16
+  case 30://Символ 15 и 16
     return (edition_settings.name_of_cell[14]&0xFF) | ((edition_settings.name_of_cell[15]<<8)&0xFF00);
 
-  case 24://Год
+  case 31://Год
     return  (*(label_to_time_array + 6)) &0xFF;
 
-  case 25://Месяц
+  case 32://Месяц
     return (*(label_to_time_array + 5)) &0xFF;
 
-  case 26://День
+  case 33://День
     return (*(label_to_time_array + 4)) &0xFF;
 
-  case 27://Час
+  case 34://Час
     return (*(label_to_time_array + 3)) &0xFF;
 
-  case 28://Минуты
+  case 35://Минуты
     return (*(label_to_time_array + 2)) &0xFF;
 
-  case 29://Секунды
+  case 36://Секунды
     return (*(label_to_time_array + 1)) &0xFF;
 
-  case 30://Сотые секунды
+  case 37://Сотые секунды
     return (*(label_to_time_array + 0)) &0xFF;
   }//switch
 
@@ -390,72 +390,72 @@ int postPKVBigWriteAction(void)
       upravlSetting = 1;//флаг Setting
       break;
 
-    case 16://Символ 1 и 2
+    case 23://Символ 1 и 2
       edition_settings.name_of_cell[0] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[1] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 17://Символ 3 и 4
+    case 24://Символ 3 и 4
       edition_settings.name_of_cell[2] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[3] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 18://Символ 5 и 6
+    case 25://Символ 5 и 6
       edition_settings.name_of_cell[4] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[5] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 19://Символ 7 и 8
+    case 26://Символ 7 и 8
       edition_settings.name_of_cell[6] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[7] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 20://Символ 9 и 10
+    case 27://Символ 9 и 10
       edition_settings.name_of_cell[8] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[9] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 21://Символ 11 и 12
+    case 28://Символ 11 и 12
       edition_settings.name_of_cell[10] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[11] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 22://Символ 13 и 14
+    case 29://Символ 13 и 14
       edition_settings.name_of_cell[12] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[13] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
-    case 23://Символ 15 и 16
+    case 30://Символ 15 и 16
       edition_settings.name_of_cell[14] = (tempWriteArray[offsetTempWriteArray+i]);
       edition_settings.name_of_cell[15] = (tempWriteArray[offsetTempWriteArray+i])>>8;
       upravlSetting = 1;//флаг Setting
       break;
 
-    case 24://Год
+    case 31://Год
       *(label_to_time_array + 6) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 25://Месяц
+    case 32://Месяц
       *(label_to_time_array + 5) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 26://День
+    case 33://День
       *(label_to_time_array + 4) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 27://Час
+    case 34://Час
       *(label_to_time_array + 3) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 28://Минуты
+    case 35://Минуты
       *(label_to_time_array + 2) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 29://Секунды
+    case 36://Секунды
       *(label_to_time_array + 1) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;
-    case 30://Сотые секунды
+    case 37://Сотые секунды
       *(label_to_time_array + 0) = (tempWriteArray[offsetTempWriteArray+i]);
       flag_time_array = 1;
       break;

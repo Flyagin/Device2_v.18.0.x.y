@@ -843,26 +843,30 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_output;
     break;
-  case 1219:
+
+//  count_bit = 9;
+  case 1220:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_output_modif;
     break;
-  case 1220:
+
+//  count_bit = 9;
+  case 1222:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_df;
     if(regUst&(~(0xFF))) diapazon=0;
     break;
-#define MARKER1221  1221
-  case MARKER1221:
+#define MARKER1223  1223
+  case MARKER1223:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_led;
     break;
-  case 1222:
+  case 1224:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.type_of_led;
     if(regUst&(~(0x1))) diapazon=0;
     break;
-  case 1223:
+  case 1225:
     (*multer) = 1;
     (*editValue) = (uint32_t*)&edition_settings.buttons_mode;
     if(regUst&(~(0xFFF))) diapazon=0;
@@ -887,9 +891,9 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
     }//if
     break;
 
-//IF ÂÑÒÀÂÊÀ 1224-1243
-//IF ÂÑÒÀÂÊÀ 1244-1251
-//IF ÂÑÒÀÂÊÀ 1254-1261
+//IF ÂÑÒÀÂÊÀ 1226-1245
+//IF ÂÑÒÀÂÊÀ 1246-1253
+//IF ÂÑÒÀÂÊÀ 1256-1263
 
 #if (                                   \
      (MODYFIKACIA_VERSII_PZ == 0) ||    \
@@ -1030,19 +1034,19 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
   }//if(inOffset>=988 && inOffset<1021 && inOffset!=1004)
 
 #if (MODYFIKACIA_VERSII_PZ == 0)
-  if(inOffset>=1224 && inOffset<1244)
+  if(inOffset>=1226 && inOffset<1246)
 #endif
 #if (                                   \
      (MODYFIKACIA_VERSII_PZ == 1) ||    \
      (MODYFIKACIA_VERSII_PZ == 3)       \
     )   
-    if(inOffset>=1224 && inOffset<1240)
+    if(inOffset>=1226 && inOffset<1242)
 #endif
 #if (MODYFIKACIA_VERSII_PZ == 2)
-      if(inOffset>=1224 && inOffset<1232)
+      if(inOffset>=1226 && inOffset<1234)
 #endif
       {
-        int item = inOffset-1224;
+        int item = inOffset-1226;
         (*editValue) = (uint32_t*)&edition_settings.dopusk_dv[item];
         (*multer) = 1;
         if(regUst<KOEF_DOPUSK_DV_POST_MIN || regUst>KOEF_DOPUSK_DV_MAX) diapazon=0;
@@ -1058,16 +1062,16 @@ int ustFunc000(int inOffset, int gruppa, int *multer, int regUst, uint32_t **edi
         }
       }//if
 
-  if(inOffset>=1244 && inOffset<1252)
+  if(inOffset>=1246 && inOffset<1254)
   {
-    int item = inOffset-1244;
+    int item = inOffset-1246;
     (*editValue) = (uint32_t*)&edition_settings.timeout_pause_df[item];
     if(regUst<TIMEOUT_DF_PAUSE_MIN/10 || regUst>TIMEOUT_DF_PAUSE_MAX/10) diapazon=0;
   }//if(inOffset>=1076 && inOffset<1084)
 
-  if(inOffset>=1254 && inOffset<1262)
+  if(inOffset>=1256 && inOffset<1264)
   {
-    int item = inOffset-1254;
+    int item = inOffset-1256;
     (*editValue) = (uint32_t*)&edition_settings.timeout_work_df[item];
     if(regUst<TIMEOUT_DF_WORK_MIN/10 || regUst>TIMEOUT_DF_WORK_MAX/10) diapazon=0;
   }//if(inOffset>=1076 && inOffset<1084)
@@ -1312,7 +1316,7 @@ int getUSTBigModbusRegister(int adrReg)
   }//if(editValue == (uint32_t*)&edition_settings.type_of_input)
   if(editValue == (uint32_t*)&edition_settings.type_of_led)
   {
-    if(offset==MARKER1221)
+    if(offset==MARKER1223)
     {
       return (*editValue) & (uint32_t)0xffff;
     }
@@ -1548,7 +1552,7 @@ int postUSTBigWriteAction(void)
     }//if(editValue == (uint32_t*)&edition_settings.type_of_input)
     if(editValue == (uint32_t*)&edition_settings.type_of_led)
     {
-      if(offset==MARKER1221)
+      if(offset==MARKER1223)
       {
         (*editValue) &= (uint32_t)~0xffff;
         (*editValue) |= (value & 0xffff);

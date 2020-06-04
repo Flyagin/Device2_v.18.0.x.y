@@ -7,9 +7,9 @@
 #define BEGIN_ADR_BIT 55000
 
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 10031
+#define END_ADR_REGISTER 10032
 //конечный bit в карте памяти
-#define END_ADR_BIT 55496
+#define END_ADR_BIT 55512
 
 #define CLRVALID_DATA  0
 
@@ -743,9 +743,20 @@ int uprFunc000(int actControl, int inOffset, uint32_t *uprMaska, int validData, 
       (*uprMaska)   = INDEX_CTR_NKN_DZ;
       break;
 
+//  count_bit = 1;
     case 496:
       (*uprMaska)   = INDEX_ML_CTR_TRANSFORMATOR_3I0_3I0_1;
       (*editControl) = &edition_settings.control_transformator;
+      break;
+
+//  count_bit = 1;
+    case 512:
+      (*uprMaska)   = INDEX_ML_CTR_AR_AVAR_STATE;
+      (*editControl) = &edition_settings.control_ar;
+//      if(actControl)
+//        {
+//         if(action_after_changing_of_configuration(edition_settings.configuration, &edition_settings)) isValid = 0;
+//        }//if(actControl)
       break;
 
     }//switch

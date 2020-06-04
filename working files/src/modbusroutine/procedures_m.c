@@ -447,19 +447,19 @@ int dataAnalogRegistrator(int offsetRegister, int recordNumber, int recordLen)
           unsigned int read_tmp;
           UINT ByteToRead = ((unsigned int)(*point_to_last_number_time_sample) - recordNumber + 1)*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
           res = f_read(&fil, point_to_Buffer, ByteToRead, &read_tmp);
-          if ((res != FR_OK) || (read_tmp != ByteToRead)) return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+          if ((res != FR_OK) || (read_tmp != ByteToRead)) return MARKER_ERRORPERIMETR/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
         }
-        else return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+        else return MARKER_ERRORPERIMETR/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
 
         res = f_close(&fil);
         if (res != FR_OK) 
         {
           //Невизначена ситуація, якої ніколи б не мало бути.
           _SET_BIT(set_diagnostyka, ERROR_AR_UNDEFINED_BIT);
-          return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+          return MARKER_ERRORPERIMETR/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
         }
       }
-      else return MARKER_ERRORDIAPAZON/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
+      else return MARKER_ERRORPERIMETR/*насправді потібно видати помилку ERROR_SLAVE_DEVICE_FAILURE*/;
     }
 
   //Якщо ми сюди дійшли, то вважаємо що запитувана виборка зчитана і знаходиться у буфері читання аналогового реєстратора для інтерфейсу
@@ -882,24 +882,97 @@ int recordNumberCaseDiskret(int subObj, int offsetRegister)
 
 int recordNumberCaseOther(int subObj, int offsetRegister, int recordLen, int registrator)
 {
+  int *point_to_first_number_time_sample, *point_to_last_number_time_sample;
+  char *point_id_ar_record;
+  int *point_to_max_number_time_sample;
+  unsigned char *point_to_Buffer;
+  
   __HEADER_AR *header_ar_tmp;
-  unsigned char *point_to_buffer;
-  if (pointInterface == USB_RECUEST) //метка интерфейса 0-USB 1-RS485
-    point_to_buffer = buffer_for_USB_read_record_dr;
-  else
-    point_to_buffer = buffer_for_RS485_read_record_dr;
 
-  int max_number_time_sample = (current_settings.prefault_number_periods + current_settings.postfault_number_periods) << VAGA_NUMBER_POINT_AR;
-
-  if (pointInterface==USB_RECUEST) //метка интерфейса 0-USB 1-RS485
+  if(registrator == ANALOG_REGISTRATOR)
+  {
+    if (pointInterface == USB_RECUEST)
     {
-      header_ar_tmp = (__HEADER_AR*)buffer_for_USB_read_record_ar;
-    }//if
-  else
-    {
-      header_ar_tmp = (__HEADER_AR*)buffer_for_RS485_read_record_ar;
+      point_id_ar_record = id_ar_record_for_USB;
+      point_to_first_number_time_sample = &first_number_time_sample_for_USB;
+      point_to_last_number_time_sample  = &last_number_time_sample_for_USB;
+      point_to_max_number_time_sample = &max_number_time_sample_USB;
+          
+      point_to_Buffer = buffer_for_USB_read_record_ar;
     }
+    else
+    {
+      point_id_ar_record = id_ar_record_for_RS485;
+      point_to_first_number_time_sample = &first_number_time_sample_for_RS485;
+      point_to_last_number_time_sample  = &last_number_time_sample_for_RS485;
+      point_to_max_number_time_sample = &max_number_time_sample_RS485;
+          
+      point_to_Buffer = buffer_for_RS485_read_record_ar;
+    }
+  
+    //Перевіряємо чи зчитано заголовок аналогового реєстратора
+    if ((*point_to_first_number_time_sample) != -1)
+    {
+      //Зараз не виконувалося зчитування заголовку аналогового реєстрата
+              
+      FIL fil;
+      FRESULT res = f_open(&fil, point_id_ar_record, FA_READ);
+      if (res == FR_OK) 
+      {
+        res = f_lseek(&fil, 0);
+        if (res == FR_OK)
+        {
+          //Виставляємо читання заголовку запису даного запису і дальше, скільки можливо, часових зрізів 
+          *point_to_first_number_time_sample = -1;
+          int last_number_time_sample_tmp = (SIZE_PAGE_DATAFLASH_2 - sizeof(__HEADER_AR))/((NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int));
+          int max_number_time_sample = *point_to_max_number_time_sample = (f_size(&fil) - sizeof(__HEADER_AR))/((NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int));
+            
+          if (max_number_time_sample >= 0)
+          {
+            if (last_number_time_sample_tmp <= max_number_time_sample)
+            {
+              *point_to_last_number_time_sample = last_number_time_sample_tmp - 1;//номер останнього часового зрізу ВКЛЮЧНО
+            }
+            else
+            {
+              *point_to_last_number_time_sample = max_number_time_sample - 1;
+            }
+              
+            unsigned int read_tmp;
+            UINT ByteToRead = sizeof(__HEADER_AR) + ((unsigned int)(*point_to_last_number_time_sample) + 1)*(NUMBER_ANALOG_CANALES + NUMBER_WORD_DIGITAL_PART_AR)*sizeof(short int);
+            res = f_read(&fil, point_to_Buffer, ByteToRead, &read_tmp);
+            if ((res != FR_OK) || (read_tmp != ByteToRead)) return MARKER_ERRORPERIMETR;
+          }
+          else return MARKER_ERRORPERIMETR;
+        }
+        else return MARKER_ERRORPERIMETR;
 
+        res = f_close(&fil);
+        if (res != FR_OK) 
+        {
+          //Невизначена ситуація, якої ніколи б не мало бути.
+          _SET_BIT(set_diagnostyka, ERROR_AR_UNDEFINED_BIT);
+          return MARKER_ERRORPERIMETR;
+        }
+      }
+      else return MARKER_ERRORPERIMETR;
+    }
+              
+    header_ar_tmp = (__HEADER_AR*)point_to_Buffer;
+  }
+  else if (registrator == DISKRET_REGISTRATOR)
+  {
+    if (pointInterface == USB_RECUEST) //метка интерфейса 0-USB 1-RS485
+      point_to_Buffer = buffer_for_USB_read_record_dr;
+    else
+      point_to_Buffer = buffer_for_RS485_read_record_dr;
+  }
+  else return MARKER_ERRORPERIMETR;
+    
+
+//  unsigned int prefault_number_periods = header_ar_tmp->prefault_number_periods;
+//  int max_number_time_sample = (prefault_number_periods + current_settings.postfault_number_periods) << VAGA_NUMBER_POINT_AR;
+//
   switch(subObj)
     {
     case 0://Частота линии (Гц) subObj
@@ -918,8 +991,8 @@ int recordNumberCaseOther(int subObj, int offsetRegister, int recordLen, int reg
           if(registrator==ANALOG_REGISTRATOR) return ((50*1000)<<VAGA_NUMBER_POINT_AR)>>4; //Чаcтота
           return 0;
         case 1://Последняя выборка на этой частоте offsetRegister
-          if(registrator==ANALOG_REGISTRATOR) return max_number_time_sample; //Частота виборки
-          return *(point_to_buffer + FIRST_INDEX_NUMBER_ITEMS_DR); //остання виборка на даній чатоті дискретизації рівна останній
+          if(registrator==ANALOG_REGISTRATOR) return *point_to_max_number_time_sample; //Частота виборки
+          return *(point_to_Buffer + FIRST_INDEX_NUMBER_ITEMS_DR); //остання виборка на даній чатоті дискретизації рівна останній
         }//switch
 
       return MARKER_ERRORPERIMETR;
@@ -952,7 +1025,7 @@ int recordNumberCaseOther(int subObj, int offsetRegister, int recordLen, int reg
                 }
 
               int temp_data;
-              unsigned int max_time_milliseconds_before = (current_settings.prefault_number_periods)*2; //2 - це десяті від 20 мс, що відображає період на 50Гц
+              unsigned int max_time_milliseconds_before = (header_ar_tmp->prefault_number_periods)*2; //2 - це десяті від 20 мс, що відображає період на 50Гц
               unsigned int flag_carry = 0;
               unsigned int s, ds_ms;
 
@@ -1132,7 +1205,7 @@ m1:
               unsigned int time_avar_digital[7];
               for (unsigned int i = 0; i < 7; i++)
                 {
-                  unsigned int val = *(point_to_buffer + FIRST_INDEX_DATA_TIME_DR + i), val_l, val_m;
+                  unsigned int val = *(point_to_Buffer + FIRST_INDEX_DATA_TIME_DR + i), val_l, val_m;
                   val_l = val & 0xf;
                   val_m = (val >> 4) & 0xf;
                   time_avar_digital[i] = val_m*10 + val_l;
