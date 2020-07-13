@@ -1,9 +1,9 @@
 #include "header.h"
 
 //начальный регистр в карте памяти
-#define BEGIN_ADR_REGISTER 1516
+#define BEGIN_ADR_REGISTER 1580
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 1651
+#define END_ADR_REGISTER 1715
 
 #define REGISTERS_SDI 8
 

@@ -1,12 +1,12 @@
 #include "header.h"
 
 //начальный регистр в карте памяти
-#define BEGIN_ADR_REGISTER 1356
+#define BEGIN_ADR_REGISTER 1420
 #define REGISTERS_DV 8
 
 #if (MODYFIKACIA_VERSII_PZ == 0)
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 1515
+#define END_ADR_REGISTER 1579
 #endif
 
 #if (                                   \
@@ -14,12 +14,12 @@
      (MODYFIKACIA_VERSII_PZ == 3)       \
     )   
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 1483
+#define END_ADR_REGISTER 1547
 #endif
 
 #if (MODYFIKACIA_VERSII_PZ == 2)
 //конечный регистр в карте памяти
-#define END_ADR_REGISTER 1419
+#define END_ADR_REGISTER 1483
 #endif
 
 int privateDVBigGetReg2(int adrReg);
