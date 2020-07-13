@@ -119,6 +119,12 @@ void periodical_operations(void)
   //Робота з Watchdog
   watchdog_routine();
 
+  if (watchdog_l2) 
+  {
+    //Теоретично цього ніколи не мало б бути
+    total_error_sw_fixed(119);
+  }
+
   /*******************/
   //Контроль достовірності важливих даних
   /*******************/
@@ -296,12 +302,6 @@ void periodical_operations(void)
 
     //Скидаємо активну задачу самоконтролю по резервній копії для аналогового реєстратора
     periodical_tasks_TEST_RESURS_LOCK = false;
-  }
-  
-  if (watchdog_l2) 
-  {
-    //Теоретично цього ніколи не мало б бути
-    total_error_sw_fixed(119);
   }
   
 //  /*******************/
