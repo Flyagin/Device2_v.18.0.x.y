@@ -7130,15 +7130,18 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           for(unsigned int i = 0; i < NUMBER_BYTES_SAMPLE_DR; i++) 
             buffer_for_save_dr_record[FIRST_INDEX_SOURCE_DR + i] = *(((unsigned char*)cur_active_sources) + i);
 
-          //Помічаємо скільки часу пройшло з початку запуску запису
-          time_from_start_record_dr = 0;
-          
           //Записуємо попередній cтан сигналів перед аварією
           //Мітка часу попереднього стану сигналів до моменту початку запису
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR +  0] = 0xff;
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR +  1] = 0xff;
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR +  2] = 0xff;
 
+          //Помічаємо скільки часу пройшло з початку запуску запису
+          time_from_start_record_dr = 0;
+          
+          //Помічаємо кількість нових зрізів
+          number_items_dr = 1;
+      
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + number_items_dr*SD_DR +  0] =  time_from_start_record_dr        & 0xff;
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + number_items_dr*SD_DR +  1] = (time_from_start_record_dr >> 8 ) & 0xff;
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + number_items_dr*SD_DR +  2] = (time_from_start_record_dr >> 16) & 0xff;
@@ -7156,9 +7159,6 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + 3 + NUMBER_BYTES_SAMPLE_DR + 0] = 0;
           buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + 3 + NUMBER_BYTES_SAMPLE_DR + 1] = 0;
 
-          //Помічаємо кількість нових зрізів
-          number_items_dr = 1;
-      
           //Вираховуємо кількість змін сигналів
           number_changes_into_dr_record = 0;
           unsigned int number_changes_into_current_item;
@@ -7252,7 +7252,7 @@ inline void digital_registrator(unsigned int* carrent_active_functions)
         _NUMBER_CHANGES_INTO_UNSIGNED_INT_ARRAY(previous_active_functions, carrent_active_functions, N_BIG, number_changes_into_current_item);
         number_changes_into_dr_record += number_changes_into_current_item;
       
-        //Записуємо попередній cтан сигналів
+        //Записуємо поточний cтан сигналів
         //Мітка часу
         buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + number_items_dr*SD_DR +  0] =  time_from_start_record_dr        & 0xff;
         buffer_for_save_dr_record[FIRST_INDEX_FIRST_DATA_DR + number_items_dr*SD_DR +  1] = (time_from_start_record_dr >> 8 ) & 0xff;
