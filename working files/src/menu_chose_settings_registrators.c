@@ -16,8 +16,8 @@ void make_ekran_chose_registrators(void)
       " Аналог.реєстр. "
     },
     {
-      "Digital recorder",
-      " Analog recorder"
+      " Binary recorder",
+      "Disturb recorder"
     },
     {
       " Дискр. рег-р   ",
@@ -74,8 +74,8 @@ void make_ekran_settings_analog_registrators(void)
       " Управління     "
     },
     {
-      " Sources        ",
-      " Delay          ",
+      " Inputs         ",
+      " Operate delay  ",
       " Control        "
     },
     {
@@ -261,7 +261,7 @@ void make_ekran_control_ar()
       " Аварійний проц."
     },
     {
-      " Аварийный проц."
+      " Fault process  "
     },
     {
       " Аварийный проц."

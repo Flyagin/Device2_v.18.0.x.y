@@ -19,7 +19,7 @@ void make_ekran_chose_communication_parameters(void)
     },
     {
       " Bay name       ",
-      " Bay Address    ",
+      " IED Address    ",
       " RS-485 Settings"
     },
     {
@@ -533,7 +533,7 @@ void make_ekran_timeout_interface()
     "End of Reception",
     "  Конец приёма  "
   };
-  const unsigned char symbols[MAX_NAMBER_LANGUAGE][5] = {"симв.", "симв.", "symb.", "симв."};
+  const unsigned char symbols[MAX_NAMBER_LANGUAGE][5] = {"симв.", "симв.", "symb ", "симв."};
   int index_language = index_language_in_array(current_settings.language);
   
   unsigned int position_temp = current_ekran.index_position;

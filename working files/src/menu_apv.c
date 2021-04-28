@@ -30,15 +30,15 @@ void make_ekran_timeout_apv(unsigned int group)
       " аК.юоб БЁД бб  "
     },
     {
-      "   AR Shot 1    ",
-      "   AR Shot 2    ",
-      "   AR Shot 3    ",
-      "   AR Shot 4    ",
-      "  AR1 Blocking  ",
-      "  AR2 Blocking  ",
-      "  AR3 Blocking  ",
-      "  AR4 Blocking  ",
-      "AR Block from CB"
+      "   AR Cycle 1   ",
+      "   AR Cycle 2   ",
+      "   AR Cycle 3   ",
+      "   AR Cycle 4   ",
+      "  AR Cyc 1 Blk  ",
+      "  AR Cyc 2 Blk  ",
+      "  AR Cyc 3 Blk  ",
+      "  AR Cyc 4 Blk  ",
+      "   AR CB Blk    "
     },
     {
       "   1 жХЙК юоб   ",
@@ -386,15 +386,15 @@ void make_ekran_control_apv()
       "Start from юлрг3",
       " Start from дг4 ",
       "Start from юлрг4",
-      " Start from OCP1",
-      " Start from OCP2",
-      " Start from OCP3",
-      " Start from OCP4",
-      " Start frm ргмо1",
-      " Start frm ргмо2",
-      " Start frm ргмо3",
-      "й.ОНК.бб ДКЪ юоб",
-      " аК.юоб НР спнб2"
+      "    via OCP1    ",
+      "    via OCP2    ",
+      "    via OCP3    ",
+      "    via OCP4    ",
+      "   via DEFP1    ",
+      "   via DEFP2    ",
+      "   via DEFP3    ",
+      " AR CB State Ctr",
+      " AR Blk via CBF "
     },
     {
       "      юоб       ",

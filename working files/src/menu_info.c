@@ -9,18 +9,30 @@ void make_ekran_info()
   {
     {
       "   Версия ПО    ",
+#if (MODYFIKACIA_VERSII_PZ >= 10)
+      " Версия ПО(КП)  ",
+#endif
       "   Версия КП    "
     },
     {
       "   Версія ПЗ    ",
+#if (MODYFIKACIA_VERSII_PZ >= 10)
+      " Версія ПЗ(КП)  ",
+#endif
       "   Версія КП    "
     },
     {
-      "   VER.of F/W   ",
-      "   VER.of MM    "
+      "  Firmware ver  ",
+#if (MODYFIKACIA_VERSII_PZ >= 10)
+      "Firmware ver(CU)",
+#endif
+      "  Mem Card ver  "
     },
     {
       "   Версия ПО    ",
+#if (MODYFIKACIA_VERSII_PZ >= 10)
+      " Версия ПО(КП)  ",
+#endif
       "   Версия КП    "
     }
   };

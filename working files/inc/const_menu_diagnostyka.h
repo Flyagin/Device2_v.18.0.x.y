@@ -176,8 +176,8 @@ ERROR_FATFS
   " Ош.воcст.с.вых ",   \
   "Инф.вых./св.нет ",   \
   " Ош.зап.вых./св.",   \
-  "  Ош.триг.инф.  ",   \
-  "  Триг.инф.нет  ",   \
+  " Ош.триг.инф.   ",   \
+  " Триг.инф.нет   ",   \
   "Ош.зап.триг.инф.",   \
   "Ош.контр.триг.и.",   \
   " Ош.инф.ан.рег. ",   \
@@ -197,7 +197,7 @@ ERROR_FATFS
   " Ош.зап.сч.рес. ",   \
   "Ош.контр.сч.рес.",   \
   " Ош.к.с.энергий ",   \
-  "  Энергий нет   ",   \
+  " Энергий нет    ",   \
   " Ош.зап.энергий ",   \
   " Батарея разряж.",   \
   "Осцилятор остан.",   \
@@ -295,7 +295,7 @@ ERROR_FATFS
   " Пом.зап.ліч.р. ",   \
   "Пом.контр.ліч.р.",   \
   " Пом.к.с.енергій",   \
-  "  Енергій нема  ",   \
+  " Енергій нема   ",   \
   " Пом.зап.енергій",   \
   "Батарея розрядж.",   \
   " Осцилятор зуп. ",   \
@@ -357,102 +357,102 @@ ERROR_FATFS
   " Пом.Ф.С.       "
 
 # define NAME_DIAGN_EN  \
-  " I2C Err.       ",   \
-  " Settings Err.  ",   \
+  " I2C Er         ",   \
+  " Settings Er    ",   \
   " No settings    ",   \
-  " Sett.W.Err.    ",   \
-  " Sett.Ctrl.Err. ",   \
-  " Sett.Type Err. ",   \
-  " Adjust Err.    ",   \
+  " Sett W Er      ",   \
+  " Sett Ctl Er    ",   \
+  " Sett Type Er   ",   \
+  " Adjust Er      ",   \
   " No adjust      ",   \
-  " Adjust W.Err.  ",   \
-  "Adjust Ctrl.Err.",   \
-  " Adjust-Set Err.",   \
-  "Tr.LED Rest Err.",   \
-  "Sign DO Rest Err",   \
-  " No DO/LED Inf. ",   \
-  " DO/LED W Err.  ",   \
-  "  Ош.триг.инф.  ",   \
-  "  Триг.инф.нет  ",   \
-  "Ош.зап.триг.инф.",   \
-  "Ош.контр.триг.и.",   \
-  " An.Rec.Inf.Err.",   \
-  " No An.Rec.Inf. ",   \
-  "An.Rec.Inf.W.Err",   \
-  "An.Rec.Ctrl.Err.",   \
-  " D.Rec.Inf.Err. ",   \
-  " No D.Rec.Inf.  ",   \
-  "Inf.D.Rec.W.Err.",   \
-  " D.Rec.Ctrl.Err.",   \
-  " PER Inf.Err.   ",   \
-  " No Inf.of PER  ",   \
-  "Inf.W.Err.of PER",   \
-  " PER Ctrl.Err.  ",   \
-  " Res.C.Inf.Err. ",   \
-  " No Res.C.Inf.  ",   \
-  "Inf.Res.C.W.Err.",   \
-  " Res.C.Ctrl.Err.",   \
-  " Ош.к.с.энергий ",   \
-  "  Энергий нет   ",   \
-  " Ош.зап.энергий ",   \
+  " Adjust W Er    ",   \
+  "Adjust Ctl Er   ",   \
+  " Adjust-Set Er  ",   \
+  "Tr LED Rest Er  ",   \
+  "Sign BO Rest Er ",   \
+  " No BO/LED Inf  ",   \
+  " BO/LED W Er    ",   \
+  " Nvol LS Inf Er ",   \
+  " No Nvol LS Inf ",   \
+  "Nvol LS Inf W Er",   \
+  "Nvol LS Inf C Er",   \
+  " Dst Rec Er     ",   \
+  " Dst Rec No info",   \
+  " Dst Rec W Er   ",   \
+  " Dst Rec Ctr Er ",   \
+  " Bin Rec Er     ",   \
+  " Bin Rec No info",   \
+  " Bin Rec W Er   ",   \
+  " Bin Rec Ctr Er ",   \
+  " Diag Rec Er    ",   \
+  "Diag Rec No info",   \
+  " Diag Rec W Er  ",   \
+  "Diag Rec Ctr Er ",   \
+  " CB Res Coun Er ",   \
+  "CB Res Ctr No In",   \
+  " CB Res Ctr W Er",   \
+  " CB R Cnt Ctr Er",   \
+  " Energy calc Er ",   \
+  " Energy calc Abs",   \
+  "Energy calc W Er",   \
   " RTC:Battery low",   \
-  " RTC:Osc.stop   ",   \
-  " RTC:Osc.fail   ",   \
+  " RTC:Osc stop   ",   \
+  " RTC:Osc fail   ",   \
   " RTC:Halt update",   \
-  "RTC:No def.sett.",   \
+  "RTC:No def sett ",   \
   " ADC:VREF fail  ",   \
-  " ADC SPI Err.   ",   \
-  "Переп.буф.ц.осц.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " DO?.? Ctrl.Err.",   \
-  " An.Rec.busy    ",   \
-  " An.Rec.buff.OVF",   \
-  " Mem.An.Rec.Full",   \
-  "Undef.An.Rec.Err",   \
-  " D.Rec.busy     ",   \
-  "Undef.D.Rec.Err.",   \
-  " D.Rec.Data lost",   \
-  "OVF of PER buff.",   \
-  " PER Data lost  ",   \
+  " ADC SPI Er     ",   \
+  "UnAp D Buf Ovrfl",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " BO?.? Ctl Er   ",   \
+  " Dst Rec Busy   ",   \
+  " Dst Rec Buf Ovf",   \
+  "Dst Rec Mem Full",   \
+  "UnDef Dst Rec Er",   \
+  " Bin Rec busy   ",   \
+  "UnDef Bin Rec Er",   \
+  "Bin Rec Dat Lost",   \
+  "OVF of PER buff ",   \
+  " PER Dat lost   ",   \
   " Device Start   ",   \
   " Device Restart ",   \
   " Device SFTRST  ",   \
   " Device Stop    ",   \
-  " Пропад.питания ",   \
+  " Power Outage   ",   \
   " LCD Fail       ",   \
-  " EDF SPI Err.   ",   \
-  " Ext.SRAM Err.  ",   \
-  " Int.FLASH Err. ",   \
-  " Ош.выб.гр.уст. ",   \
-  " Пот.д.энергии  ",   \
-  " Test ОВД1      ",   \
-  " Test ОВД2      ",   \
-  " Test ОВД3      ",   \
-  " BA1 f.         ",   \
-  " BA1 ctrl.      ",   \
-  " BDVV5_1 f.     ",   \
-  " BDVV5_1 ctrl.  ",   \
-  " BDVV5_2 f.     ",   \
-  " BDVV5_2 ctrl.  ",   \
-  " BDV-DZ f.      ",   \
-  " BDV-DZ ctrl.   ",   \
-  " BDZ f.         ",   \
-  " BDZ ctrl.      ",   \
-  " Error FS       "
+  " EDF SPI Er     ",   \
+  " Ext SRAM Er    ",   \
+  " Flash Mem Er   ",   \
+  " SP Gr Sel Er   ",   \
+  " En Ctr Dat Lost",   \
+  " Sensor1 Test   ",   \
+  " Sensor2 Test   ",   \
+  " Sensor3 Test   ",   \
+  " AIU01 abs      ",   \
+  " AIU01 ver      ",   \
+  " BIOU05_X abs   ",   \
+  " BIOU05_X ver   ",   \
+  " BIOU05_Y abs   ",   \
+  " BIOU05_Y ver   ",   \
+  " BIASU01 abs    ",   \
+  " BIASU01 ver    ",   \
+  " ASU abs        ",   \
+  " ASU ver        ",   \
+  " Error of FS    "
 
 # define NAME_DIAGN_KZ  \
   " Ош.I2C         ",   \
@@ -470,8 +470,8 @@ ERROR_FATFS
   " Ош.воcст.с.вых ",   \
   "Инф.вых./св.нет ",   \
   " Ош.зап.вых./св.",   \
-  "  Ош.триг.инф.  ",   \
-  "  Триг.инф.нет  ",   \
+  " Ош.триг.инф.   ",   \
+  " Триг.инф.нет   ",   \
   "Ош.зап.триг.инф.",   \
   "Ош.контр.триг.и.",   \
   " Ош.инф.ан.рег. ",   \
@@ -491,7 +491,7 @@ ERROR_FATFS
   " Ош.зап.сч.рес. ",   \
   "Ош.контр.сч.рес.",   \
   " Ош.к.с.энергий ",   \
-  "  Энергий нет   ",   \
+  " Энергий нет    ",   \
   " Ош.зап.энергий ",   \
   " Батарея разряж.",   \
   "Осцилятор остан.",   \

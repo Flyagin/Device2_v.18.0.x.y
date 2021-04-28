@@ -14,7 +14,7 @@ void make_ekran_timeout_zdz(unsigned int group)
       "     T ЗДЗ      "
     },
     {
-      "     T ЗДЗ      "
+      "    AFD Del     "
     },
     {
       "     T ЗДЗ      "
@@ -139,23 +139,23 @@ void make_ekran_control_zdz()
       " Пуск від ЗНмін2"
     },
     {
-      "      ЗДЗ       ",
+      "      AFD       ",
 #if (                                   \
      (MODYFIKACIA_VERSII_PZ == 0) ||    \
      (MODYFIKACIA_VERSII_PZ == 3)       \
     )   
-      "      ОВД1      ",
-      "      ОВД2      ",
-      "      ОВД3      ",
-      "  Порог чувст.  ",
+      "   SENSSARC1    ",
+      "   SENSSARC2    ",
+      "   SENSSARC3    ",
+      "  Sensitivity   ",
 #endif
-      "   Выбор ЗДЗ    ",
-      " Start from OCP1",
-      " Start from OCP2",
-      " Start from OCP3",
-      " Start from OCP4",
-      " Пуск от ЗНмин1 ",
-      " Пуск от ЗНмин2 "
+      "  AFD settings  ",
+      "    via OCP1    ",
+      "    via OCP2    ",
+      "    via OCP3    ",
+      "    via OCP4    ",
+      "    via UVP1    ",
+      "    via UVP2    "
     },
     {
       "      ЗДЗ       ",

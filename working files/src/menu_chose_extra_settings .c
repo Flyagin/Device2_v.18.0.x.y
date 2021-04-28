@@ -22,11 +22,11 @@ void make_ekran_chose_extra_settings(void)
       " Бл.Вимк.від ДВ "
     },
     {
-      "Бл.Гот.к ТУ от з",
-      " Инф.об отключ. ",
-      " FK activ.Ctrl  ",
-      " Blc.On CB fr.DI", 
-      "Blc.Off CB fr.DI"
+      " Rem Ctr Trip Bl",
+      "   Trip Info    ",
+      "  FK activ Ctr  ",
+      "Cl CB Blk via BI", 
+      "Op CB Blk via BI"
     },
     {
       "Бл.Гот.к ТУ от з",

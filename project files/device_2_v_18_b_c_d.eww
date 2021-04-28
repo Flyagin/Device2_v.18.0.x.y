@@ -1,16 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
+
 <workspace>
-    <project>
-        <path>$WS_DIR$\v.18.00\device_2_v_18_0_1_0.ewp</path>
-    </project>
-    <project>
-        <path>$WS_DIR$\v.18.00\device_2_v_18_1_1_0.ewp</path>
-    </project>
-    <project>
-        <path>$WS_DIR$\v.18.00\device_2_v_18_2_1_0.ewp</path>
-    </project>
-    <project>
-        <path>$WS_DIR$\v.18.00\device_2_v_18_3_1_0.ewp</path>
-    </project>
-    <batchBuild />
+  <batchBuild/>
 </workspace>
+
+

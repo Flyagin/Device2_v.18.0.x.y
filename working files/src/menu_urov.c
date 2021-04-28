@@ -14,7 +14,7 @@ void make_ekran_setpoint_urov(unsigned int group)
       "  Уставка ПРВВ  "
     },
     {
-      "  CBFP Pickup   "
+      "   CBF StVal    "
     },
     {
       "  Уставка УРОВ  "
@@ -110,8 +110,8 @@ void make_ekran_timeout_urov(unsigned int group)
       " 2 Ступінь ПРВВ "
     },
     {
-      "  CBFP Stage 1  ",
-      "  CBFP Stage 2  "
+      "   CBF IntTr    ",
+      "   CBF ExtTr    "
     },
     {
       " 1 Ступень УРОВ ",
@@ -260,7 +260,7 @@ void make_ekran_control_urov()
       " Пуск от ЗНмакс2",
       "  Пуск от АЧР1  ",
       "  Пуск от АЧР2  ",
-      "  Пуск от УЗх   "
+      "  Пуск от УЗx   "
     },
     {
       "      ПРВВ      ",
@@ -293,7 +293,7 @@ void make_ekran_control_urov()
       "  Пуск від УЗx  "
     },
     {
-      "      CBFP      ",
+      "      CBP       ",
       " Start from ДЗ1 ",
       "Start from АМТЗ1",
       " Start from ДЗ2 ",
@@ -302,25 +302,25 @@ void make_ekran_control_urov()
       "Start from АМТЗ3",
       " Start from ДЗ4 ",
       "Start from АМТЗ4",
-      " Start from OCP1",
-      " Start from OCP2",
-      " Start from OCP3",
-      " Start from OCP4",
-      "  Пуск от ЗДЗ   ",
-      " Start from 3I0 ",
-      " Start from 3U0 ",
-      "  Пуск от НЗЗ   ",
-      " Пуск от ТЗНП1  ",
-      " Пуск от ТЗНП2  ",
-      " Пуск от ТЗНП3  ",
-      " Start from NPSP",
-      "Start from Umin1",
-      "Start from Umin2",
-      "Start from Umax1",
-      "Start from Umax2",
-      "  Пуск от АЧР1  ",
-      "  Пуск от АЧР2  ",
-      "  Пуск от УЗх   "
+      "    via OCP1    ",
+      "    via OCP2    ",
+      "    via OCP3    ",
+      "    via OCP4    ",
+      "    via AFD     ",
+      "  via EFP 3I0   ",
+      "  via EFP U01   ",
+      "   via SDEFP    ",
+      "   via DEFP1    ",
+      "   via DEFP2    ",
+      "   via DEFP3    ",
+      "   via NSOCP    ",
+      "    via UVP1    ",
+      "    via UVP2    ",
+      "    via OVP1    ",
+      "    via OVP2    ",
+      "    via LFC1    ",
+      "    via LFC2    ",
+      "   MFPx Start   "
     },
     {
       "      УРОВ      ",
@@ -350,7 +350,7 @@ void make_ekran_control_urov()
       " Пуск от ЗНмакс2",
       "  Пуск от АЧР1  ",
       "  Пуск от АЧР2  ",
-      "  Пуск от УЗх   "
+      "  Пуск от УЗx   "
     }
   };
   const uint32_t index_number_UP[MAX_NAMBER_LANGUAGE] = {12, 13, 12, 12};

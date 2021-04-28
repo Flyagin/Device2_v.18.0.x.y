@@ -25,7 +25,7 @@ void make_ekran_chose_of_inputs_outputs_leds_df_buttons_for_ranguvannja(__id_inp
   {
     {" Двх.           ", " Двых.          ", " Св             ", " О-функция      ", " F              ", " О-триггер      ", " О-И            ", " О-ИЛИ          ", " О-Искл.ИЛИ     ", " О-НЕ           ", " Пер.ф.         "},
     {" Двх.           ", " Двих.          ", " Св             ", " В-функція      ", " F              ", " В-триґер       ", " В-І            ", " В-АБО          ", " В-Викл.АБО     ", " В-НЕ           ", " Пер.ф.         "},
-    {" DI.            ", " DO.            ", " LED            ", " UD Function    ", " F              ", " UD Flip-Flop   ", " UD AND         ", " UD OR          ", " UD XOR         ", " UD NOT         ", " Tr.F.          "},
+    {" BI.            ", " BO.            ", " LED            ", " UD-Function    ", " F              ", " UD-FF          ", " AND            ", " OR             ", " XOR            ", " NOT            ", " Transfer func  "},
     {" Двх.           ", " Двых.          ", " Св             ", " О-функция      ", " F              ", " О-триггер      ", " О-И            ", " О-ИЛИ          ", " О-Искл.ИЛИ     ", " О-НЕ           ", " Пер.ф.         "}
   };
 
@@ -236,7 +236,7 @@ void make_ekran_set_function_in_bi(unsigned int number_ekran, unsigned int type_
     },
     {
       "       No       ",
-      "    ranking     ",
+      "  signal conf   ",
       NAME_RANG_SMALL_EN
     },
     {
@@ -292,7 +292,7 @@ void make_ekran_set_function_in_bi(unsigned int number_ekran, unsigned int type_
     {
       "    Блок.ЗЗ     ",
       "    Блок.ЗЗ     ",
-      "    Блок.ЗЗ     ",
+      "    SEFP Blk    ",
       "    Блок.ЗЗ     "
     };
     for (unsigned int index_1 = 0; index_1 < MAX_COL_LCD; index_1++)
@@ -795,7 +795,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
     },
     {
       "       No       ",
-      "    ranking     ",
+      "  signal conf   ",
       NAME_RANG_EN
     },
     {
@@ -850,7 +850,7 @@ void make_ekran_set_function_in_output_led_df_dt_reg(unsigned int number_ekran, 
     {
       "    Блок.ЗЗ     ",
       "    Блок.ЗЗ     ",
-      "    Блок.ЗЗ     ",
+      "    SEFP Blk    ",
       "    Блок.ЗЗ     "
     };
     for (unsigned int index_1 = 0; index_1 < MAX_COL_LCD; index_1++)

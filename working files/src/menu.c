@@ -19684,7 +19684,7 @@ void main_manu_function(void)
                 {
                   " Очистить ресурс",
                   " Очистити ресурс",
-                  " Reset Resources",
+                  " Reset Res Coun ",
                   " Очистить ресурс"
                 };
 

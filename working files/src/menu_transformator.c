@@ -48,7 +48,7 @@ void make_ekran_chose_setpoint_control_transformator(void)
       " Управління     "
     },
     {
-      " Pickups        ",
+      " Start Values   ",
       " Control        "
     },
     {
@@ -259,7 +259,7 @@ void make_ekran_transformator_control(void)
       "   З'єднання    "
     },
     {
-      " Выб.U для защит",
+      "U protection use",
       "   Connection   "
     },
     {
@@ -292,7 +292,7 @@ void make_ekran_transformator_control(void)
           {
             {"     Фазные     ", "    Линейные    "},
             {"     Фазні      ", "    Лінійні     "},
-            {"     Фазные     ", "    Линейные    "},
+            {"      Ph-N      ", "     Ph-Ph      "},
             {"     Фазные     ", "    Линейные    "}
           },
           {
@@ -305,10 +305,10 @@ void make_ekran_transformator_control(void)
         const unsigned int cursor_x[MAX_ROW_FOR_TRANSFORMATOR_INFO_CONTROL][MAX_NAMBER_LANGUAGE][2] = 
         {
           {
-            {3, 4},
-            {3, 4},
-            {3, 4},
-            {3, 4}
+            {4, 3},
+            {4, 3},
+            {4, 3},
+            {4, 3}
           },
           {
             {5, 4},

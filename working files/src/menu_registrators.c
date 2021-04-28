@@ -18,9 +18,9 @@ void make_ekran_list_registrators(void)
       " Архів діагност."
     },
     {
-      " Analog recorder",
-      "Digital recorder",
-      " Diagn.Archive  "
+      " Dst recorder   ",
+      " Binary recorder",
+      " Diag recorder  "
     },
     {
       " Аналог.рег-р   ",
@@ -250,8 +250,8 @@ void make_ekran_list_titles_for_record_of_digital_registrator(void)
       },
       {
         " Time label     ",
-        " Digit.S.Changes",
-        " ОМП            "
+        " Bin S Changes  ",
+        " FL             "
       },
       {
         " Уакыт белгісі  ",
@@ -577,7 +577,7 @@ void make_ekran_vmp_value_records_digital_registrator(void)
     {
       //Місце пошкодження
 #define SIZE_NAME_FIELD         2
-      const unsigned char name_field[MAX_NAMBER_LANGUAGE][SIZE_NAME_FIELD] = {"МП", "МП", "FP", "МП"};
+      const unsigned char name_field[MAX_NAMBER_LANGUAGE][SIZE_NAME_FIELD] = {"МП", "МП", "FD", "МП"};
       for (unsigned int j = 0; j < SIZE_NAME_FIELD; j++)
       {
         name_string[i][1 + j] = name_field[index_language][j];
@@ -889,14 +889,14 @@ void make_ekran_changing_signals_digital_registrator(void)
                 {
                   "мс.",
                   "мс.",
-                  "ms.",
+                  "ms ",
                   "мс."
                 };
                 const unsigned char passive_active[MAX_NAMBER_LANGUAGE][2][5] = 
                 {
                   {"Пасс.", "Акт. "},
                   {"Пас. ", "Акт. "},
-                  {"Pass.", "Act. "},
+                  {"Pass ", "Act  "},
                   {"Пасс.", "Акт. "}
                 };
                 unsigned int time_of_slice = buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 0] + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 1]<<8) + (buffer_for_manu_read_record[FIRST_INDEX_FIRST_DATA_DR + SD_DR*(1 + index_of_the_slice) + 2]<<16);
@@ -1286,7 +1286,7 @@ void make_ekran_changing_diagnostics_pr_err_registrator(void)
                 {
                   {"Пасс.", "Акт. "},
                   {"Пас. ", "Акт. "},
-                  {"Pass.", "Act. "},
+                  {"Pass ", "Act  "},
                   {"Пасс.", "Акт. "}
                 };
 
